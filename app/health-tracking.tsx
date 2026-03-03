@@ -17,7 +17,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
 import { useNotes } from '../contexts/NotesContext';
-import { useTemperature, TempUnit } from '../contexts/TemperatureContext';
+import { useTemperature, parseTempUnit } from '../contexts/TemperatureContext';
 import { useAuth } from '../contexts/AuthContext';
 import Toast from 'react-native-toast-message';
 import { formatTodayOrDate } from '../utils/localeUtils';
@@ -33,6 +33,7 @@ import { HealthItemGrid } from '../components/HealthItemGrid';
 import { DateNavigator } from '../components/DateNavigator';
 import { CycleIcon as DeleteIcon } from '../components/icons/general/delete';
 import { CycleIcon as EditIcon } from '../components/icons/general/edit';
+import { CycleIcon as PlusIcon } from '../components/icons/general/plus';
 
 dayjs.extend(isoWeek);
 
@@ -149,7 +150,7 @@ export default function HealthTracking() {
           }
         });
 
-        const savedUnit = ((await getSetting('temp_unit')) as TempUnit | null) ?? 'C';
+        const savedUnit = parseTempUnit(await getSetting('temp_unit'));
         setTempUnit(savedUnit);
 
         setSelectedSymptoms(symptomIds);
@@ -515,7 +516,11 @@ export default function HealthTracking() {
                 onPress={() => router.push('/temperature-editor')}
                 activeOpacity={0.7}
               >
-                <EditIcon color={colors.neutral400} />
+                {tempCelsius ? (
+                  <EditIcon color={colors.neutral400} />
+                ) : (
+                  <PlusIcon color={colors.neutral400} />
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -525,7 +530,7 @@ export default function HealthTracking() {
             onPress={() => router.push('/temperature-editor')}
             activeOpacity={0.7}
           >
-            {tempCelsius ? (
+            {tempCelsius && !Number.isNaN(parseFloat(tempCelsius)) ? (
               <Text style={[typography.body, { flex: 1 }]}>
                 {tempUnit === 'F'
                   ? `${toFahrenheit(parseFloat(tempCelsius)).toFixed(1)} °F`
@@ -568,9 +573,11 @@ export default function HealthTracking() {
                 onPress={openNotesEditor}
                 activeOpacity={0.7}
               >
-                <EditIcon
-                  color={colors.neutral400}
-                />
+                {notes.trim() ? (
+                  <EditIcon color={colors.neutral400} />
+                ) : (
+                  <PlusIcon color={colors.neutral400} />
+                )}
               </TouchableOpacity>
             </View>
           </View>

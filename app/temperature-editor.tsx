@@ -13,7 +13,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
-import { useTemperature, TempUnit } from '../contexts/TemperatureContext';
+import { useTemperature, TempUnit, parseTempUnit } from '../contexts/TemperatureContext';
 import { getSetting, setSetting } from '../db';
 import { Button } from '../components/Button';
 
@@ -51,7 +51,7 @@ export default function TemperatureEditor() {
     hasInitialized.current = true;
 
     const init = async () => {
-      const savedUnit = ((await getSetting('temp_unit')) as TempUnit | null) ?? 'C';
+      const savedUnit = parseTempUnit(await getSetting('temp_unit'));
       setUnit(savedUnit);
       setTempUnit(savedUnit);
 
@@ -100,8 +100,9 @@ export default function TemperatureEditor() {
       : numericValue >= 95 && numericValue <= 102);
   const rawDigits = displayValue.replace(/\D/g, '');
   const before = digitsBefore(rawDigits, unit);
-  const isComplete = rawDigits.length >= before + 2;
+  const isComplete = rawDigits.length >= before + 1;
   const showError = !!displayValue && isComplete && !isInRange;
+  const disableSave = !isComplete || !isInRange;
 
   const handleSave = () => {
     if (!isInRange) return;
@@ -203,7 +204,7 @@ export default function TemperatureEditor() {
               },
             ]}
           >
-            <Button title={t('buttons.done')} onPress={handleSave} fullWidth disabled={showError} />
+            <Button title={t('buttons.done')} onPress={handleSave} fullWidth disabled={disableSave} />
           </View>
         )}
       </KeyboardAvoidingView>

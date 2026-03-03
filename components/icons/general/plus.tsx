@@ -1,6 +1,6 @@
 import React from 'react';
 import { SvgProps } from 'react-native-svg';
-import EditSvg from './edit.svg';
+import PlusSvg from './plus.svg';
 
 interface IconProps extends SvgProps {
   size?: number;
@@ -12,5 +12,5 @@ export const CycleIcon: React.FC<IconProps> = ({
   color = '#1C1B1F',
   ...props
 }) => {
-  return <EditSvg width={size} height={size} fill={color} color={color} {...props} />;
+  return <PlusSvg width={size} height={size} fill={color} color={color} {...props} />;
 };

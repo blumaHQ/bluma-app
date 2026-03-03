@@ -11,6 +11,9 @@ import { useAuth } from './AuthContext';
 
 export type TempUnit = 'C' | 'F';
 
+export const parseTempUnit = (value: string | null): TempUnit =>
+  value === 'C' || value === 'F' ? value : 'C';
+
 interface TemperatureContextType {
   tempCelsius: string;
   setTempCelsius: (temp: string) => void;

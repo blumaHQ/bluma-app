@@ -10,6 +10,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { router, useFocusEffect } from 'expo-router';
 import { getDB, getSetting } from '../db';
+import { parseTempUnit } from '../contexts/TemperatureContext';
 import { healthLogs } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { useTheme } from '../styles/theme';
@@ -48,8 +49,8 @@ export const QuickHealthSelector = ({
             .from(healthLogs)
             .where(eq(healthLogs.date, dateToUse));
 
-          const savedUnit = (await getSetting('temp_unit')) as 'C' | 'F' | null;
-          setTempUnit(savedUnit ?? 'C');
+          const savedUnit = parseTempUnit(await getSetting('temp_unit'));
+          setTempUnit(savedUnit);
           setHealthLogsForDate(logs);
         } catch (error) {
           console.error('Error loading health logs:', error);
