@@ -1,9 +1,9 @@
 {
   "welcome": {
     "title": "Rastrea tu ciclo menstrual con privacidad",
-    "badgeStorage": "Datos almacenados y cifrados localmente",
+    "badgeStorage": "Datos almacenados localmente y cifrados",
     "badgeNoTracking": "Sin rastreo de terceros",
-    "badgeNoAds": "Sin anuncios intrusivos",
+    "badgeNoAds": "Sin anuncios",
     "badgeOpenSource": "Código abierto"
   },
   "periodLength": {

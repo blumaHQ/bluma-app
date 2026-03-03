@@ -1,9 +1,9 @@
 {
   "welcome": {
     "title": "Acompanha o teu ciclo em privado",
-    "badgeStorage": "Dados armazenados e encriptados localmente",
+    "badgeStorage": "Dados armazenados localmente e encriptados",
     "badgeNoTracking": "Sem rastreio de terceiros",
-    "badgeNoAds": "Sem anúncios intrusivos",
+    "badgeNoAds": "Sem anúncios",
     "badgeOpenSource": "Código aberto"
   },
   "periodLength": {

@@ -1,10 +1,10 @@
 {
   "welcome": {
     "title": "Track your cycle, privately",
-    "badgeStorage": "Data locally stored and encrypted",
+    "badgeStorage": "Data stored locally and encrypted",
     "badgeNoTracking": "No third-party tracking",
-    "badgeNoAds": "No ads ever",
-    "badgeOpenSource": "Open-source code"
+    "badgeNoAds": "No ads",
+    "badgeOpenSource": "Open source"
   },
   "periodLength": {
     "title": "How long does your period usually last?",
