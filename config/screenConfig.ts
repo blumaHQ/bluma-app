@@ -57,6 +57,13 @@ export const dynamicScreens: ScreenConfig[] = [
     backgroundColorKey: 'panel',
   },
   {
+    name: 'temperature-editor',
+    headerShown: true,
+    titleKey: 'common:navigation.temperature',
+    headerShadowVisible: false,
+    backgroundColorKey: 'panel',
+  },
+  {
     name: 'cycle-details',
     headerShown: true,
     titleKey: 'stats:screenTitles.cycleDetails',

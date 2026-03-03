@@ -10,16 +10,18 @@ import { Button } from '../components/Button';
 import { router, useLocalSearchParams } from 'expo-router';
 import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
-import { getDB } from '../db';
+import { getDB, getSetting } from '../db';
 import { healthLogs, periodDates } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
 import { useNotes } from '../contexts/NotesContext';
+import { useTemperature, parseTempUnit } from '../contexts/TemperatureContext';
 import { useAuth } from '../contexts/AuthContext';
 import Toast from 'react-native-toast-message';
 import { formatTodayOrDate } from '../utils/localeUtils';
+import { toFahrenheit } from '../utils/temperatureUtils';
 import { useTranslation } from 'react-i18next';
 import {
   SYMPTOMS,
@@ -30,12 +32,11 @@ import {
 } from '../constants/healthTracking';
 import { HealthItemGrid } from '../components/HealthItemGrid';
 import { DateNavigator } from '../components/DateNavigator';
-import { CycleIcon as DeleteIcon } from '../components/icons/general/delete';
-import { CycleIcon as EditIcon } from '../components/icons/general/edit';
+import { DeleteIcon } from '../components/icons/general/delete';
+import { EditIcon } from '../components/icons/general/edit';
+import { PlusIcon } from '../components/icons/general/plus';
 
 dayjs.extend(isoWeek);
-
-// leftover types used to render week data were removed
 
 export default function HealthTracking() {
   const { colors } = useTheme();
@@ -43,6 +44,7 @@ export default function HealthTracking() {
   const { t } = useTranslation(['common', 'health']);
   const params = useLocalSearchParams();
   const { notes, setNotes } = useNotes();
+  const { tempCelsius, setTempCelsius, tempUnit, setTempUnit } = useTemperature();
   const { isLocked } = useAuth();
   const ICON_SIZE = 50;
 
@@ -68,6 +70,7 @@ export default function HealthTracking() {
     new Set()
   );
   const [originalNotes, setOriginalNotes] = useState<string>('');
+  const [originalTemp, setOriginalTemp] = useState<string>('');
   const [hasChanges, setHasChanges] = useState<boolean>(false);
 
   const [isPeriodDate, setIsPeriodDate] = useState<boolean>(false);
@@ -77,6 +80,7 @@ export default function HealthTracking() {
   const symptomsSectionRef = useRef<View>(null);
   const moodsSectionRef = useRef<View>(null);
   const dischargeSectionRef = useRef<View>(null);
+  const tempSectionRef = useRef<View>(null);
   const notesSectionRef = useRef<View>(null);
 
   // Update header title on focused
@@ -127,6 +131,7 @@ export default function HealthTracking() {
         const flowIds = new Set<string>();
         const dischargeIds = new Set<string>();
         let notesText = '';
+        let tempValue = '';
 
         existingEntries.forEach(entry => {
           if (entry.type === 'symptom') {
@@ -139,20 +144,27 @@ export default function HealthTracking() {
             dischargeIds.add(entry.item_id);
           } else if (entry.type === 'notes') {
             notesText = entry.name || '';
+          } else if (entry.type === 'temperature') {
+            tempValue = entry.name || '';
           }
         });
+
+        const savedUnit = parseTempUnit(await getSetting('temp_unit'));
+        setTempUnit(savedUnit);
 
         setSelectedSymptoms(symptomIds);
         setSelectedMoods(moodIds);
         setSelectedFlows(flowIds);
         setSelectedDischarges(dischargeIds);
         setNotes(notesText);
+        setTempCelsius(tempValue);
 
         setOriginalSymptoms(new Set(symptomIds));
         setOriginalMoods(new Set(moodIds));
         setOriginalFlows(new Set(flowIds));
         setOriginalDischarges(new Set(dischargeIds));
         setOriginalNotes(notesText);
+        setOriginalTemp(tempValue);
         setHasChanges(false);
       } catch (error) {
         console.error('Error loading health logs:', error);
@@ -160,7 +172,7 @@ export default function HealthTracking() {
     };
 
     loadExistingHealthLogs();
-  }, [selectedDate, setNotes]);
+  }, [selectedDate, setNotes, setTempCelsius, setTempUnit]);
 
   // Handle scrollTo parameter to navigate to specific sections
   useEffect(() => {
@@ -171,6 +183,7 @@ export default function HealthTracking() {
       symptoms: symptomsSectionRef,
       moods: moodsSectionRef,
       discharge: dischargeSectionRef,
+      temperature: tempSectionRef,
       notes: notesSectionRef,
     };
 
@@ -206,13 +219,15 @@ export default function HealthTracking() {
       originalDischarges
     );
     const notesChanged = notes !== originalNotes;
+    const tempChanged = tempCelsius !== originalTemp;
 
     setHasChanges(
       symptomsChanged ||
         moodsChanged ||
         flowsChanged ||
         dischargesChanged ||
-        notesChanged
+        notesChanged ||
+        tempChanged
     );
   }, [
     selectedSymptoms,
@@ -220,11 +235,13 @@ export default function HealthTracking() {
     selectedFlows,
     selectedDischarges,
     notes,
+    tempCelsius,
     originalSymptoms,
     originalMoods,
     originalFlows,
     originalDischarges,
     originalNotes,
+    originalTemp,
   ]);
 
   // Clear sensitive health data when app is locked
@@ -239,6 +256,7 @@ export default function HealthTracking() {
       setOriginalFlows(new Set());
       setOriginalDischarges(new Set());
       setOriginalNotes('');
+      setOriginalTemp('');
       setHasChanges(false);
     }
   }, [isLocked]);
@@ -338,6 +356,15 @@ export default function HealthTracking() {
         });
       }
 
+      if (tempCelsius) {
+        allRecords.push({
+          date: selectedDate,
+          type: 'temperature',
+          item_id: 'basal-temp',
+          name: tempCelsius,
+        });
+      }
+
       if (notes.trim()) {
         allRecords.push({
           date: selectedDate,
@@ -380,7 +407,7 @@ export default function HealthTracking() {
       <ScrollView
         ref={scrollViewRef}
         style={commonStyles.scrollView}
-        contentContainerStyle={scrollContentContainerWithSafeArea}
+        contentContainerStyle={[scrollContentContainerWithSafeArea, { paddingBottom: 80 + insets.bottom}]}
         showsVerticalScrollIndicator={false}
       >
         {isPeriodDate && (
@@ -464,6 +491,66 @@ export default function HealthTracking() {
           />
         </View>
 
+        {/* Basal temperature */}
+        <View
+          ref={tempSectionRef}
+          style={[commonStyles.sectionContainer]}
+        >
+          <View style={commonStyles.sectionTitleContainer}>
+            <Text style={[typography.headingMd]}>
+              {t('health:tracking.basalTemperature')}
+            </Text>
+            <View style={styles.notesIconsContainer}>
+              {tempCelsius && (
+                <TouchableOpacity
+                  style={styles.notesIcon}
+                  onPress={() => setTempCelsius('')}
+                  activeOpacity={0.7}
+                >
+                  <DeleteIcon color={colors.neutral400} />
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity
+                style={styles.notesIcon}
+                onPress={() => router.push('/temperature-editor')}
+                activeOpacity={0.7}
+              >
+                {tempCelsius ? (
+                  <EditIcon color={colors.neutral400} />
+                ) : (
+                  <PlusIcon color={colors.neutral400} />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={styles.notesContainer}
+            onPress={() => router.push('/temperature-editor')}
+            activeOpacity={0.7}
+          >
+            {tempCelsius && !Number.isNaN(parseFloat(tempCelsius)) ? (
+                <Text style={[typography.body, { flex: 1, fontSize: 22 }]}>
+                <Text>
+                  {tempUnit === 'F'
+                    ? toFahrenheit(parseFloat(tempCelsius)).toFixed(1)
+                    : parseFloat(tempCelsius).toFixed(1)}
+                </Text>
+                <Text style={{ fontSize: 16 }}>{` °${tempUnit}`}</Text>
+              </Text>
+            ) : (
+              <Text
+                style={[
+                  typography.body,
+                  { flex: 1, color: colors.placeholder},
+                ]}
+              >
+                {t('health:tracking.basalTemperaturePlaceholder')}
+              </Text>
+            )}
+          </TouchableOpacity>
+        </View>
+
         {/* Notes */}
         <View
           ref={notesSectionRef}
@@ -488,9 +575,11 @@ export default function HealthTracking() {
                 onPress={openNotesEditor}
                 activeOpacity={0.7}
               >
-                <EditIcon
-                  color={colors.neutral400}
-                />
+                {notes.trim() ? (
+                  <EditIcon color={colors.neutral400} />
+                ) : (
+                  <PlusIcon color={colors.neutral400} />
+                )}
               </TouchableOpacity>
             </View>
           </View>
@@ -535,8 +624,6 @@ const styles = StyleSheet.create({
   notesContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    borderRadius: 12,
-    minHeight: 60,
   },
   notesIconsContainer: {
     flexDirection: 'row',

@@ -5,6 +5,7 @@ import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import { AuthProvider } from '../contexts/AuthContext';
 import { NotesProvider } from '../contexts/NotesContext';
+import { TemperatureProvider } from '../contexts/TemperatureContext';
 import { ThemeProvider, useTheme } from '../contexts/ThemeContext';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -162,7 +163,9 @@ export default function RootLayout() {
         <ThemeProvider>
           <AuthProvider>
             <NotesProvider>
-              <AppContent />
+              <TemperatureProvider>
+                <AppContent />
+              </TemperatureProvider>
             </NotesProvider>
           </AuthProvider>
         </ThemeProvider>

@@ -7,8 +7,8 @@ interface IconProps extends SvgProps {
   color?: string;
 }
 
-export const CycleIcon: React.FC<IconProps> = ({
-  size = 24,
+export const EditIcon: React.FC<IconProps> = ({
+  size = 30,
   color = '#1C1B1F',
   ...props
 }) => {
