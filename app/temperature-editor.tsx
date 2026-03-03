@@ -199,7 +199,6 @@ export default function TemperatureEditor() {
             style={[
               styles.buttonContainer,
               {
-                backgroundColor: 'colors.panel',
                 paddingBottom: Math.max(insets.bottom, 120),
               },
             ]}

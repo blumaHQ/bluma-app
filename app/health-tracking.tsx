@@ -407,7 +407,7 @@ export default function HealthTracking() {
       <ScrollView
         ref={scrollViewRef}
         style={commonStyles.scrollView}
-        contentContainerStyle={scrollContentContainerWithSafeArea}
+        contentContainerStyle={[scrollContentContainerWithSafeArea, { paddingBottom: 100}]}
         showsVerticalScrollIndicator={false}
       >
         {isPeriodDate && (
