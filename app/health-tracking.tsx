@@ -21,6 +21,7 @@ import { useTemperature, parseTempUnit } from '../contexts/TemperatureContext';
 import { useAuth } from '../contexts/AuthContext';
 import Toast from 'react-native-toast-message';
 import { formatTodayOrDate } from '../utils/localeUtils';
+import { toFahrenheit } from '../utils/temperatureUtils';
 import { useTranslation } from 'react-i18next';
 import {
   SYMPTOMS,
@@ -31,13 +32,11 @@ import {
 } from '../constants/healthTracking';
 import { HealthItemGrid } from '../components/HealthItemGrid';
 import { DateNavigator } from '../components/DateNavigator';
-import { CycleIcon as DeleteIcon } from '../components/icons/general/delete';
-import { CycleIcon as EditIcon } from '../components/icons/general/edit';
-import { CycleIcon as PlusIcon } from '../components/icons/general/plus';
+import { DeleteIcon } from '../components/icons/general/delete';
+import { EditIcon } from '../components/icons/general/edit';
+import { PlusIcon } from '../components/icons/general/plus';
 
 dayjs.extend(isoWeek);
-
-const toFahrenheit = (c: number) => Math.round((c * 9) / 5 * 10 + 32 * 10) / 10;
 
 export default function HealthTracking() {
   const { colors } = useTheme();
@@ -408,7 +407,7 @@ export default function HealthTracking() {
       <ScrollView
         ref={scrollViewRef}
         style={commonStyles.scrollView}
-        contentContainerStyle={[scrollContentContainerWithSafeArea, { paddingBottom: 100}]}
+        contentContainerStyle={[scrollContentContainerWithSafeArea, { paddingBottom: 80 + insets.bottom}]}
         showsVerticalScrollIndicator={false}
       >
         {isPeriodDate && (

@@ -16,9 +16,7 @@ import { useAppStyles } from '../hooks/useStyles';
 import { useTemperature, TempUnit, parseTempUnit } from '../contexts/TemperatureContext';
 import { getSetting, setSetting } from '../db';
 import { Button } from '../components/Button';
-
-const toFahrenheit = (c: number) => Math.round((c * 9) / 5 * 10 + 32 * 10) / 10;
-const toCelsius = (f: number) => Math.round(((f - 32) * 5) / 9 * 10) / 10;
+import { toFahrenheit, toCelsius } from '../utils/temperatureUtils';
 
 // °F values starting with "1" are 100-104 (3 digits before decimal), otherwise 2
 const digitsBefore = (digits: string, unit: TempUnit): number =>

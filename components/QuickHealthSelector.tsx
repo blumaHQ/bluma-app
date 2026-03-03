@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { router, useFocusEffect } from 'expo-router';
 import { getDB, getSetting } from '../db';
 import { parseTempUnit } from '../contexts/TemperatureContext';
+import { toFahrenheit } from '../utils/temperatureUtils';
 import { healthLogs } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { useTheme } from '../styles/theme';
@@ -103,7 +104,7 @@ export const QuickHealthSelector = ({
       const celsius = parseFloat(log.name || '');
       if (isNaN(celsius)) return t('tracking.basalTemperature');
       return tempUnit === 'F'
-        ? `${(Math.round((celsius * 9 / 5 + 32) * 10) / 10).toFixed(1)} °F`
+        ? `${toFahrenheit(celsius).toFixed(1)} °F`
         : `${celsius.toFixed(1)} °C`;
     }
 
