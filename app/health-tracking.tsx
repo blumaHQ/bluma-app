@@ -531,16 +531,19 @@ export default function HealthTracking() {
             activeOpacity={0.7}
           >
             {tempCelsius && !Number.isNaN(parseFloat(tempCelsius)) ? (
-              <Text style={[typography.body, { flex: 1 }]}>
-                {tempUnit === 'F'
-                  ? `${toFahrenheit(parseFloat(tempCelsius)).toFixed(1)} °F`
-                  : `${parseFloat(tempCelsius).toFixed(1)} °C`}
+                <Text style={[typography.body, { flex: 1, fontSize: 22 }]}>
+                <Text>
+                  {tempUnit === 'F'
+                    ? toFahrenheit(parseFloat(tempCelsius)).toFixed(1)
+                    : parseFloat(tempCelsius).toFixed(1)}
+                </Text>
+                <Text style={{ fontSize: 16 }}>{` °${tempUnit}`}</Text>
               </Text>
             ) : (
               <Text
                 style={[
                   typography.body,
-                  { flex: 1, color: colors.placeholder },
+                  { flex: 1, color: colors.placeholder},
                 ]}
               >
                 {t('health:tracking.basalTemperaturePlaceholder')}

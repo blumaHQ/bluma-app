@@ -18,6 +18,7 @@ import { useAppStyles } from '../hooks/useStyles';
 import dayjs from 'dayjs';
 import { CustomIcon } from './icons/health';
 import { NoteIcon } from './icons/health/Note';
+import { TemperatureIcon } from './icons/health/Temperature';
 import { SYMPTOMS, MOODS, FLOWS, DISCHARGES } from '../constants/healthTracking';
 import { FAB } from './FAB';
 
@@ -69,7 +70,7 @@ export const QuickHealthSelector = ({
     }
 
     if (type === 'temperature') {
-      return <CustomIcon name="im-okay" size={54} />;
+      return <TemperatureIcon size={54} />;
     }
 
     let iconName: string | undefined;
