@@ -57,6 +57,7 @@
     "beforePeriod": "Lembre-me 3 dias antes do provável início da minha próxima menstruação.",
     "dayOfPeriod": "Lembre-me no dia do início da minha menstruação.",
     "latePeriod": "Lembre-me se minha menstruação estiver atrasada.",
+    "fertilityWindow": "Lembre-me antes dos meus dias férteis.",
     "reminderTime": "Horário do lembrete",
     "loading": "Carregando configurações de notificações...",
     "loadError": "Não foi possível carregar as configurações de notificações",

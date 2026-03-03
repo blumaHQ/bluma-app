@@ -28,6 +28,7 @@ export default function Reminders() {
   const [beforePeriodEnabled, setBeforePeriodEnabled] = useState(false);
   const [dayOfPeriodEnabled, setDayOfPeriodEnabled] = useState(false);
   const [latePeriodEnabled, setLatePeriodEnabled] = useState(false);
+  const [fertilityWindowEnabled, setFertilityWindowEnabled] = useState(false);
   const [notificationTime, setNotificationTime] = useState(new Date());
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,6 +46,7 @@ export default function Reminders() {
         setBeforePeriodEnabled(settings.beforePeriodEnabled);
         setDayOfPeriodEnabled(settings.dayOfPeriodEnabled);
         setLatePeriodEnabled(settings.latePeriodEnabled);
+        setFertilityWindowEnabled(settings.fertilityWindowEnabled);
 
         // Load notification time (default to 10 AM)
         const hour = (await AsyncStorage.getItem('notification_time_hour')) || '10';
@@ -95,12 +97,49 @@ export default function Reminders() {
     );
   };
 
+  const toggleFertilityWindow = async (value: boolean) => {
+    if (!value) {
+      setFertilityWindowEnabled(value);
+      await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled, value);
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      let hasPermission = await NotificationService.checkPermissionStatus();
+
+      if (!hasPermission) {
+        startPermissionRequest();
+        try {
+          hasPermission = await NotificationService.requestPermissions();
+        } finally {
+          endPermissionRequest();
+        }
+      }
+
+      if (hasPermission) {
+        setFertilityWindowEnabled(value);
+        await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled, value);
+      } else {
+        showPermissionSettingsDialog();
+      }
+    } catch (error) {
+      console.error('Error toggling notification:', error);
+      setStatusMessage({
+        text: t('reminderSettings.updateError'),
+        isError: true,
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   // Handle toggle for 3-day advance notification
   const toggleBeforePeriod = async (value: boolean) => {
     // If turning notifications off, no need to check permissions
     if (!value) {
       setBeforePeriodEnabled(value);
-      await saveSettings(value, dayOfPeriodEnabled, latePeriodEnabled);
+      await saveSettings(value, dayOfPeriodEnabled, latePeriodEnabled, fertilityWindowEnabled);
       return;
     }
 
@@ -122,7 +161,7 @@ export default function Reminders() {
       if (hasPermission) {
         // Only update UI and save setting if permission granted
         setBeforePeriodEnabled(value);
-        await saveSettings(value, dayOfPeriodEnabled, latePeriodEnabled);
+        await saveSettings(value, dayOfPeriodEnabled, latePeriodEnabled, fertilityWindowEnabled);
       } else {
         // Show settings dialog instead of error message
         showPermissionSettingsDialog();
@@ -143,7 +182,7 @@ export default function Reminders() {
     // If turning notifications off, no need to check permissions
     if (!value) {
       setDayOfPeriodEnabled(value);
-      await saveSettings(beforePeriodEnabled, value, latePeriodEnabled);
+      await saveSettings(beforePeriodEnabled, value, latePeriodEnabled, fertilityWindowEnabled);
       return;
     }
 
@@ -165,7 +204,7 @@ export default function Reminders() {
       if (hasPermission) {
         // Only update UI and save setting if permission granted
         setDayOfPeriodEnabled(value);
-        await saveSettings(beforePeriodEnabled, value, latePeriodEnabled);
+        await saveSettings(beforePeriodEnabled, value, latePeriodEnabled, fertilityWindowEnabled);
       } else {
         // Show settings dialog instead of error message
         showPermissionSettingsDialog();
@@ -186,7 +225,7 @@ export default function Reminders() {
     // If turning notifications off, no need to check permissions
     if (!value) {
       setLatePeriodEnabled(value);
-      await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, value);
+      await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, value, fertilityWindowEnabled);
       return;
     }
 
@@ -208,7 +247,7 @@ export default function Reminders() {
       if (hasPermission) {
         // Only update UI and save setting if permission granted
         setLatePeriodEnabled(value);
-        await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, value);
+        await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, value, fertilityWindowEnabled);
       } else {
         // Show settings dialog instead of error message
         showPermissionSettingsDialog();
@@ -246,24 +285,22 @@ export default function Reminders() {
     return formatTime(date);
   };
 
-  // Save settings to database and update notification service
   const saveSettings = async (
     before: boolean,
     dayOf: boolean,
-    late: boolean
+    late: boolean,
+    fertilityWindow: boolean
   ) => {
     setIsSaving(true);
     try {
-      await NotificationService.saveNotificationSettings(before, dayOf, late);
-
-      // Removed notification success/disable messages
+      await NotificationService.saveNotificationSettings(before, dayOf, late, fertilityWindow);
     } catch (error) {
       console.error('Failed to save notification settings:', error);
-      // Revert UI state if save fails
       const settings = await NotificationService.getNotificationSettings();
       setBeforePeriodEnabled(settings.beforePeriodEnabled);
       setDayOfPeriodEnabled(settings.dayOfPeriodEnabled);
       setLatePeriodEnabled(settings.latePeriodEnabled);
+      setFertilityWindowEnabled(settings.fertilityWindowEnabled);
 
       setStatusMessage({
         text: t('reminderSettings.updateError'),
@@ -348,7 +385,7 @@ export default function Reminders() {
           />
         </View>
 
-        <View style={[styles.settingRow, styles.lastRow]}>
+        <View style={[styles.settingRow, { borderBottomColor: colors.border }]}>
           <Text
             style={[
               typography.body,
@@ -360,6 +397,25 @@ export default function Reminders() {
           <Switch
             value={latePeriodEnabled}
             onValueChange={toggleLatePeriod}
+            trackColor={{ false: colors.border, true: colors.primary }}
+            thumbColor={Platform.OS === 'ios' ? undefined : colors.white}
+            ios_backgroundColor={colors.border}
+            disabled={isSaving}
+          />
+        </View>
+
+        <View style={[styles.settingRow, styles.lastRow]}>
+          <Text
+            style={[
+              typography.body,
+              { flexShrink: 1, paddingRight: 12, flex: 1 },
+            ]}
+          >
+            {t('reminderSettings.fertilityWindow')}
+          </Text>
+          <Switch
+            value={fertilityWindowEnabled}
+            onValueChange={toggleFertilityWindow}
             trackColor={{ false: colors.border, true: colors.primary }}
             thumbColor={Platform.OS === 'ios' ? undefined : colors.white}
             ios_backgroundColor={colors.border}

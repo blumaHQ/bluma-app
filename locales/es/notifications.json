@@ -10,6 +10,10 @@
   "periodLate": {
     "title": "Tu periodo está retrasado",
     "body": "Tu periodo debería haber comenzado ayer. ¿Has olvidado registrar tu periodo?"
+  },
+  "fertilityWindowReminder": {
+    "title": "Tus días fértiles se acercan",
+    "body": "Tu ventana fértil comienza mañana."
   }
 }
 

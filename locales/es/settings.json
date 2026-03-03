@@ -56,6 +56,7 @@
     "beforePeriod": "Recuérdame 3 días antes de que comience mi próximo periodo.",
     "dayOfPeriod": "Recuérdame el día de inicio de mi periodo.",
     "latePeriod": "Recuérdame si mi periodo está retrasado.",
+    "fertilityWindow": "Recuérdame antes de mis días fértiles.",
     "reminderTime": "Hora del recordatorio",
     "loading": "Cargando configuración de notificaciones...",
     "loadError": "No se pudo cargar la configuración de notificaciones",

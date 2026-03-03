@@ -57,6 +57,7 @@
     "beforePeriod": "Remind me 3 days before my next period is likely to start.",
     "dayOfPeriod": "Remind me the day of my period start.",
     "latePeriod": "Remind me if my period is late.",
+    "fertilityWindow": "Remind me before my fertile days.",
     "reminderTime": "Reminder time",
     "loading": "Loading notification settings...",
     "loadError": "Could not load notification settings",

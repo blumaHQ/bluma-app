@@ -12,6 +12,7 @@ const NOTIFICATION_SETTINGS_KEYS = {
   BEFORE_PERIOD: 'notifications_period_before',
   DAY_OF_PERIOD: 'notifications_period_day',
   LATE_PERIOD: 'notifications_period_late',
+  FERTILITY_WINDOW: 'notifications_fertility_window',
   TIME_HOUR: 'notification_time_hour',
   TIME_MINUTE: 'notification_time_minute',
 };
@@ -36,10 +37,13 @@ export class NotificationService {
       const dayOfPeriodEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD);
       const latePeriodEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD);
 
+      const fertilityWindowEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW);
+
       return (
         beforePeriodEnabled === 'true' ||
         dayOfPeriodEnabled === 'true' ||
-        latePeriodEnabled === 'true'
+        latePeriodEnabled === 'true' ||
+        fertilityWindowEnabled === 'true'
       );
     } catch (error) {
       console.error('Failed to read notification settings:', error);
@@ -52,6 +56,7 @@ export class NotificationService {
     beforePeriodEnabled: boolean;
     dayOfPeriodEnabled: boolean;
     latePeriodEnabled: boolean;
+    fertilityWindowEnabled: boolean;
   }> {
     try {
       const beforePeriodEnabled =
@@ -60,11 +65,14 @@ export class NotificationService {
         (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD)) === 'true';
       const latePeriodEnabled =
         (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD)) === 'true';
+      const fertilityWindowEnabled =
+        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW)) === 'true';
 
       return {
         beforePeriodEnabled,
         dayOfPeriodEnabled,
         latePeriodEnabled,
+        fertilityWindowEnabled,
       };
     } catch (error) {
       console.error('Failed to read notification settings:', error);
@@ -72,6 +80,7 @@ export class NotificationService {
         beforePeriodEnabled: false,
         dayOfPeriodEnabled: false,
         latePeriodEnabled: false,
+        fertilityWindowEnabled: false,
       };
     }
   }
@@ -80,10 +89,10 @@ export class NotificationService {
   static async saveNotificationSettings(
     beforePeriodEnabled: boolean,
     dayOfPeriodEnabled: boolean,
-    latePeriodEnabled: boolean
+    latePeriodEnabled: boolean,
+    fertilityWindowEnabled: boolean
   ): Promise<void> {
     try {
-      // Save settings to AsyncStorage
       await AsyncStorage.setItem(
         NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD,
         beforePeriodEnabled ? 'true' : 'false'
@@ -96,15 +105,15 @@ export class NotificationService {
         NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD,
         latePeriodEnabled ? 'true' : 'false'
       );
+      await AsyncStorage.setItem(
+        NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW,
+        fertilityWindowEnabled ? 'true' : 'false'
+      );
 
-      // If notifications were just enabled, initialize them
-      if (beforePeriodEnabled || dayOfPeriodEnabled || latePeriodEnabled) {
+      if (beforePeriodEnabled || dayOfPeriodEnabled || latePeriodEnabled || fertilityWindowEnabled) {
         await this.init();
-
-        // Immediately schedule notifications if there's period data
         await this.scheduleNotificationsIfDataExists();
       } else {
-        // If all are disabled, cancel all notifications
         await this.cancelPeriodNotifications();
       }
     } catch (error) {
@@ -213,11 +222,10 @@ export class NotificationService {
     allDates: string[],
     daysBefore: number = 3
   ) {
-    // Check if notifications are enabled
-    const { beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled } =
+    const { beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled, fertilityWindowEnabled } =
       await this.getNotificationSettings();
 
-    if (!beforePeriodEnabled && !dayOfPeriodEnabled && !latePeriodEnabled) {
+    if (!beforePeriodEnabled && !dayOfPeriodEnabled && !latePeriodEnabled && !fertilityWindowEnabled) {
       return;
     }
 
@@ -314,6 +322,39 @@ export class NotificationService {
       }
     }
 
+    // Schedule fertility window notification if enabled (1 day before window opens = ovulation - 6)
+    if (fertilityWindowEnabled) {
+      const ovulationDateStr = PeriodPredictionService.getOvulationDay(startDate, userCycleLength);
+      const [oy, om, od] = ovulationDateStr.split('-').map(Number);
+      const fertilityReminderDate = new Date(
+        oy,
+        om - 1,
+        od,
+        parseInt(notificationHour),
+        parseInt(notificationMinute),
+        0
+      );
+      fertilityReminderDate.setDate(fertilityReminderDate.getDate() - 6);
+
+      if (fertilityReminderDate > new Date()) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: i18n.t('notifications:fertilityWindowReminder.title'),
+            body: i18n.t('notifications:fertilityWindowReminder.body'),
+            data: { type: 'fertility_window_reminder' },
+            color: Colors.accentPink,
+          },
+          trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.DATE,
+            channelId:
+              Platform.OS === 'android' ? 'period-notifications' : undefined,
+            date: fertilityReminderDate,
+          },
+          identifier: 'fertility-window-reminder',
+        });
+      }
+    }
+
     // Schedule late period notification if enabled
     if (latePeriodEnabled) {
       const latePeriodDate = new Date(predictionDateLocal);
@@ -349,7 +390,8 @@ export class NotificationService {
       if (
         notification.identifier === 'period-reminder' ||
         notification.identifier === 'period-start' ||
-        notification.identifier === 'period-late'
+        notification.identifier === 'period-late' ||
+        notification.identifier === 'fertility-window-reminder'
       ) {
         await Notifications.cancelScheduledNotificationAsync(
           notification.identifier

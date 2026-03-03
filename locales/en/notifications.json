@@ -10,6 +10,10 @@
   "periodLate": {
     "title": "Your period is late",
     "body": "Your period was expected yesterday. Did you forget to log your period?"
+  },
+  "fertilityWindowReminder": {
+    "title": "Your fertile days are approaching",
+    "body": "Your fertile window starts tomorrow."
   }
 }
 
