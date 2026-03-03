@@ -129,7 +129,7 @@ export default function TemperatureEditor() {
             <View
               style={[
                 styles.toggle,
-                { backgroundColor: colors.surface, borderColor: colors.border },
+                { backgroundColor: colors.surface, borderColor: colors.neutral150 },
               ]}
             >
               <TouchableOpacity
@@ -140,7 +140,7 @@ export default function TemperatureEditor() {
                 onPress={() => handleUnitChange('C')}
               >
                 <Text
-                  style={[typography.bodyXl, unit === 'C' && styles.activeToggleText]}
+                  style={[typography.bodyXl, { fontWeight: '600' }]}
                 >
                   °C
                 </Text>
@@ -153,7 +153,7 @@ export default function TemperatureEditor() {
                 onPress={() => handleUnitChange('F')}
               >
                 <Text
-                  style={[typography.bodyXl, unit === 'F' && styles.activeToggleText]}
+                  style={[typography.bodyXl, { fontWeight: '600' }]}
                 >
                   °F
                 </Text>
@@ -239,9 +239,6 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     minWidth: 70,
     alignItems: 'center',
-  },
-  activeToggleText: {
-    fontWeight: '700',
   },
   inputRow: {
     paddingHorizontal: 8,
