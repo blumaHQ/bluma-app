@@ -38,7 +38,8 @@
     "stats": "Estatísticas",
     "settings": "Configurações",
     "appName": "Bluma",
-    "notes": "Notas"
+    "notes": "Notas",
+    "temperature": "Temperatura"
   },
   "cycleDetails": {
     "cycleDay": "Dia {{number}} do ciclo",

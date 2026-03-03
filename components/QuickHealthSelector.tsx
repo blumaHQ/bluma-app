@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { router, useFocusEffect } from 'expo-router';
-import { getDB } from '../db';
+import { getDB, getSetting } from '../db';
 import { healthLogs } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { useTheme } from '../styles/theme';
@@ -33,6 +33,7 @@ export const QuickHealthSelector = ({
   const { typography } = useAppStyles();
   const { t } = useTranslation('health');
   const [healthLogsForDate, setHealthLogsForDate] = useState<any[]>([]);
+  const [tempUnit, setTempUnit] = useState<'C' | 'F'>('C');
 
   // Load health logs when component is focused or selectedDate changes
   useFocusEffect(
@@ -47,6 +48,8 @@ export const QuickHealthSelector = ({
             .from(healthLogs)
             .where(eq(healthLogs.date, dateToUse));
 
+          const savedUnit = (await getSetting('temp_unit')) as 'C' | 'F' | null;
+          setTempUnit(savedUnit ?? 'C');
           setHealthLogsForDate(logs);
         } catch (error) {
           console.error('Error loading health logs:', error);
@@ -62,6 +65,10 @@ export const QuickHealthSelector = ({
 
     if (type === 'notes') {
       return <NoteIcon size={54} />;
+    }
+
+    if (type === 'temperature') {
+      return <CustomIcon name="im-okay" size={54} />;
     }
 
     let iconName: string | undefined;
@@ -88,6 +95,14 @@ export const QuickHealthSelector = ({
 
     if (type === 'notes') {
       return t('quickHealthSelector.note');
+    }
+
+    if (type === 'temperature') {
+      const celsius = parseFloat(log.name || '');
+      if (isNaN(celsius)) return t('tracking.basalTemperature');
+      return tempUnit === 'F'
+        ? `${(Math.round((celsius * 9 / 5 + 32) * 10) / 10).toFixed(1)} °F`
+        : `${celsius.toFixed(1)} °C`;
     }
 
     if (type === 'symptom') {
@@ -132,6 +147,8 @@ export const QuickHealthSelector = ({
             params.scrollTo = 'discharge';
           } else if (log.type === 'flow') {
             params.scrollTo = 'flow';
+          } else if (log.type === 'temperature') {
+            params.scrollTo = 'temperature';
           }
 
           router.push({
