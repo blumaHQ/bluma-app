@@ -39,7 +39,7 @@
     "settings": "Settings",
     "appName": "Bluma",
     "notes": "Notes",
-    "temperature": "Temperature"
+    "temperature": "Basal temperature"
   },
   "cycleDetails": {
     "cycleDay": "Cycle day {{number}}",
