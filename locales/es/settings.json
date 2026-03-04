@@ -47,20 +47,20 @@
     "unlockButton": "Desbloquear"
   },
   "reminderSettings": {
-  "beforePeriod": "Recuérdame 3 días antes de que comience mi próximo periodo",
+    "beforePeriod": "Recuérdame 3 días antes de que comience mi próximo periodo",
     "dayOfPeriod": "Recuérdame el día de inicio de mi periodo",
     "latePeriod": "Recuérdame si mi periodo está retrasado",
     "fertilityWindow": "Recuérdame antes de mis días fértiles",
-    "fertilityWindowHint": "Activar o desactivar los recordatorios de ventana fértil",
+    "fertilityWindowHint": "Activa para recibir un recordatorio antes de tus días fértiles",
     "reminderTime": "Hora del recordatorio",
     "loading": "Cargando configuración de notificaciones...",
     "loadError": "No se pudo cargar la configuración de notificaciones",
     "updateError": "Error al actualizar la configuración de notificaciones",
     "permissionDialog": {
-    "title": "Habilitar notificaciones",
-    "message": "Para recibir recordatorios sobre tu ciclo menstrual, habilita las notificaciones para Bluma en la configuración de tu dispositivo.",
-    "cancel": "Cancelar",
-    "openSettings": "Abrir configuración"
+      "title": "Habilitar notificaciones",
+      "message": "Para recibir recordatorios sobre tu ciclo menstrual, habilita las notificaciones para Bluma en la configuración de tu dispositivo.",
+      "cancel": "Cancelar",
+      "openSettings": "Abrir configuración"
     }
   },
   "aboutScreen": {

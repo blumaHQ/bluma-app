@@ -48,7 +48,7 @@
     "unlockButton": "Desbloquear"
   },
   "reminderSettings": {
-  "beforePeriod": "Lembra-me 3 dias antes do início da minha próxima menstruação",
+    "beforePeriod": "Lembra-me 3 dias antes do início da minha próxima menstruação",
     "dayOfPeriod": "Lembra-me no dia do início do meu período",
     "latePeriod": "Lembra-me se o meu período estiver atrasado",
     "fertilityWindow": "Lembra-me antes dos meus dias férteis",
@@ -58,10 +58,10 @@
     "loadError": "Não foi possível carregar as definições de notificações",
     "updateError": "Falha ao atualizar definições de notificações",
     "permissionDialog": {
-    "title": "Ativar Notificações",
-    "message": "Para receberes lembretes sobre o teu ciclo menstrual, ativa as notificações da Bluma nas definições do teu dispositivo.",
-    "cancel": "Cancelar",
-    "openSettings": "Abrir Definições"
+      "title": "Ativar Notificações",
+      "message": "Para receberes lembretes sobre o teu ciclo menstrual, ativa as notificações da Bluma nas definições do teu dispositivo.",
+      "cancel": "Cancelar",
+      "openSettings": "Abrir Definições"
     }
   },
   "aboutScreen": {

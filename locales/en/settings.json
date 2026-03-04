@@ -52,17 +52,17 @@
     "dayOfPeriod": "Remind me the day of my period start",
     "latePeriod": "Remind me if my period is late",
     "fertilityWindow": "Remind me before my fertile days",
-    "fertilityWindowHint": "Turn fertility window reminders on or off",
+    "fertilityWindowHint": "Toggle to receive a reminder before your fertile days",
     "reminderTime": "Reminder time",
     "loading": "Loading notification settings...",
     "loadError": "Could not load notification settings",
     "updateError": "Failed to update notification settings",
-      "permissionDialog": {
+    "permissionDialog": {
       "title": "Enable Notifications",
       "message": "To receive reminders about your menstrual cycle, please enable notifications for Bluma in your device settings.",
       "cancel": "Cancel",
       "openSettings": "Open Settings"
-      }
+    }
   },
   "aboutScreen": {
     "title": "About Bluma",
