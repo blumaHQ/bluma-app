@@ -52,6 +52,7 @@
     "dayOfPeriod": "Remind me the day of my period start",
     "latePeriod": "Remind me if my period is late",
     "fertilityWindow": "Remind me before my fertile days",
+    "fertilityWindowHint": "Turn fertility window reminders on or off",
     "reminderTime": "Reminder time",
     "loading": "Loading notification settings...",
     "loadError": "Could not load notification settings",

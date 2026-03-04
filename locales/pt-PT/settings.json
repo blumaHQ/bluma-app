@@ -52,6 +52,7 @@
     "dayOfPeriod": "Lembra-me no dia do início do meu período",
     "latePeriod": "Lembra-me se o meu período estiver atrasado",
     "fertilityWindow": "Lembra-me antes dos meus dias férteis",
+    "fertilityWindowHint": "Ativar ou desativar os lembretes da janela fértil",
     "reminderTime": "Hora do lembrete",
     "loading": "A carregar definições de notificações...",
     "loadError": "Não foi possível carregar as definições de notificações",
