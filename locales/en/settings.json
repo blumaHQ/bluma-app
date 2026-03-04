@@ -16,7 +16,7 @@
   },
   "deleteDataConfirm": {
     "title": "Delete all data",
-    "message": "All your data will be permanently deleted: period tracking, symptoms, health logs, app settings, theme preferences, notification settings, and app lock configuration. This action cannot be undone.",
+    "message": "This will permanently delete all your period data, cycle history, health logs, and app settings. This action cannot be undone.",
     "delete": "Delete all data",
     "cancel": "Cancel",
     "success": "Success",
@@ -47,17 +47,11 @@
     "unlockApp": "Unlock Bluma",
     "unlockButton": "Unlock"
   },
-    "reminderSettings": {
-    "title": "Reminders",
-    "periodReminder": "Period reminder",
-    "description": "Get notified before your next period",
-    "daysBeforePeriod": "Days before period",
-    "days": "{{count}} day",
-    "days_other": "{{count}} days",
-    "beforePeriod": "Remind me 3 days before my next period is likely to start.",
-    "dayOfPeriod": "Remind me the day of my period start.",
-    "latePeriod": "Remind me if my period is late.",
-    "fertilityWindow": "Remind me before my fertile days.",
+  "reminderSettings": {
+    "beforePeriod": "Remind me 3 days before my next period start",
+    "dayOfPeriod": "Remind me the day of my period start",
+    "latePeriod": "Remind me if my period is late",
+    "fertilityWindow": "Remind me before my fertile days",
     "reminderTime": "Reminder time",
     "loading": "Loading notification settings...",
     "loadError": "Could not load notification settings",
