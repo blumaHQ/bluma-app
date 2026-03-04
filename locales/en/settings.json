@@ -47,7 +47,7 @@
     "unlockApp": "Unlock Bluma",
     "unlockButton": "Unlock"
   },
-  "reminderSettings": {
+    "reminderSettings": {
     "title": "Reminders",
     "periodReminder": "Period reminder",
     "description": "Get notified before your next period",
@@ -62,12 +62,12 @@
     "loading": "Loading notification settings...",
     "loadError": "Could not load notification settings",
     "updateError": "Failed to update notification settings",
-    "permissionDialog": {
+      "permissionDialog": {
       "title": "Enable Notifications",
-      "message": "To receive period reminders, please enable notifications for Bluma in your device settings.",
+      "message": "To receive reminders about your menstrual cycle, please enable notifications for Bluma in your device settings.",
       "cancel": "Cancel",
       "openSettings": "Open Settings"
-    }
+      }
   },
   "aboutScreen": {
     "title": "About Bluma",

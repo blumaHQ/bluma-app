@@ -63,10 +63,10 @@
     "loadError": "Não foi possível carregar as definições de notificações",
     "updateError": "Falha ao atualizar definições de notificações",
     "permissionDialog": {
-      "title": "Ativar Notificações",
-      "message": "Para receberes lembretes de período, ativa as notificações da Bluma nas definições do teu dispositivo.",
-      "cancel": "Cancelar",
-      "openSettings": "Abrir Definições"
+    "title": "Ativar Notificações",
+    "message": "Para receberes lembretes sobre o teu ciclo menstrual, ativa as notificações da Bluma nas definições do teu dispositivo.",
+    "cancel": "Cancelar",
+    "openSettings": "Abrir Definições"
     }
   },
   "aboutScreen": {
