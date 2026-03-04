@@ -76,7 +76,7 @@
       "symptomsTracking": "Registo de sintomas e humor",
       "statistics": "Estatísticas e histórico do ciclo",
       "insights": "Informações sobre as fases do ciclo",
-      "reminders": "Lembretes de período",
+      "reminders": "Lembretes de período e fertilidade",
       "lock": "Bloqueio biométrico da aplicação",
       "theme": "Suporte a tema escuro e claro"
     },
@@ -139,7 +139,7 @@
       "description": "A Bluma pode solicitar as seguintes permissões:",
       "reminders": "",
       "remindersBold": "Lembretes",
-      "remindersSuffix": ": Para te enviar lembretes de período.",
+      "remindersSuffix": ": Para te enviar lembretes de período e fertilidade.",
       "biometric": "",
       "biometricBold": "Autenticação biométrica",
       "biometricSuffix": ": Para proteger a aplicação com impressão digital ou reconhecimento facial.",

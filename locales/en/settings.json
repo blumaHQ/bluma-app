@@ -76,7 +76,7 @@
       "symptomsTracking": "Symptom and mood tracking",
       "statistics": "Cycle statistics & history",
       "insights": "Cycle phase insights",
-      "reminders": "Period reminders",
+      "reminders": "Period and fertility reminders",
       "lock": "Biometric app lock",
       "theme": "Dark and light theme support"
     },
@@ -139,7 +139,7 @@
       "description": "Bluma may request the following permissions:",
       "reminders": "",
       "remindersBold": "Reminders",
-      "remindersSuffix": ": To send you period reminders.",
+      "remindersSuffix": ": To send you period and fertility reminders.",
       "biometric": "",
       "biometricBold": "Biometric authentication",
       "biometricSuffix": ": To secure your app with fingerprint or face recognition.",
