@@ -97,10 +97,14 @@ export default function Reminders() {
     );
   };
 
-  const toggleFertilityWindow = async (value: boolean) => {
+  const toggleWithPermission = async (
+    value: boolean,
+    setter: (v: boolean) => void,
+    saveArgs: [boolean, boolean, boolean, boolean]
+  ) => {
     if (!value) {
-      setFertilityWindowEnabled(value);
-      await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled, value);
+      setter(value);
+      await saveSettings(...saveArgs);
       return;
     }
 
@@ -118,150 +122,50 @@ export default function Reminders() {
       }
 
       if (hasPermission) {
-        setFertilityWindowEnabled(value);
-        await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled, value);
+        setter(value);
+        await saveSettings(...saveArgs);
       } else {
         showPermissionSettingsDialog();
       }
     } catch (error) {
       console.error('Error toggling notification:', error);
-      setStatusMessage({
-        text: t('reminderSettings.updateError'),
-        isError: true,
-      });
+      setStatusMessage({ text: t('reminderSettings.updateError'), isError: true });
     } finally {
       setIsSaving(false);
     }
   };
 
-  // Handle toggle for 3-day advance notification
-  const toggleBeforePeriod = async (value: boolean) => {
-    // If turning notifications off, no need to check permissions
-    if (!value) {
-      setBeforePeriodEnabled(value);
-      await saveSettings(value, dayOfPeriodEnabled, latePeriodEnabled, fertilityWindowEnabled);
-      return;
-    }
+  const toggleFertilityWindow = (value: boolean) =>
+    toggleWithPermission(value, setFertilityWindowEnabled, [
+      beforePeriodEnabled,
+      dayOfPeriodEnabled,
+      latePeriodEnabled,
+      value,
+    ]);
 
-    setIsSaving(true);
-    try {
-      // Check if we already have permissions
-      let hasPermission = await NotificationService.checkPermissionStatus();
+  const toggleBeforePeriod = (value: boolean) =>
+    toggleWithPermission(value, setBeforePeriodEnabled, [
+      value,
+      dayOfPeriodEnabled,
+      latePeriodEnabled,
+      fertilityWindowEnabled,
+    ]);
 
-      // If no permission, request it
-      if (!hasPermission) {
-        startPermissionRequest();
-        try {
-          hasPermission = await NotificationService.requestPermissions();
-        } finally {
-          endPermissionRequest();
-        }
-      }
+  const toggleDayOfPeriod = (value: boolean) =>
+    toggleWithPermission(value, setDayOfPeriodEnabled, [
+      beforePeriodEnabled,
+      value,
+      latePeriodEnabled,
+      fertilityWindowEnabled,
+    ]);
 
-      if (hasPermission) {
-        // Only update UI and save setting if permission granted
-        setBeforePeriodEnabled(value);
-        await saveSettings(value, dayOfPeriodEnabled, latePeriodEnabled, fertilityWindowEnabled);
-      } else {
-        // Show settings dialog instead of error message
-        showPermissionSettingsDialog();
-      }
-    } catch (error) {
-      console.error('Error toggling notification:', error);
-      setStatusMessage({
-        text: t('reminderSettings.updateError'),
-        isError: true,
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  // Handle toggle for day-of notification
-  const toggleDayOfPeriod = async (value: boolean) => {
-    // If turning notifications off, no need to check permissions
-    if (!value) {
-      setDayOfPeriodEnabled(value);
-      await saveSettings(beforePeriodEnabled, value, latePeriodEnabled, fertilityWindowEnabled);
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      // Check if we already have permissions
-      let hasPermission = await NotificationService.checkPermissionStatus();
-
-      // If no permission, request it
-      if (!hasPermission) {
-        startPermissionRequest();
-        try {
-          hasPermission = await NotificationService.requestPermissions();
-        } finally {
-          endPermissionRequest();
-        }
-      }
-
-      if (hasPermission) {
-        // Only update UI and save setting if permission granted
-        setDayOfPeriodEnabled(value);
-        await saveSettings(beforePeriodEnabled, value, latePeriodEnabled, fertilityWindowEnabled);
-      } else {
-        // Show settings dialog instead of error message
-        showPermissionSettingsDialog();
-      }
-    } catch (error) {
-      console.error('Error toggling notification:', error);
-      setStatusMessage({
-        text: t('reminderSettings.updateError'),
-        isError: true,
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  // Handle toggle for late period notification
-  const toggleLatePeriod = async (value: boolean) => {
-    // If turning notifications off, no need to check permissions
-    if (!value) {
-      setLatePeriodEnabled(value);
-      await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, value, fertilityWindowEnabled);
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      // Check if we already have permissions
-      let hasPermission = await NotificationService.checkPermissionStatus();
-
-      // If no permission, request it
-      if (!hasPermission) {
-        startPermissionRequest();
-        try {
-          hasPermission = await NotificationService.requestPermissions();
-        } finally {
-          endPermissionRequest();
-        }
-      }
-
-      if (hasPermission) {
-        // Only update UI and save setting if permission granted
-        setLatePeriodEnabled(value);
-        await saveSettings(beforePeriodEnabled, dayOfPeriodEnabled, value, fertilityWindowEnabled);
-      } else {
-        // Show settings dialog instead of error message
-        showPermissionSettingsDialog();
-      }
-    } catch (error) {
-      console.error('Error toggling notification:', error);
-      setStatusMessage({
-        text: t('reminderSettings.updateError'),
-        isError: true,
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  };
+  const toggleLatePeriod = (value: boolean) =>
+    toggleWithPermission(value, setLatePeriodEnabled, [
+      beforePeriodEnabled,
+      dayOfPeriodEnabled,
+      value,
+      fertilityWindowEnabled,
+    ]);
 
   // Handle time picker change
   const handleTimeChange = async (event: any, selectedTime?: Date) => {
