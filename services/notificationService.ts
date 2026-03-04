@@ -323,8 +323,9 @@ export class NotificationService {
     }
 
     // Schedule fertility window notification if enabled (1 day before window opens = ovulation - 6)
+    // Anchored to the next predicted period start, not the last recorded one.
     if (fertilityWindowEnabled) {
-      const ovulationDateStr = PeriodPredictionService.getOvulationDay(startDate, userCycleLength);
+      const ovulationDateStr = PeriodPredictionService.getOvulationDay(prediction.date, userCycleLength);
       const [oy, om, od] = ovulationDateStr.split('-').map(Number);
       const fertilityReminderDate = new Date(
         oy,

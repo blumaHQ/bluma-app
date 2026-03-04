@@ -420,6 +420,9 @@ export default function Reminders() {
             thumbColor={Platform.OS === 'ios' ? undefined : colors.white}
             ios_backgroundColor={colors.border}
             disabled={isSaving}
+            accessibilityRole="switch"
+            accessibilityLabel={t('reminderSettings.fertilityWindow')}
+            accessibilityHint={t('reminderSettings.fertilityWindowHint')}
           />
         </View>
       </View>
