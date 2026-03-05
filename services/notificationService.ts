@@ -24,10 +24,8 @@ const SECURE_STORE_OPTIONS: SecureStore.SecureStoreOptions = {
 // Configure how notifications are handled when the app is in the foreground
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
-    // Newer SDKs also require these fields on iOS
     shouldShowBanner: true,
     shouldShowList: true,
   }),
