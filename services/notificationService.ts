@@ -327,20 +327,21 @@ export class NotificationService {
       }
     }
 
-    // Schedule fertility window notification if enabled (1 day before window opens = ovulation - 6)
-    // Anchored to the next predicted period start, not the last recorded one.
+    // Schedule fertility window notification if enabled (day before window opens = ovulation - 6)
+    // Prefer the current cycle's window; fall back to next cycle if it has already passed.
     if (fertilityWindowEnabled) {
-      const ovulationDateStr = PeriodPredictionService.getOvulationDay(prediction.date, userCycleLength);
-      const [oy, om, od] = ovulationDateStr.split('-').map(Number);
-      const fertilityReminderDate = new Date(
-        oy,
-        om - 1,
-        od,
-        parseInt(notificationHour),
-        parseInt(notificationMinute),
-        0
-      );
-      fertilityReminderDate.setDate(fertilityReminderDate.getDate() - 6);
+      const toFertilityDate = (periodStart: string) => {
+        const ovulationStr = PeriodPredictionService.getOvulationDay(periodStart, userCycleLength);
+        const [y, m, d] = ovulationStr.split('-').map(Number);
+        const date = new Date(y, m - 1, d, parseInt(notificationHour), parseInt(notificationMinute), 0);
+        date.setDate(date.getDate() - 6);
+        return date;
+      };
+
+      const currentCycleFertilityDate = toFertilityDate(startDate);
+      const fertilityReminderDate = currentCycleFertilityDate > new Date()
+        ? currentCycleFertilityDate
+        : toFertilityDate(prediction.date);
 
       if (fertilityReminderDate > new Date()) {
         await Notifications.scheduleNotificationAsync({
@@ -385,6 +386,10 @@ export class NotificationService {
         });
       }
     }
+  }
+
+  static async rescheduleNotifications(): Promise<void> {
+    await this.scheduleNotificationsIfDataExists();
   }
 
   // Cancel previously scheduled period notifications

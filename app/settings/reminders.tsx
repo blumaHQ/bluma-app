@@ -175,6 +175,7 @@ export default function Reminders() {
       const secureStoreOptions = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK };
       await SecureStore.setItemAsync('notification_time_hour', selectedTime.getHours().toString(), secureStoreOptions);
       await SecureStore.setItemAsync('notification_time_minute', selectedTime.getMinutes().toString(), secureStoreOptions);
+      await NotificationService.rescheduleNotifications();
     }
   };
 
