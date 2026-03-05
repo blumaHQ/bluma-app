@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { NotificationService } from '../../services/notificationService';
 import { useTheme } from '../../styles/theme';
@@ -49,8 +49,8 @@ export default function Reminders() {
         setFertilityWindowEnabled(settings.fertilityWindowEnabled);
 
         // Load notification time (default to 10 AM)
-        const hour = (await AsyncStorage.getItem('notification_time_hour')) || '10';
-        const minute = (await AsyncStorage.getItem('notification_time_minute')) || '0';
+        const hour = (await SecureStore.getItemAsync('notification_time_hour', { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '10';
+        const minute = (await SecureStore.getItemAsync('notification_time_minute', { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '0';
         const timeDate = new Date();
         timeDate.setHours(parseInt(hour), parseInt(minute), 0, 0);
         setNotificationTime(timeDate);
@@ -172,15 +172,9 @@ export default function Reminders() {
     setShowTimePicker(false);
     if (selectedTime) {
       setNotificationTime(selectedTime);
-      // Save the time to AsyncStorage
-      await AsyncStorage.setItem(
-        'notification_time_hour',
-        selectedTime.getHours().toString()
-      );
-      await AsyncStorage.setItem(
-        'notification_time_minute',
-        selectedTime.getMinutes().toString()
-      );
+      const secureStoreOptions = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK };
+      await SecureStore.setItemAsync('notification_time_hour', selectedTime.getHours().toString(), secureStoreOptions);
+      await SecureStore.setItemAsync('notification_time_minute', selectedTime.getMinutes().toString(), secureStoreOptions);
     }
   };
 

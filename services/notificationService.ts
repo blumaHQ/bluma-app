@@ -1,7 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { PeriodPredictionService } from './periodPredictions';
 import { getSetting, getDB } from '../db';
 import { periodDates } from '../db/schema';
@@ -15,6 +15,10 @@ const NOTIFICATION_SETTINGS_KEYS = {
   FERTILITY_WINDOW: 'notifications_fertility_window',
   TIME_HOUR: 'notification_time_hour',
   TIME_MINUTE: 'notification_time_minute',
+};
+
+const SECURE_STORE_OPTIONS: SecureStore.SecureStoreOptions = {
+  keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK,
 };
 
 // Configure how notifications are handled when the app is in the foreground
@@ -33,11 +37,10 @@ export class NotificationService {
   // Check if notifications are enabled in settings
   static async areNotificationsEnabled(): Promise<boolean> {
     try {
-      const beforePeriodEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD);
-      const dayOfPeriodEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD);
-      const latePeriodEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD);
-
-      const fertilityWindowEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW);
+      const beforePeriodEnabled = await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD, SECURE_STORE_OPTIONS);
+      const dayOfPeriodEnabled = await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD, SECURE_STORE_OPTIONS);
+      const latePeriodEnabled = await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD, SECURE_STORE_OPTIONS);
+      const fertilityWindowEnabled = await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW, SECURE_STORE_OPTIONS);
 
       return (
         beforePeriodEnabled === 'true' ||
@@ -60,13 +63,13 @@ export class NotificationService {
   }> {
     try {
       const beforePeriodEnabled =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD)) === 'true';
+        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD, SECURE_STORE_OPTIONS)) === 'true';
       const dayOfPeriodEnabled =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD)) === 'true';
+        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD, SECURE_STORE_OPTIONS)) === 'true';
       const latePeriodEnabled =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD)) === 'true';
+        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD, SECURE_STORE_OPTIONS)) === 'true';
       const fertilityWindowEnabled =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW)) === 'true';
+        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW, SECURE_STORE_OPTIONS)) === 'true';
 
       return {
         beforePeriodEnabled,
@@ -93,21 +96,25 @@ export class NotificationService {
     fertilityWindowEnabled: boolean
   ): Promise<void> {
     try {
-      await AsyncStorage.setItem(
+      await SecureStore.setItemAsync(
         NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD,
-        beforePeriodEnabled ? 'true' : 'false'
+        beforePeriodEnabled ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
       );
-      await AsyncStorage.setItem(
+      await SecureStore.setItemAsync(
         NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD,
-        dayOfPeriodEnabled ? 'true' : 'false'
+        dayOfPeriodEnabled ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
       );
-      await AsyncStorage.setItem(
+      await SecureStore.setItemAsync(
         NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD,
-        latePeriodEnabled ? 'true' : 'false'
+        latePeriodEnabled ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
       );
-      await AsyncStorage.setItem(
+      await SecureStore.setItemAsync(
         NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW,
-        fertilityWindowEnabled ? 'true' : 'false'
+        fertilityWindowEnabled ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
       );
 
       if (beforePeriodEnabled || dayOfPeriodEnabled || latePeriodEnabled || fertilityWindowEnabled) {
@@ -243,9 +250,9 @@ export class NotificationService {
     let notificationMinute = '0';
     try {
       notificationHour =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR)) || '10';
+        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, SECURE_STORE_OPTIONS)) || '10';
       notificationMinute =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE)) || '0';
+        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, SECURE_STORE_OPTIONS)) || '0';
     } catch (error) {
       console.error('Failed to read notification time settings, using defaults:', error);
     }
