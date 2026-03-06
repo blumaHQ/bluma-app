@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { getDB, getSetting } from '../db';
 import { healthLogs, periodDates } from '../db/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
@@ -97,34 +97,75 @@ export default function HealthTracking() {
     }, [selectedDate])
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      let cancelled = false;
+
+      const resyncPeriodStatus = async () => {
+        const isPeriod = await checkIsPeriodDate(selectedDate);
+        if (cancelled || isPeriod === null) return;
+        setIsPeriodDate(isPeriod);
+        if (!isPeriod) {
+          setSelectedFlows(new Set());
+          setOriginalFlows(new Set());
+        }
+      };
+
+      void resyncPeriodStatus();
+      return () => {
+        cancelled = true;
+      };
+    }, [selectedDate])
+  );
+
   // Handle date change from DateNavigator
   const handleDateChange = (newDate: string) => {
     setSelectedDate(newDate);
   };
-  const checkIsPeriodDate = async (date: string) => {
+
+  const checkIsPeriodDate = async (date: string): Promise<boolean | null> => {
     try {
       const db = getDB();
       const result = await db
         .select()
         .from(periodDates)
         .where(eq(periodDates.date, date));
-      setIsPeriodDate(result.length > 0);
+      return result.length > 0;
     } catch (error) {
       console.error('Error checking period date:', error);
-      setIsPeriodDate(false);
+      return null;
     }
   };
 
   useEffect(() => {
-    const loadExistingHealthLogs = async () => {
-      try {
-        await checkIsPeriodDate(selectedDate);
+    let cancelled = false;
 
+    const syncAndLoadHealthLogs = async () => {
+      try {
+        const isPeriod = await checkIsPeriodDate(selectedDate);
+        if (cancelled) return;
+        if (isPeriod !== null) {
+          setIsPeriodDate(isPeriod);
+        }
         const db = getDB();
+
+        if (isPeriod === false) {
+          await db
+            .delete(healthLogs)
+            .where(
+              and(
+                eq(healthLogs.date, selectedDate),
+                eq(healthLogs.type, 'flow')
+              )
+            );
+        }
+
         const existingEntries = await db
           .select()
           .from(healthLogs)
           .where(eq(healthLogs.date, selectedDate));
+
+        if (cancelled) return;
 
         const symptomIds = new Set<string>();
         const moodIds = new Set<string>();
@@ -150,18 +191,21 @@ export default function HealthTracking() {
         });
 
         const savedUnit = parseTempUnit(await getSetting('temp_unit'));
+        if (cancelled) return;
         setTempUnit(savedUnit);
+
+        const nextFlows = isPeriod === false ? new Set<string>() : flowIds;
 
         setSelectedSymptoms(symptomIds);
         setSelectedMoods(moodIds);
-        setSelectedFlows(flowIds);
+        setSelectedFlows(nextFlows);
         setSelectedDischarges(dischargeIds);
         setNotes(notesText);
         setTempCelsius(tempValue);
 
         setOriginalSymptoms(new Set(symptomIds));
         setOriginalMoods(new Set(moodIds));
-        setOriginalFlows(new Set(flowIds));
+        setOriginalFlows(new Set(nextFlows));
         setOriginalDischarges(new Set(dischargeIds));
         setOriginalNotes(notesText);
         setOriginalTemp(tempValue);
@@ -171,7 +215,10 @@ export default function HealthTracking() {
       }
     };
 
-    loadExistingHealthLogs();
+    void syncAndLoadHealthLogs();
+    return () => {
+      cancelled = true;
+    };
   }, [selectedDate, setNotes, setTempCelsius, setTempUnit]);
 
   // Handle scrollTo parameter to navigate to specific sections
