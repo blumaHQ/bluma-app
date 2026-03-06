@@ -97,6 +97,27 @@ export default function HealthTracking() {
     }, [selectedDate])
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      let cancelled = false;
+
+      const resyncPeriodStatus = async () => {
+        const isPeriod = await checkIsPeriodDate(selectedDate);
+        if (cancelled || isPeriod === null) return;
+        setIsPeriodDate(isPeriod);
+        if (!isPeriod) {
+          setSelectedFlows(new Set());
+          setOriginalFlows(new Set());
+        }
+      };
+
+      void resyncPeriodStatus();
+      return () => {
+        cancelled = true;
+      };
+    }, [selectedDate])
+  );
+
   // Handle date change from DateNavigator
   const handleDateChange = (newDate: string) => {
     setSelectedDate(newDate);
