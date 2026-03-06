@@ -174,13 +174,19 @@ export default function Reminders() {
     if (selectedTime) {
       const previousTime = notificationTime;
       setNotificationTime(selectedTime);
+      const secureStoreOptions = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK };
       try {
-        const secureStoreOptions = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK };
         await SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, selectedTime.getHours().toString(), secureStoreOptions);
         await SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, selectedTime.getMinutes().toString(), secureStoreOptions);
         await NotificationService.rescheduleNotifications();
       } catch {
         setNotificationTime(previousTime);
+        try {
+          await SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, previousTime.getHours().toString(), secureStoreOptions);
+          await SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, previousTime.getMinutes().toString(), secureStoreOptions);
+        } catch (rollbackError) {
+          console.error('Failed to rollback notification time in SecureStore:', rollbackError);
+        }
         setStatusMessage({ text: t('reminderSettings.updateError'), isError: true });
       }
     }
