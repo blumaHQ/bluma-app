@@ -99,19 +99,26 @@ export default function Reminders() {
     );
   };
 
+  type ReminderFlags = {
+    beforePeriod: boolean;
+    dayOfPeriod: boolean;
+    latePeriod: boolean;
+    fertilityWindow: boolean;
+  };
+
   const toggleWithPermission = async (
     value: boolean,
     setter: (v: boolean) => void,
-    saveArgs: [boolean, boolean, boolean, boolean]
+    flags: ReminderFlags
   ) => {
     if (!value) {
       setIsSaving(true);
       try {
         setter(value);
-        await saveSettings(...saveArgs);
+        await saveSettings(flags);
       } catch (error) {
         console.error('Error disabling notification:', error);
-        setter(!value); // Revert
+        setter(!value);
         setStatusMessage({ text: t('reminderSettings.updateError'), isError: true });
       } finally {
         setIsSaving(false);
@@ -134,7 +141,7 @@ export default function Reminders() {
 
       if (hasPermission) {
         setter(value);
-        await saveSettings(...saveArgs);
+        await saveSettings(flags);
       } else {
         showPermissionSettingsDialog();
       }
@@ -147,36 +154,36 @@ export default function Reminders() {
   };
 
   const toggleFertilityWindow = (value: boolean) =>
-    toggleWithPermission(value, setFertilityWindowEnabled, [
-      beforePeriodEnabled,
-      dayOfPeriodEnabled,
-      latePeriodEnabled,
-      value,
-    ]);
+    toggleWithPermission(value, setFertilityWindowEnabled, {
+      beforePeriod: beforePeriodEnabled,
+      dayOfPeriod: dayOfPeriodEnabled,
+      latePeriod: latePeriodEnabled,
+      fertilityWindow: value,
+    });
 
   const toggleBeforePeriod = (value: boolean) =>
-    toggleWithPermission(value, setBeforePeriodEnabled, [
-      value,
-      dayOfPeriodEnabled,
-      latePeriodEnabled,
-      fertilityWindowEnabled,
-    ]);
+    toggleWithPermission(value, setBeforePeriodEnabled, {
+      beforePeriod: value,
+      dayOfPeriod: dayOfPeriodEnabled,
+      latePeriod: latePeriodEnabled,
+      fertilityWindow: fertilityWindowEnabled,
+    });
 
   const toggleDayOfPeriod = (value: boolean) =>
-    toggleWithPermission(value, setDayOfPeriodEnabled, [
-      beforePeriodEnabled,
-      value,
-      latePeriodEnabled,
-      fertilityWindowEnabled,
-    ]);
+    toggleWithPermission(value, setDayOfPeriodEnabled, {
+      beforePeriod: beforePeriodEnabled,
+      dayOfPeriod: value,
+      latePeriod: latePeriodEnabled,
+      fertilityWindow: fertilityWindowEnabled,
+    });
 
   const toggleLatePeriod = (value: boolean) =>
-    toggleWithPermission(value, setLatePeriodEnabled, [
-      beforePeriodEnabled,
-      dayOfPeriodEnabled,
-      value,
-      fertilityWindowEnabled,
-    ]);
+    toggleWithPermission(value, setLatePeriodEnabled, {
+      beforePeriod: beforePeriodEnabled,
+      dayOfPeriod: dayOfPeriodEnabled,
+      latePeriod: value,
+      fertilityWindow: fertilityWindowEnabled,
+    });
 
   // Handle time picker change
   const handleTimeChange = async (event: any, selectedTime?: Date) => {
@@ -208,15 +215,10 @@ export default function Reminders() {
     return formatTime(date);
   };
 
-  const saveSettings = async (
-    before: boolean,
-    dayOf: boolean,
-    late: boolean,
-    fertilityWindow: boolean
-  ) => {
+  const saveSettings = async ({ beforePeriod, dayOfPeriod, latePeriod, fertilityWindow }: ReminderFlags) => {
     setIsSaving(true);
     try {
-      await NotificationService.saveNotificationSettings(before, dayOf, late, fertilityWindow);
+      await NotificationService.saveNotificationSettings(beforePeriod, dayOfPeriod, latePeriod, fertilityWindow);
     } catch (error) {
       console.error('Failed to save notification settings:', error);
       const settings = await NotificationService.getNotificationSettings();

@@ -136,6 +136,15 @@ export class NotificationService {
             : SecureStore.deleteItemAsync(k, SECURE_STORE_OPTIONS)
         )
       );
+      try {
+        if (snapshot.some((value) => value === 'true')) {
+          await this.rescheduleNotifications();
+        } else {
+          await this.cancelPeriodNotifications();
+        }
+      } catch (rollbackError) {
+        console.error('Failed to restore notification schedule:', rollbackError);
+      }
       console.error('Failed to save notification settings:', error);
       throw new Error('Failed to save notification settings. Please try again.');
     }
