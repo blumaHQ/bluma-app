@@ -178,7 +178,7 @@ export default function Reminders() {
         await SecureStore.setItemAsync('notification_time_hour', selectedTime.getHours().toString(), secureStoreOptions);
         await SecureStore.setItemAsync('notification_time_minute', selectedTime.getMinutes().toString(), secureStoreOptions);
         await NotificationService.rescheduleNotifications();
-      } catch (error) {
+      } catch {
         setNotificationTime(previousTime);
         setStatusMessage({ text: t('reminderSettings.updateError'), isError: true });
       }
