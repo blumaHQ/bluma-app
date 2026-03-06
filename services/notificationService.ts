@@ -330,20 +330,50 @@ export class NotificationService {
     // Schedule fertility window notification if enabled (day before window opens = ovulation - 6)
     // Prefer the current cycle's window; fall back to next cycle if it has already passed.
     if (fertilityWindowEnabled) {
-      const toFertilityDate = (periodStart: string) => {
-        const ovulationStr = PeriodPredictionService.getOvulationDay(periodStart, userCycleLength);
-        const [y, m, d] = ovulationStr.split('-').map(Number);
-        const date = new Date(y, m - 1, d, parseInt(notificationHour), parseInt(notificationMinute), 0);
-        date.setDate(date.getDate() - 6);
-        return date;
+      const getFertilityReminderDate = (cycleStart: string) => {
+        const cyclePrediction = PeriodPredictionService.getPrediction(
+          cycleStart,
+          allDates,
+          userCycleLength
+        );
+
+        const [cy, cm, cd] = cyclePrediction.date.split('-').map(Number);
+        const periodDateLocal = new Date(
+          cy,
+          cm - 1,
+          cd,
+          parseInt(notificationHour),
+          parseInt(notificationMinute),
+          0
+        );
+
+        const ovulationDate = new Date(periodDateLocal);
+        ovulationDate.setDate(ovulationDate.getDate() - 14);
+
+        const fertilityDate = new Date(ovulationDate);
+        fertilityDate.setDate(fertilityDate.getDate() - 6);
+
+        console.log('Fertility calc debug:', {
+          cycleStart,
+          nextPeriodDate: cyclePrediction.date,
+          ovulationDate,
+          fertilityReminderDate: fertilityDate,
+          now: new Date(),
+        });
+
+        return fertilityDate;
       };
 
-      const currentCycleFertilityDate = toFertilityDate(startDate);
-      const fertilityReminderDate = currentCycleFertilityDate > new Date()
-        ? currentCycleFertilityDate
-        : toFertilityDate(prediction.date);
+      const now = new Date();
+      const currentCycleFertilityDate = getFertilityReminderDate(startDate);
+      const nextCycleFertilityDate = getFertilityReminderDate(prediction.date);
 
-      if (fertilityReminderDate > new Date()) {
+      const fertilityReminderDate =
+        currentCycleFertilityDate > now
+          ? currentCycleFertilityDate
+          : nextCycleFertilityDate;
+
+      if (fertilityReminderDate > now) {
         await Notifications.scheduleNotificationAsync({
           content: {
             title: i18n.t('notifications:fertilityWindowReminder.title'),
