@@ -1,6 +1,6 @@
 {
   "periodReminder": {
-    "title": "Your period should start soon",
+    "title": "Your period starts in a few days",
     "body": "Your period is expected on {{dayOfWeek}}, {{date}}"
   },
   "periodStarting": {
