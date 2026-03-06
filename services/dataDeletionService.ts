@@ -3,15 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import { deleteEncryptionKey } from './databaseEncryptionService';
 import { deleteDatabaseFile, clearDatabaseCache, initializeDatabase } from '../db';
-
-const NOTIFICATION_SECURE_STORE_KEYS = [
-  'notifications_period_before',
-  'notifications_period_day',
-  'notifications_period_late',
-  'notifications_fertility_window',
-  'notification_time_hour',
-  'notification_time_minute',
-];
+import { NOTIFICATION_SETTINGS_KEYS_LIST } from '../constants/notificationKeys';
 
 export class DataDeletionService {
   static async deleteAllUserData(): Promise<void> {
@@ -33,7 +25,7 @@ export class DataDeletionService {
 
       // Clear notification preferences from SecureStore
       await Promise.all(
-        NOTIFICATION_SECURE_STORE_KEYS.map(key => SecureStore.deleteItemAsync(key))
+        NOTIFICATION_SETTINGS_KEYS_LIST.map(key => SecureStore.deleteItemAsync(key))
       );
 
       // Reinitialize database (creates fresh empty database with new encryption key)

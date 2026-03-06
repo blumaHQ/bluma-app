@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import * as SecureStore from 'expo-secure-store';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { NotificationService } from '../../services/notificationService';
+import { NOTIFICATION_SETTINGS_KEYS } from '../../constants/notificationKeys';
 import { useTheme } from '../../styles/theme';
 import { useAppStyles } from '../../hooks/useStyles';
 import { formatTime } from '../../utils/localeUtils';
@@ -49,8 +50,8 @@ export default function Reminders() {
         setFertilityWindowEnabled(settings.fertilityWindowEnabled);
 
         // Load notification time (default to 10 AM)
-        const hour = (await SecureStore.getItemAsync('notification_time_hour', { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '10';
-        const minute = (await SecureStore.getItemAsync('notification_time_minute', { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '0';
+        const hour = (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '10';
+        const minute = (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '0';
         const timeDate = new Date();
         timeDate.setHours(parseInt(hour), parseInt(minute), 0, 0);
         setNotificationTime(timeDate);
@@ -175,8 +176,8 @@ export default function Reminders() {
       setNotificationTime(selectedTime);
       try {
         const secureStoreOptions = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK };
-        await SecureStore.setItemAsync('notification_time_hour', selectedTime.getHours().toString(), secureStoreOptions);
-        await SecureStore.setItemAsync('notification_time_minute', selectedTime.getMinutes().toString(), secureStoreOptions);
+        await SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, selectedTime.getHours().toString(), secureStoreOptions);
+        await SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, selectedTime.getMinutes().toString(), secureStoreOptions);
         await NotificationService.rescheduleNotifications();
       } catch {
         setNotificationTime(previousTime);
