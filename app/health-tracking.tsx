@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -85,7 +85,7 @@ export default function HealthTracking() {
 
   // Update header title on focused
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const formattedDate = formatTodayOrDate(selectedDate);
 
       // If possible, update the header title
