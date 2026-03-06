@@ -339,6 +339,10 @@ export default function HealthTracking() {
   const toggleDischarge = useCallback((id: string) => {
     setSelectedDischarges(prev => {
       const next = new Set(prev);
+      if (id === 'no-discharge') {
+        return next.has(id) ? new Set() : new Set([id]);
+      }
+      next.delete('no-discharge');
       if (next.has(id)) {
         next.delete(id);
       } else {
