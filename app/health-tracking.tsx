@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import {
   View,
   Text,
@@ -85,7 +85,7 @@ export default function HealthTracking() {
 
   // Update header title on focused
   useFocusEffect(
-    useCallback(() => {
+    React.useCallback(() => {
       const formattedDate = formatTodayOrDate(selectedDate);
 
       // If possible, update the header title
@@ -109,9 +109,7 @@ export default function HealthTracking() {
         .select()
         .from(periodDates)
         .where(eq(periodDates.date, date));
-      const isPeriod = result.length > 0;
-      setIsPeriodDate(isPeriod);
-      return isPeriod;
+      return result.length > 0;
     } catch (error) {
       console.error('Error checking period date:', error);
       return null;
@@ -124,6 +122,10 @@ export default function HealthTracking() {
     const syncAndLoadHealthLogs = async () => {
       try {
         const isPeriod = await checkIsPeriodDate(selectedDate);
+        if (cancelled) return;
+        if (isPeriod !== null) {
+          setIsPeriodDate(isPeriod);
+        }
         const db = getDB();
 
         if (isPeriod === false) {
@@ -168,6 +170,7 @@ export default function HealthTracking() {
         });
 
         const savedUnit = parseTempUnit(await getSetting('temp_unit'));
+        if (cancelled) return;
         setTempUnit(savedUnit);
 
         const nextFlows = isPeriod === false ? new Set<string>() : flowIds;
