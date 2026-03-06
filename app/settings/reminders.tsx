@@ -171,11 +171,17 @@ export default function Reminders() {
   const handleTimeChange = async (event: any, selectedTime?: Date) => {
     setShowTimePicker(false);
     if (selectedTime) {
+      const previousTime = notificationTime;
       setNotificationTime(selectedTime);
-      const secureStoreOptions = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK };
-      await SecureStore.setItemAsync('notification_time_hour', selectedTime.getHours().toString(), secureStoreOptions);
-      await SecureStore.setItemAsync('notification_time_minute', selectedTime.getMinutes().toString(), secureStoreOptions);
-      await NotificationService.rescheduleNotifications();
+      try {
+        const secureStoreOptions = { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK };
+        await SecureStore.setItemAsync('notification_time_hour', selectedTime.getHours().toString(), secureStoreOptions);
+        await SecureStore.setItemAsync('notification_time_minute', selectedTime.getMinutes().toString(), secureStoreOptions);
+        await NotificationService.rescheduleNotifications();
+      } catch (error) {
+        setNotificationTime(previousTime);
+        setStatusMessage({ text: t('reminderSettings.updateError'), isError: true });
+      }
     }
   };
 
