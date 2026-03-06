@@ -105,8 +105,17 @@ export default function Reminders() {
     saveArgs: [boolean, boolean, boolean, boolean]
   ) => {
     if (!value) {
-      setter(value);
-      await saveSettings(...saveArgs);
+      setIsSaving(true);
+      try {
+        setter(value);
+        await saveSettings(...saveArgs);
+      } catch (error) {
+        console.error('Error disabling notification:', error);
+        setter(!value); // Revert
+        setStatusMessage({ text: t('reminderSettings.updateError'), isError: true });
+      } finally {
+        setIsSaving(false);
+      }
       return;
     }
 

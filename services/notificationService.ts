@@ -28,10 +28,13 @@ export class NotificationService {
   // Check if notifications are enabled in settings
   static async areNotificationsEnabled(): Promise<boolean> {
     try {
-      const beforePeriodEnabled = await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD, SECURE_STORE_OPTIONS);
-      const dayOfPeriodEnabled = await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD, SECURE_STORE_OPTIONS);
-      const latePeriodEnabled = await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD, SECURE_STORE_OPTIONS);
-      const fertilityWindowEnabled = await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW, SECURE_STORE_OPTIONS);
+      const [beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled, fertilityWindowEnabled] =
+        await Promise.all([
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW, SECURE_STORE_OPTIONS),
+        ]);
 
       return (
         beforePeriodEnabled === 'true' ||
@@ -53,20 +56,19 @@ export class NotificationService {
     fertilityWindowEnabled: boolean;
   }> {
     try {
-      const beforePeriodEnabled =
-        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD, SECURE_STORE_OPTIONS)) === 'true';
-      const dayOfPeriodEnabled =
-        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD, SECURE_STORE_OPTIONS)) === 'true';
-      const latePeriodEnabled =
-        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD, SECURE_STORE_OPTIONS)) === 'true';
-      const fertilityWindowEnabled =
-        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW, SECURE_STORE_OPTIONS)) === 'true';
+      const [beforePeriod, dayOfPeriod, latePeriod, fertilityWindow] =
+        await Promise.all([
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW, SECURE_STORE_OPTIONS),
+        ]);
 
       return {
-        beforePeriodEnabled,
-        dayOfPeriodEnabled,
-        latePeriodEnabled,
-        fertilityWindowEnabled,
+        beforePeriodEnabled: beforePeriod === 'true',
+        dayOfPeriodEnabled: dayOfPeriod === 'true',
+        latePeriodEnabled: latePeriod === 'true',
+        fertilityWindowEnabled: fertilityWindow === 'true',
       };
     } catch (error) {
       console.error('Failed to read notification settings:', error);
@@ -86,6 +88,18 @@ export class NotificationService {
     latePeriodEnabled: boolean,
     fertilityWindowEnabled: boolean
   ): Promise<void> {
+    const keys = [
+      NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD,
+      NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD,
+      NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD,
+      NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW,
+    ] as const;
+
+    const [prevBefore, prevDayOf, prevLate, prevFertility] = await Promise.all(
+      keys.map((k) => SecureStore.getItemAsync(k, SECURE_STORE_OPTIONS))
+    );
+    const snapshot = [prevBefore, prevDayOf, prevLate, prevFertility];
+
     try {
       await SecureStore.setItemAsync(
         NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD,
@@ -115,6 +129,13 @@ export class NotificationService {
         await this.cancelPeriodNotifications();
       }
     } catch (error) {
+      await Promise.allSettled(
+        keys.map((k, i) =>
+          snapshot[i] !== null && snapshot[i] !== undefined
+            ? SecureStore.setItemAsync(k, snapshot[i]!, SECURE_STORE_OPTIONS)
+            : SecureStore.deleteItemAsync(k, SECURE_STORE_OPTIONS)
+        )
+      );
       console.error('Failed to save notification settings:', error);
       throw new Error('Failed to save notification settings. Please try again.');
     }
@@ -240,10 +261,12 @@ export class NotificationService {
     let notificationHour = '10';
     let notificationMinute = '0';
     try {
-      notificationHour =
-        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, SECURE_STORE_OPTIONS)) || '10';
-      notificationMinute =
-        (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, SECURE_STORE_OPTIONS)) || '0';
+      const [hour, minute] = await Promise.all([
+        SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, SECURE_STORE_OPTIONS),
+        SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, SECURE_STORE_OPTIONS),
+      ]);
+      notificationHour = hour || '10';
+      notificationMinute = minute || '0';
     } catch (error) {
       console.error('Failed to read notification time settings, using defaults:', error);
     }
