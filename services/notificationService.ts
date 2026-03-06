@@ -8,6 +8,7 @@ import { periodDates } from '../db/schema';
 import { Colors } from '../styles/colors';
 import i18n from '../i18n/config';
 import { NOTIFICATION_SETTINGS_KEYS } from '../constants/notificationKeys';
+import { parseSafeHour, parseSafeMinute } from '../utils/dateUtils';
 
 const SECURE_STORE_OPTIONS: SecureStore.SecureStoreOptions = {
   keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK,
@@ -109,7 +110,7 @@ export class NotificationService {
 
       if (beforePeriodEnabled || dayOfPeriodEnabled || latePeriodEnabled || fertilityWindowEnabled) {
         await this.init();
-        await this.scheduleNotificationsIfDataExists();
+        await this.rescheduleNotifications();
       } else {
         await this.cancelPeriodNotifications();
       }
@@ -247,17 +248,8 @@ export class NotificationService {
       console.error('Failed to read notification time settings, using defaults:', error);
     }
 
-    const parsedHour = Number.parseInt(notificationHour, 10);
-    const parsedMinute = Number.parseInt(notificationMinute, 10);
-
-    const safeHour =
-      Number.isInteger(parsedHour) && parsedHour >= 0 && parsedHour <= 23
-        ? parsedHour
-        : 10;
-    const safeMinute =
-      Number.isInteger(parsedMinute) && parsedMinute >= 0 && parsedMinute <= 59
-        ? parsedMinute
-        : 0;
+    const safeHour = parseSafeHour(notificationHour);
+    const safeMinute = parseSafeMinute(notificationMinute);
 
     // Get prediction for next period date (YYYY-MM-DD string)
     const prediction = PeriodPredictionService.getPrediction(

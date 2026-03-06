@@ -19,6 +19,7 @@ import { NOTIFICATION_SETTINGS_KEYS } from '../../constants/notificationKeys';
 import { useTheme } from '../../styles/theme';
 import { useAppStyles } from '../../hooks/useStyles';
 import { formatTime } from '../../utils/localeUtils';
+import { parseSafeHour, parseSafeMinute } from '../../utils/dateUtils';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function Reminders() {
@@ -50,10 +51,10 @@ export default function Reminders() {
         setFertilityWindowEnabled(settings.fertilityWindowEnabled);
 
         // Load notification time (default to 10 AM)
-        const hour = (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '10';
-        const minute = (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '0';
+        const rawHour = (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '10';
+        const rawMinute = (await SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, { keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK })) || '0';
         const timeDate = new Date();
-        timeDate.setHours(parseInt(hour), parseInt(minute), 0, 0);
+        timeDate.setHours(parseSafeHour(rawHour), parseSafeMinute(rawMinute), 0, 0);
         setNotificationTime(timeDate);
       } catch (error) {
         console.error('Failed to load notification settings:', error);
@@ -184,6 +185,7 @@ export default function Reminders() {
         try {
           await SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, previousTime.getHours().toString(), secureStoreOptions);
           await SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, previousTime.getMinutes().toString(), secureStoreOptions);
+          await NotificationService.rescheduleNotifications();
         } catch (rollbackError) {
           console.error('Failed to rollback notification time in SecureStore:', rollbackError);
         }
