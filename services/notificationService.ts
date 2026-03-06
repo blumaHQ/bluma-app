@@ -255,6 +255,9 @@ export class NotificationService {
       console.error('Failed to read notification time settings, using defaults:', error);
     }
 
+    const safeHour = Math.min(23, Math.max(0, parseInt(notificationHour) || 10));
+    const safeMinute = Math.min(59, Math.max(0, parseInt(notificationMinute) || 0));
+
     // Get prediction for next period date (YYYY-MM-DD string)
     const prediction = PeriodPredictionService.getPrediction(
       startDate,
@@ -266,8 +269,8 @@ export class NotificationService {
       py,
       pm - 1,
       pd,
-      parseInt(notificationHour),
-      parseInt(notificationMinute),
+      safeHour,
+      safeMinute,
       0
     );
 
@@ -342,8 +345,8 @@ export class NotificationService {
           cy,
           cm - 1,
           cd,
-          parseInt(notificationHour),
-          parseInt(notificationMinute),
+          safeHour,
+          safeMinute,
           0
         );
 
