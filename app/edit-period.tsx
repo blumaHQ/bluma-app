@@ -120,19 +120,17 @@ export default function PeriodCalendarScreen() {
         date => !newDateSet.has(date)
       );
 
-      await db.delete(periodDates);
+      const dateInserts = newDatesArray.map(date => ({ date }));
 
-      const dateInserts = newDatesArray.map(date => ({
-        date,
-      }));
+      await db.transaction(async tx => {
+        await tx.delete(periodDates);
 
-      if (dateInserts.length > 0) {
-        await db.insert(periodDates).values(dateInserts);
-      }
+        if (dateInserts.length > 0) {
+          await tx.insert(periodDates).values(dateInserts);
+        }
 
-      if (removedDates.length > 0) {
         for (const date of removedDates) {
-          await db
+          await tx
             .delete(healthLogs)
             .where(
               and(
@@ -141,7 +139,7 @@ export default function PeriodCalendarScreen() {
               )
             );
         }
-      }
+      });
 
       // Show success toast
       Toast.show({

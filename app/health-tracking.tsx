@@ -102,7 +102,7 @@ export default function HealthTracking() {
     setSelectedDate(newDate);
   };
 
-  const checkIsPeriodDate = async (date: string): Promise<boolean> => {
+  const checkIsPeriodDate = async (date: string): Promise<boolean | null> => {
     try {
       const db = getDB();
       const result = await db
@@ -115,28 +115,14 @@ export default function HealthTracking() {
     } catch (error) {
       console.error('Error checking period date:', error);
       setIsPeriodDate(false);
-      return false;
+      return null;
     }
   };
 
   useEffect(() => {
     const loadExistingHealthLogs = async () => {
       try {
-        const isPeriod = await checkIsPeriodDate(selectedDate);
-
         const db = getDB();
-
-        if (!isPeriod) {
-          await db
-            .delete(healthLogs)
-            .where(
-              and(
-                eq(healthLogs.date, selectedDate),
-                eq(healthLogs.type, 'flow')
-              )
-            );
-        }
-
         const existingEntries = await db
           .select()
           .from(healthLogs)
@@ -189,6 +175,30 @@ export default function HealthTracking() {
 
     loadExistingHealthLogs();
   }, [selectedDate, setNotes, setTempCelsius, setTempUnit]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const syncPeriodStatus = async () => {
+        const isPeriod = await checkIsPeriodDate(selectedDate);
+
+        if (isPeriod === false) {
+          const db = getDB();
+          await db
+            .delete(healthLogs)
+            .where(
+              and(
+                eq(healthLogs.date, selectedDate),
+                eq(healthLogs.type, 'flow')
+              )
+            );
+          setSelectedFlows(new Set());
+          setOriginalFlows(new Set());
+        }
+      };
+
+      syncPeriodStatus();
+    }, [selectedDate])
+  );
 
   // Handle scrollTo parameter to navigate to specific sections
   useEffect(() => {
