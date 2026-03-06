@@ -59,7 +59,7 @@
     "updateError": "Falha ao atualizar configurações de notificações",
     "permissionDialog": {
       "title": "Ativar notificações",
-      "message": "Para receber lembretes sobre o seu ciclo menstrual, ative as notificações da Bluma nas configurações do seu dispositivo.",
+      "message": "Para receber lembretes sobre a sua menstruação e janela fértil, ative as notificações da Bluma nas configurações do seu dispositivo.",
       "cancel": "Cancelar",
       "openSettings": "Abrir configurações"
     }

@@ -353,14 +353,6 @@ export class NotificationService {
         const fertilityDate = new Date(ovulationDate);
         fertilityDate.setDate(fertilityDate.getDate() - 6);
 
-        console.log('Fertility calc debug:', {
-          cycleStart,
-          nextPeriodDate: cyclePrediction.date,
-          ovulationDate,
-          fertilityReminderDate: fertilityDate,
-          now: new Date(),
-        });
-
         return fertilityDate;
       };
 

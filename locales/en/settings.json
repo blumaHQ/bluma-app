@@ -59,7 +59,7 @@
     "updateError": "Failed to update notification settings",
     "permissionDialog": {
       "title": "Enable Notifications",
-      "message": "To receive reminders about your menstrual cycle, please enable notifications for Bluma in your device settings.",
+      "message": "To receive reminders about your period and fertility window, please enable notifications for Bluma in your device settings.",
       "cancel": "Cancel",
       "openSettings": "Open Settings"
     }

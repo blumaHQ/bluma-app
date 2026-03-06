@@ -58,7 +58,7 @@
     "updateError": "Error al actualizar la configuración de notificaciones",
     "permissionDialog": {
       "title": "Habilitar notificaciones",
-      "message": "Para recibir recordatorios sobre tu ciclo menstrual, habilita las notificaciones para Bluma en la configuración de tu dispositivo.",
+      "message": "Para recibir recordatorios sobre tu periodo y ventana fértil, habilita las notificaciones para Bluma en la configuración de tu dispositivo.",
       "cancel": "Cancelar",
       "openSettings": "Abrir configuración"
     }
