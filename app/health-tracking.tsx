@@ -333,15 +333,7 @@ export default function HealthTracking() {
   }, []);
 
   const toggleFlow = useCallback((id: string) => {
-    setSelectedFlows(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
+    setSelectedFlows(prev => (prev.has(id) ? new Set() : new Set([id])));
   }, []);
 
   const toggleDischarge = useCallback((id: string) => {
