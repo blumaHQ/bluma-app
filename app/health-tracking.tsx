@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import { getDB, getSetting } from '../db';
 import { healthLogs, periodDates } from '../db/schema';
-import { eq } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { useFocusEffect } from '@react-navigation/native';
 import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
@@ -101,26 +101,42 @@ export default function HealthTracking() {
   const handleDateChange = (newDate: string) => {
     setSelectedDate(newDate);
   };
-  const checkIsPeriodDate = async (date: string) => {
+
+  const checkIsPeriodDate = async (date: string): Promise<boolean> => {
     try {
       const db = getDB();
       const result = await db
         .select()
         .from(periodDates)
         .where(eq(periodDates.date, date));
-      setIsPeriodDate(result.length > 0);
+      const isPeriod = result.length > 0;
+      setIsPeriodDate(isPeriod);
+      return isPeriod;
     } catch (error) {
       console.error('Error checking period date:', error);
       setIsPeriodDate(false);
+      return false;
     }
   };
 
   useEffect(() => {
     const loadExistingHealthLogs = async () => {
       try {
-        await checkIsPeriodDate(selectedDate);
+        const isPeriod = await checkIsPeriodDate(selectedDate);
 
         const db = getDB();
+
+        if (!isPeriod) {
+          await db
+            .delete(healthLogs)
+            .where(
+              and(
+                eq(healthLogs.date, selectedDate),
+                eq(healthLogs.type, 'flow')
+              )
+            );
+        }
+
         const existingEntries = await db
           .select()
           .from(healthLogs)

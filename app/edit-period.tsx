@@ -16,7 +16,8 @@ import {
 } from '../types/calendarTypes';
 import { createSelectedStyle } from '../utils/calendarStyles';
 import { getDB, getSetting } from '../db';
-import { periodDates } from '../db/schema';
+import { healthLogs, periodDates } from '../db/schema';
+import { and, eq } from 'drizzle-orm';
 
 export default function PeriodCalendarScreen() {
   const { colors } = useTheme();
@@ -24,6 +25,7 @@ export default function PeriodCalendarScreen() {
   const { t } = useTranslation(['common', 'calendar']);
   const insets = useSafeAreaInsets();
   const [tempDates, setTempDates] = useState<MarkedDates>({});
+  const [initialPeriodDates, setInitialPeriodDates] = useState<string[]>([]);
   const [userPeriodLength, setUserPeriodLength] = useState<number>(5);
   const [showTodayButton, setShowTodayButton] = useState(false);
   const calendarRef = useRef<CustomCalendarRef>(null);
@@ -53,6 +55,7 @@ export default function PeriodCalendarScreen() {
         );
 
         setTempDates(dates);
+        setInitialPeriodDates(Object.keys(dates));
       } catch (error) {
         console.error('Error loading data:', error);
       }
@@ -111,14 +114,33 @@ export default function PeriodCalendarScreen() {
   const handleSave = async () => {
     try {
       const db = getDB();
+      const newDatesArray = Object.keys(tempDates);
+      const newDateSet = new Set(newDatesArray);
+      const removedDates = initialPeriodDates.filter(
+        date => !newDateSet.has(date)
+      );
+
       await db.delete(periodDates);
 
-      const dateInserts = Object.keys(tempDates).map(date => ({
+      const dateInserts = newDatesArray.map(date => ({
         date,
       }));
 
       if (dateInserts.length > 0) {
         await db.insert(periodDates).values(dateInserts);
+      }
+
+      if (removedDates.length > 0) {
+        for (const date of removedDates) {
+          await db
+            .delete(healthLogs)
+            .where(
+              and(
+                eq(healthLogs.date, date),
+                eq(healthLogs.type, 'flow')
+              )
+            );
+        }
       }
 
       // Show success toast
