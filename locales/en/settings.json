@@ -16,7 +16,7 @@
   },
   "deleteDataConfirm": {
     "title": "Delete all data",
-    "message": "All your data will be permanently deleted: period tracking, symptoms, health logs, app settings, theme preferences, notification settings, and app lock configuration. This action cannot be undone.",
+    "message": "This will permanently delete all your period data, cycle history, health logs, and app settings. This action cannot be undone.",
     "delete": "Delete all data",
     "cancel": "Cancel",
     "success": "Success",
@@ -48,22 +48,18 @@
     "unlockButton": "Unlock"
   },
   "reminderSettings": {
-    "title": "Reminders",
-    "periodReminder": "Period reminder",
-    "description": "Get notified before your next period",
-    "daysBeforePeriod": "Days before period",
-    "days": "{{count}} day",
-    "days_other": "{{count}} days",
-    "beforePeriod": "Remind me 3 days before my next period is likely to start.",
-    "dayOfPeriod": "Remind me the day of my period start.",
-    "latePeriod": "Remind me if my period is late.",
+    "beforePeriod": "Remind me 3 days before my next period start",
+    "dayOfPeriod": "Remind me the day of my period start",
+    "latePeriod": "Remind me if my period is late",
+    "fertilityWindow": "Remind me before my fertile days",
+    "fertilityWindowHint": "Toggle to receive a reminder before your fertile days",
     "reminderTime": "Reminder time",
     "loading": "Loading notification settings...",
     "loadError": "Could not load notification settings",
     "updateError": "Failed to update notification settings",
     "permissionDialog": {
       "title": "Enable Notifications",
-      "message": "To receive period reminders, please enable notifications for Bluma in your device settings.",
+      "message": "To receive reminders about your period and fertility window, please enable notifications for Bluma in your device settings.",
       "cancel": "Cancel",
       "openSettings": "Open Settings"
     }
@@ -81,7 +77,7 @@
       "symptomsTracking": "Symptom and mood tracking",
       "statistics": "Cycle statistics & history",
       "insights": "Cycle phase insights",
-      "reminders": "Period reminders",
+      "reminders": "Period and fertility reminders",
       "lock": "Biometric app lock",
       "theme": "Dark and light theme support"
     },
@@ -144,7 +140,7 @@
       "description": "Bluma may request the following permissions:",
       "reminders": "",
       "remindersBold": "Reminders",
-      "remindersSuffix": ": To send you period reminders.",
+      "remindersSuffix": ": To send you period and fertility reminders.",
       "biometric": "",
       "biometricBold": "Biometric authentication",
       "biometricSuffix": ": To secure your app with fingerprint or face recognition.",

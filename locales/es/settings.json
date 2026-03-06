@@ -16,7 +16,7 @@
   },
   "deleteDataConfirm": {
     "title": "Eliminar todos los datos",
-    "message": "Todos tus datos se eliminarán permanentemente: seguimiento del periodo, síntomas, registros de salud, ajustes de la aplicación, preferencias de tema, configuración de notificaciones y configuración de bloqueo. Esta acción no se puede deshacer.",
+    "message": "Esta acción eliminará permanentemente todos tus datos de periodo, historial de ciclos, registros de salud y ajustes de la aplicación. Esta acción no se puede deshacer.",
     "delete": "Eliminar todos los datos",
     "cancel": "Cancelar",
     "success": "Éxito",
@@ -47,22 +47,18 @@
     "unlockButton": "Desbloquear"
   },
   "reminderSettings": {
-    "title": "Recordatorios",
-    "periodReminder": "Recordatorio de periodo",
-    "description": "Recibe notificaciones antes de tu próximo periodo",
-    "daysBeforePeriod": "Días antes del periodo",
-    "days": "{{count}} día",
-    "days_other": "{{count}} días",
-    "beforePeriod": "Recuérdame 3 días antes de que comience mi próximo periodo.",
-    "dayOfPeriod": "Recuérdame el día de inicio de mi periodo.",
-    "latePeriod": "Recuérdame si mi periodo está retrasado.",
+    "beforePeriod": "Recuérdame 3 días antes de que comience mi próximo periodo",
+    "dayOfPeriod": "Recuérdame el día de inicio de mi periodo",
+    "latePeriod": "Recuérdame si mi periodo está retrasado",
+    "fertilityWindow": "Recuérdame antes de mis días fértiles",
+    "fertilityWindowHint": "Activa para recibir un recordatorio antes de tus días fértiles",
     "reminderTime": "Hora del recordatorio",
     "loading": "Cargando configuración de notificaciones...",
     "loadError": "No se pudo cargar la configuración de notificaciones",
     "updateError": "Error al actualizar la configuración de notificaciones",
     "permissionDialog": {
       "title": "Habilitar notificaciones",
-      "message": "Para recibir recordatorios de periodo, por favor habilita las notificaciones para Bluma en la configuración de tu dispositivo.",
+      "message": "Para recibir recordatorios sobre tu periodo y ventana fértil, habilita las notificaciones para Bluma en la configuración de tu dispositivo.",
       "cancel": "Cancelar",
       "openSettings": "Abrir configuración"
     }
@@ -80,7 +76,7 @@
       "symptomsTracking": "Seguimiento de síntomas y estado de ánimo",
       "statistics": "Estadísticas e historial de ciclos",
       "insights": "Información sobre fases del ciclo",
-      "reminders": "Recordatorios de periodo",
+      "reminders": "Recordatorios de periodo y fertilidad",
       "lock": "Bloqueo biométrico de aplicación",
       "theme": "Soporte de temas claro y oscuro"
     },
@@ -143,7 +139,7 @@
       "description": "Bluma puede solicitar los siguientes permisos:",
       "reminders": "",
       "remindersBold": "Recordatorios",
-      "remindersSuffix": ": Para enviarte recordatorios de periodo.",
+      "remindersSuffix": ": Para enviarte recordatorios de periodo y fertilidad.",
       "biometric": "",
       "biometricBold": "Autenticación biométrica",
       "biometricSuffix": ": Para bloquear tu aplicación con huella digital o reconocimiento facial.",

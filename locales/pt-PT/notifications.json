@@ -10,5 +10,9 @@
   "periodLate": {
     "title": "O teu período está atrasado",
     "body": "O teu período era esperado ontem. Esqueceste-te de registar o período?"
+  },
+  "fertilityWindowReminder": {
+    "title": "Os teus dias férteis estão a aproximar-se",
+    "body": "A tua janela fértil começa amanhã. As probabilidades de conceber são maiores durante este tempo."
   }
 }

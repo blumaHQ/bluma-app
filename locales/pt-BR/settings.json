@@ -16,7 +16,7 @@
   },
   "deleteDataConfirm": {
     "title": "Excluir todos os dados",
-    "message": "Todos os seus dados serão excluídos permanentemente: registro de menstruações, sintomas, registros de saúde, configurações do app, preferências de tema, configurações de notificações e bloqueio. Esta ação não pode ser desfeita.",
+    "message": "Esta ação excluirá permanentemente todos os seus dados de menstruação, histórico de ciclos, registros de saúde e configurações do app. Esta ação não pode ser desfeita.",
     "delete": "Excluir todos os dados",
     "cancel": "Cancelar",
     "success": "Sucesso",
@@ -48,22 +48,18 @@
     "unlockButton": "Desbloquear"
   },
   "reminderSettings": {
-    "title": "Lembretes",
-    "periodReminder": "Lembrete de menstruação",
-    "description": "Receba notificações antes da sua próxima menstruação",
-    "daysBeforePeriod": "Dias antes da menstruação",
-    "days": "{{count}} dia",
-    "days_other": "{{count}} dias",
-    "beforePeriod": "Lembre-me 3 dias antes do provável início da minha próxima menstruação.",
-    "dayOfPeriod": "Lembre-me no dia do início da minha menstruação.",
-    "latePeriod": "Lembre-me se minha menstruação estiver atrasada.",
+    "beforePeriod": "Lembre-me 3 dias antes do início da minha próxima menstruação",
+    "dayOfPeriod": "Lembre-me no dia do início da minha menstruação",
+    "latePeriod": "Lembre-me se minha menstruação estiver atrasada",
+    "fertilityWindow": "Lembre-me antes dos meus dias férteis",
+    "fertilityWindowHint": "Ativar ou desativar os lembretes da janela fértil",
     "reminderTime": "Horário do lembrete",
     "loading": "Carregando configurações de notificações...",
     "loadError": "Não foi possível carregar as configurações de notificações",
     "updateError": "Falha ao atualizar configurações de notificações",
     "permissionDialog": {
       "title": "Ativar notificações",
-      "message": "Para receber lembretes de menstruação, ative as notificações da Bluma nas configurações do seu dispositivo.",
+      "message": "Para receber lembretes sobre a sua menstruação e janela fértil, ative as notificações da Bluma nas configurações do seu dispositivo.",
       "cancel": "Cancelar",
       "openSettings": "Abrir configurações"
     }
@@ -81,7 +77,7 @@
       "symptomsTracking": "Registro de sintomas e humor",
       "statistics": "Estatísticas e histórico do ciclo",
       "insights": "Informações sobre as fases do ciclo",
-      "reminders": "Lembretes de menstruação",
+      "reminders": "Lembretes de menstruação e fertilidade",
       "lock": "Bloqueio biométrico do app",
       "theme": "Suporte a tema escuro e claro"
     },
@@ -144,7 +140,7 @@
       "description": "A Bluma pode solicitar as seguintes permissões:",
       "reminders": "",
       "remindersBold": "Lembretes",
-      "remindersSuffix": ": Para enviar lembretes de menstruação.",
+      "remindersSuffix": ": Para enviar lembretes de menstruação e fertilidade.",
       "biometric": "",
       "biometricBold": "Autenticação biométrica",
       "biometricSuffix": ": Para proteger o app com impressão digital ou reconhecimento facial.",

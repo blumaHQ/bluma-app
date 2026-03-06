@@ -1,28 +1,24 @@
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { Platform } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { PeriodPredictionService } from './periodPredictions';
 import { getSetting, getDB } from '../db';
 import { periodDates } from '../db/schema';
 import { Colors } from '../styles/colors';
 import i18n from '../i18n/config';
+import { NOTIFICATION_SETTINGS_KEYS } from '../constants/notificationKeys';
+import { parseSafeHour, parseSafeMinute } from '../utils/dateUtils';
 
-const NOTIFICATION_SETTINGS_KEYS = {
-  BEFORE_PERIOD: 'notifications_period_before',
-  DAY_OF_PERIOD: 'notifications_period_day',
-  LATE_PERIOD: 'notifications_period_late',
-  TIME_HOUR: 'notification_time_hour',
-  TIME_MINUTE: 'notification_time_minute',
+const SECURE_STORE_OPTIONS: SecureStore.SecureStoreOptions = {
+  keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK,
 };
 
 // Configure how notifications are handled when the app is in the foreground
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
     shouldPlaySound: true,
     shouldSetBadge: false,
-    // Newer SDKs also require these fields on iOS
     shouldShowBanner: true,
     shouldShowList: true,
   }),
@@ -32,14 +28,19 @@ export class NotificationService {
   // Check if notifications are enabled in settings
   static async areNotificationsEnabled(): Promise<boolean> {
     try {
-      const beforePeriodEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD);
-      const dayOfPeriodEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD);
-      const latePeriodEnabled = await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD);
+      const [beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled, fertilityWindowEnabled] =
+        await Promise.all([
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW, SECURE_STORE_OPTIONS),
+        ]);
 
       return (
         beforePeriodEnabled === 'true' ||
         dayOfPeriodEnabled === 'true' ||
-        latePeriodEnabled === 'true'
+        latePeriodEnabled === 'true' ||
+        fertilityWindowEnabled === 'true'
       );
     } catch (error) {
       console.error('Failed to read notification settings:', error);
@@ -52,19 +53,22 @@ export class NotificationService {
     beforePeriodEnabled: boolean;
     dayOfPeriodEnabled: boolean;
     latePeriodEnabled: boolean;
+    fertilityWindowEnabled: boolean;
   }> {
     try {
-      const beforePeriodEnabled =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD)) === 'true';
-      const dayOfPeriodEnabled =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD)) === 'true';
-      const latePeriodEnabled =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD)) === 'true';
+      const [beforePeriod, dayOfPeriod, latePeriod, fertilityWindow] =
+        await Promise.all([
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD, SECURE_STORE_OPTIONS),
+          SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW, SECURE_STORE_OPTIONS),
+        ]);
 
       return {
-        beforePeriodEnabled,
-        dayOfPeriodEnabled,
-        latePeriodEnabled,
+        beforePeriodEnabled: beforePeriod === 'true',
+        dayOfPeriodEnabled: dayOfPeriod === 'true',
+        latePeriodEnabled: latePeriod === 'true',
+        fertilityWindowEnabled: fertilityWindow === 'true',
       };
     } catch (error) {
       console.error('Failed to read notification settings:', error);
@@ -72,6 +76,7 @@ export class NotificationService {
         beforePeriodEnabled: false,
         dayOfPeriodEnabled: false,
         latePeriodEnabled: false,
+        fertilityWindowEnabled: false,
       };
     }
   }
@@ -80,34 +85,66 @@ export class NotificationService {
   static async saveNotificationSettings(
     beforePeriodEnabled: boolean,
     dayOfPeriodEnabled: boolean,
-    latePeriodEnabled: boolean
+    latePeriodEnabled: boolean,
+    fertilityWindowEnabled: boolean
   ): Promise<void> {
+    const keys = [
+      NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD,
+      NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD,
+      NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD,
+      NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW,
+    ] as const;
+
+    const [prevBefore, prevDayOf, prevLate, prevFertility] = await Promise.all(
+      keys.map((k) => SecureStore.getItemAsync(k, SECURE_STORE_OPTIONS))
+    );
+    const snapshot = [prevBefore, prevDayOf, prevLate, prevFertility];
+
     try {
-      // Save settings to AsyncStorage
-      await AsyncStorage.setItem(
+      await SecureStore.setItemAsync(
         NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD,
-        beforePeriodEnabled ? 'true' : 'false'
+        beforePeriodEnabled ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
       );
-      await AsyncStorage.setItem(
+      await SecureStore.setItemAsync(
         NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD,
-        dayOfPeriodEnabled ? 'true' : 'false'
+        dayOfPeriodEnabled ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
       );
-      await AsyncStorage.setItem(
+      await SecureStore.setItemAsync(
         NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD,
-        latePeriodEnabled ? 'true' : 'false'
+        latePeriodEnabled ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
+      );
+      await SecureStore.setItemAsync(
+        NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW,
+        fertilityWindowEnabled ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
       );
 
-      // If notifications were just enabled, initialize them
-      if (beforePeriodEnabled || dayOfPeriodEnabled || latePeriodEnabled) {
+      if (beforePeriodEnabled || dayOfPeriodEnabled || latePeriodEnabled || fertilityWindowEnabled) {
         await this.init();
-
-        // Immediately schedule notifications if there's period data
-        await this.scheduleNotificationsIfDataExists();
+        await this.rescheduleNotifications();
       } else {
-        // If all are disabled, cancel all notifications
         await this.cancelPeriodNotifications();
       }
     } catch (error) {
+      await Promise.allSettled(
+        keys.map((k, i) =>
+          snapshot[i] !== null && snapshot[i] !== undefined
+            ? SecureStore.setItemAsync(k, snapshot[i]!, SECURE_STORE_OPTIONS)
+            : SecureStore.deleteItemAsync(k, SECURE_STORE_OPTIONS)
+        )
+      );
+      try {
+        if (snapshot.some((value) => value === 'true')) {
+          await this.rescheduleNotifications();
+        } else {
+          await this.cancelPeriodNotifications();
+        }
+      } catch (rollbackError) {
+        console.error('Failed to restore notification schedule:', rollbackError);
+      }
       console.error('Failed to save notification settings:', error);
       throw new Error('Failed to save notification settings. Please try again.');
     }
@@ -213,11 +250,10 @@ export class NotificationService {
     allDates: string[],
     daysBefore: number = 3
   ) {
-    // Check if notifications are enabled
-    const { beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled } =
+    const { beforePeriodEnabled, dayOfPeriodEnabled, latePeriodEnabled, fertilityWindowEnabled } =
       await this.getNotificationSettings();
 
-    if (!beforePeriodEnabled && !dayOfPeriodEnabled && !latePeriodEnabled) {
+    if (!beforePeriodEnabled && !dayOfPeriodEnabled && !latePeriodEnabled && !fertilityWindowEnabled) {
       return;
     }
 
@@ -234,13 +270,18 @@ export class NotificationService {
     let notificationHour = '10';
     let notificationMinute = '0';
     try {
-      notificationHour =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR)) || '10';
-      notificationMinute =
-        (await AsyncStorage.getItem(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE)) || '0';
+      const [hour, minute] = await Promise.all([
+        SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, SECURE_STORE_OPTIONS),
+        SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, SECURE_STORE_OPTIONS),
+      ]);
+      notificationHour = hour || '10';
+      notificationMinute = minute || '0';
     } catch (error) {
       console.error('Failed to read notification time settings, using defaults:', error);
     }
+
+    const safeHour = parseSafeHour(notificationHour);
+    const safeMinute = parseSafeMinute(notificationMinute);
 
     // Get prediction for next period date (YYYY-MM-DD string)
     const prediction = PeriodPredictionService.getPrediction(
@@ -253,8 +294,8 @@ export class NotificationService {
       py,
       pm - 1,
       pd,
-      parseInt(notificationHour),
-      parseInt(notificationMinute),
+      safeHour,
+      safeMinute,
       0
     );
 
@@ -314,6 +355,63 @@ export class NotificationService {
       }
     }
 
+    // Schedule fertility window notification if enabled (day before window opens = ovulation - 6)
+    // Prefer the current cycle's window; fall back to next cycle if it has already passed.
+    if (fertilityWindowEnabled) {
+      const getFertilityReminderDate = (cycleStart: string) => {
+        const cyclePrediction = PeriodPredictionService.getPrediction(
+          cycleStart,
+          allDates,
+          userCycleLength
+        );
+
+        const [cy, cm, cd] = cyclePrediction.date.split('-').map(Number);
+        const periodDateLocal = new Date(
+          cy,
+          cm - 1,
+          cd,
+          safeHour,
+          safeMinute,
+          0
+        );
+
+        const ovulationDate = new Date(periodDateLocal);
+        ovulationDate.setDate(ovulationDate.getDate() - 14);
+
+        const fertilityDate = new Date(ovulationDate);
+        fertilityDate.setDate(fertilityDate.getDate() - 6);
+
+        return fertilityDate;
+      };
+
+      const now = new Date();
+      const currentCycleFertilityDate = getFertilityReminderDate(startDate);
+      const nextCycleFertilityDate = getFertilityReminderDate(prediction.date);
+
+      const fertilityReminderDate =
+        currentCycleFertilityDate > now
+          ? currentCycleFertilityDate
+          : nextCycleFertilityDate;
+
+      if (fertilityReminderDate > now) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: i18n.t('notifications:fertilityWindowReminder.title'),
+            body: i18n.t('notifications:fertilityWindowReminder.body'),
+            data: { type: 'fertility_window_reminder' },
+            color: Colors.accentPink,
+          },
+          trigger: {
+            type: Notifications.SchedulableTriggerInputTypes.DATE,
+            channelId:
+              Platform.OS === 'android' ? 'period-notifications' : undefined,
+            date: fertilityReminderDate,
+          },
+          identifier: 'fertility-window-reminder',
+        });
+      }
+    }
+
     // Schedule late period notification if enabled
     if (latePeriodEnabled) {
       const latePeriodDate = new Date(predictionDateLocal);
@@ -340,6 +438,11 @@ export class NotificationService {
     }
   }
 
+  static async rescheduleNotifications(): Promise<void> {
+    await this.cancelPeriodNotifications();
+    await this.scheduleNotificationsIfDataExists();
+  }
+
   // Cancel previously scheduled period notifications
   static async cancelPeriodNotifications() {
     const scheduledNotifications =
@@ -349,7 +452,8 @@ export class NotificationService {
       if (
         notification.identifier === 'period-reminder' ||
         notification.identifier === 'period-start' ||
-        notification.identifier === 'period-late'
+        notification.identifier === 'period-late' ||
+        notification.identifier === 'fertility-window-reminder'
       ) {
         await Notifications.cancelScheduledNotificationAsync(
           notification.identifier

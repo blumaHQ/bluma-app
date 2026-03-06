@@ -10,5 +10,9 @@
   "periodLate": {
     "title": "Sua menstruação está atrasada",
     "body": "Sua menstruação era esperada ontem. Você esqueceu de registrar?"
+  },
+  "fertilityWindowReminder": {
+    "title": "Seus dias férteis estão se aproximando",
+    "body": "Sua janela fértil começa amanhã. As chances de conceber são maiores durante este tempo."
   }
 }
