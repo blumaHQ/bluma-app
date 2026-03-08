@@ -155,7 +155,7 @@
       "description": "The more you log your period dates, the more accurate the predictions become. With 3+ cycles, Bluma can provide better predictions based on your patterns."
     },
     "privacy": {
-      "title": "Privacy first",
+      "title": "On-device predictions",
       "description": "All calculations happen locally on your device. Your period data never leaves your phone and is never shared with anyone."
     },
     "disclaimerPrefix": "🛎️ ",
