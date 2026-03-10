@@ -10,9 +10,52 @@
   "screenTitles": {
     "reminders": "Lembretes",
     "appLock": "Bloqueio do App",
+    "backup": "Backup e restauração",
     "about": "Sobre",
     "privacyPolicy": "Política de privacidade",
     "calendarView": "Visualização do calendário"
+  },
+  "backup": {
+    "settingsRow": "Backup e restauração",
+    "createTitle": "Criar backup",
+    "createDescription": "Salve um backup criptografado de todos os seus dados. Você precisará da chave de backup para restaurá-lo.",
+    "createButton": "Criar backup",
+    "generating": "Criando backup…",
+    "keyLabel": "Sua chave de backup",
+    "keyWarning": "Seu arquivo de backup é criptografado. Sem esta chave, ninguém pode ler seus dados — nem mesmo a Bluma. Salve-a antes de continuar. Ela não pode ser mostrada novamente.",
+    "copyKey": "Copiar chave",
+    "keyCopied": "Chave copiada",
+    "savedKey": "Salvei minha chave — salvar arquivo de backup",
+    "shareAgain": "Compartilhar novamente",
+    "done": "Concluído",
+    "restoreTitle": "Restaurar backup",
+    "restoreDescription": "Restaure seus dados a partir de um arquivo de backup .bluma criado anteriormente.",
+    "restoreButton": "Escolher arquivo de backup",
+    "restore": {
+      "confirmTitle": "Restaurar backup",
+      "confirmMessage": "Isso substituirá permanentemente todos os seus dados atuais pelo backup. Esta ação não pode ser desfeita.",
+      "continue": "Continuar",
+      "cancel": "Cancelar",
+      "keyLabel": "Digite sua chave de backup",
+      "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
+      "restoreButton": "Restaurar",
+      "pickDifferentFile": "Escolher outro arquivo",
+      "successTitle": "Restauração concluída",
+      "successMessage": "Seus dados foram restaurados com sucesso.",
+      "error": {
+        "invalidFile": "Este arquivo não parece ser um backup válido da Bluma.",
+        "unsupportedVersion": "Este backup foi criado com uma versão mais nova da Bluma. Por favor, atualize o app.",
+        "wrongKey": "Chave de backup incorreta. Por favor, verifique e tente novamente.",
+        "emptyKey": "Por favor, digite sua chave de backup.",
+        "pickFailed": "Não foi possível abrir o arquivo. Por favor, tente novamente.",
+        "failed": "A restauração falhou. Por favor, tente novamente."
+      }
+    },
+    "error": {
+      "title": "Erro",
+      "createFailed": "Não foi possível criar o backup. Por favor, tente novamente.",
+      "shareFailed": "Não foi possível compartilhar o arquivo de backup. Por favor, tente novamente."
+    }
   },
   "deleteDataConfirm": {
     "title": "Excluir todos os dados",

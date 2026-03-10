@@ -10,9 +10,52 @@
   "screenTitles": {
     "reminders": "Recordatorios",
     "appLock": "Bloqueo de aplicación",
+    "backup": "Copia de seguridad",
     "about": "Acerca de",
     "privacyPolicy": "Política de privacidad",
     "calendarView": "Vista del calendario"
+  },
+  "backup": {
+    "settingsRow": "Copia de seguridad",
+    "createTitle": "Crear copia de seguridad",
+    "createDescription": "Guarda una copia de seguridad cifrada de todos tus datos. Necesitarás la clave para restaurarla.",
+    "createButton": "Crear copia de seguridad",
+    "generating": "Creando copia de seguridad…",
+    "keyLabel": "Tu clave de respaldo",
+    "keyWarning": "Tu copia de seguridad está cifrada. Sin esta clave, nadie puede leer tus datos — ni siquiera Bluma. Guárdala antes de continuar. No se puede mostrar de nuevo.",
+    "copyKey": "Copiar clave",
+    "keyCopied": "Clave copiada",
+    "savedKey": "Guardé mi clave — guardar archivo de respaldo",
+    "shareAgain": "Compartir de nuevo",
+    "done": "Listo",
+    "restoreTitle": "Restaurar copia de seguridad",
+    "restoreDescription": "Restaura tus datos desde un archivo de copia de seguridad .bluma creado anteriormente.",
+    "restoreButton": "Elegir archivo de respaldo",
+    "restore": {
+      "confirmTitle": "Restaurar copia de seguridad",
+      "confirmMessage": "Esto reemplazará permanentemente todos tus datos actuales con los del respaldo. Esta acción no se puede deshacer.",
+      "continue": "Continuar",
+      "cancel": "Cancelar",
+      "keyLabel": "Introduce tu clave de respaldo",
+      "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
+      "restoreButton": "Restaurar",
+      "pickDifferentFile": "Elegir otro archivo",
+      "successTitle": "Restauración completa",
+      "successMessage": "Tus datos han sido restaurados correctamente.",
+      "error": {
+        "invalidFile": "Este archivo no parece ser una copia de seguridad válida de Bluma.",
+        "unsupportedVersion": "Esta copia de seguridad fue creada con una versión más nueva de Bluma. Por favor actualiza la aplicación.",
+        "wrongKey": "Clave de respaldo incorrecta. Por favor verifica e inténtalo de nuevo.",
+        "emptyKey": "Por favor introduce tu clave de respaldo.",
+        "pickFailed": "No se pudo abrir el archivo. Por favor inténtalo de nuevo.",
+        "failed": "La restauración falló. Por favor inténtalo de nuevo."
+      }
+    },
+    "error": {
+      "title": "Error",
+      "createFailed": "No se pudo crear la copia de seguridad. Por favor inténtalo de nuevo.",
+      "shareFailed": "No se pudo compartir el archivo de respaldo. Por favor inténtalo de nuevo."
+    }
   },
   "deleteDataConfirm": {
     "title": "Eliminar todos los datos",

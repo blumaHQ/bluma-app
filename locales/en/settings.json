@@ -10,9 +10,52 @@
   "screenTitles": {
     "reminders": "Reminders",
     "appLock": "App Lock",
+    "backup": "Back Up & Restore",
     "about": "About",
     "privacyPolicy": "Privacy policy",
     "calendarView": "Calendar view"
+  },
+  "backup": {
+    "settingsRow": "Back up & restore",
+    "createTitle": "Create backup",
+    "createDescription": "Save an encrypted backup of all your data. You'll need the backup key to restore it.",
+    "createButton": "Create backup",
+    "generating": "Creating backup…",
+    "keyLabel": "Your backup key",
+    "keyWarning": "Your backup file is encrypted. Without this key, nobody can read your data — not even Bluma. Save it before continuing. It cannot be shown again.",
+    "copyKey": "Copy key",
+    "keyCopied": "Key copied",
+    "savedKey": "I've saved my key — save backup file",
+    "shareAgain": "Share again",
+    "done": "Done",
+    "restoreTitle": "Restore backup",
+    "restoreDescription": "Restore your data from a previously created .bluma backup file.",
+    "restoreButton": "Choose backup file",
+    "restore": {
+      "confirmTitle": "Restore backup",
+      "confirmMessage": "This will permanently replace all your current data with the backup. This cannot be undone.",
+      "continue": "Continue",
+      "cancel": "Cancel",
+      "keyLabel": "Enter your backup key",
+      "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
+      "restoreButton": "Restore",
+      "pickDifferentFile": "Choose a different file",
+      "successTitle": "Restore complete",
+      "successMessage": "Your data has been restored successfully.",
+      "error": {
+        "invalidFile": "This file doesn't appear to be a valid Bluma backup.",
+        "unsupportedVersion": "This backup was created with a newer version of Bluma. Please update the app.",
+        "wrongKey": "Incorrect backup key. Please check and try again.",
+        "emptyKey": "Please enter your backup key.",
+        "pickFailed": "Could not open the file. Please try again.",
+        "failed": "Restore failed. Please try again."
+      }
+    },
+    "error": {
+      "title": "Error",
+      "createFailed": "Could not create the backup. Please try again.",
+      "shareFailed": "Could not share the backup file. Please try again."
+    }
   },
   "deleteDataConfirm": {
     "title": "Delete all data",

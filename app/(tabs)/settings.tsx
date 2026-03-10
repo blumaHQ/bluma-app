@@ -59,6 +59,19 @@ export default function Settings() {
 
         <TouchableOpacity
           style={[styles.settingRow, { borderBottomColor: colors.border }]}
+          onPress={() => router.push('/settings/backup')}
+        >
+          <View style={styles.iconContainer}>
+            <SettingsIcon name="cloud-upload-outline" />
+          </View>
+          <Text style={[typography.bodyLg, { flex: 1 }]}>
+            {t('backup.settingsRow')}
+          </Text>
+          <ChevronIcon />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.settingRow, { borderBottomColor: colors.border }]}
           onPress={() => router.push('/settings/app-lock')}
         >
           <View style={styles.iconContainer}>
