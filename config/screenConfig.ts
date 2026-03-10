@@ -36,6 +36,13 @@ export const dynamicScreens: ScreenConfig[] = [
     backgroundColorKey: 'background',
   },
   {
+    name: 'settings/restore',
+    headerShown: true,
+    titleKey: 'settings:screenTitles.restore',
+    headerShadowVisible: false,
+    backgroundColorKey: 'background',
+  },
+  {
     name: 'settings/about',
     headerShown: true,
     titleKey: 'settings:screenTitles.about',

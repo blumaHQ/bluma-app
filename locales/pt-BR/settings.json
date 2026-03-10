@@ -10,18 +10,22 @@
   "screenTitles": {
     "reminders": "Lembretes",
     "appLock": "Bloqueio do App",
-    "backup": "Backup e restauração",
+    "backup": "Backup de dados",
+    "restore": "Restaurar dados",
     "about": "Sobre",
     "privacyPolicy": "Política de privacidade",
     "calendarView": "Visualização do calendário"
   },
   "backup": {
     "settingsRow": "Backup e restauração",
+    "settingsRowBackup": "Backup de dados",
+    "settingsRowRestore": "Restaurar dados",
     "createTitle": "Criar backup",
     "createDescription": "Salve um backup criptografado de todos os seus dados. Você precisará da chave de backup para restaurá-lo.",
     "createButton": "Criar backup",
     "generating": "Criando backup…",
     "keyLabel": "Sua chave de backup",
+    "keyWarningTitle": "Salve sua chave agora",
     "keyWarning": "Seu arquivo de backup é criptografado. Sem esta chave, ninguém pode ler seus dados — nem mesmo a Bluma. Salve-a antes de continuar. Ela não pode ser mostrada novamente.",
     "copyKey": "Copiar chave",
     "keyCopied": "Chave copiada",

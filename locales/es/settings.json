@@ -10,18 +10,22 @@
   "screenTitles": {
     "reminders": "Recordatorios",
     "appLock": "Bloqueo de aplicación",
-    "backup": "Copia de seguridad",
+    "backup": "Copia de seguridad de datos",
+    "restore": "Restaurar datos",
     "about": "Acerca de",
     "privacyPolicy": "Política de privacidad",
     "calendarView": "Vista del calendario"
   },
   "backup": {
     "settingsRow": "Copia de seguridad",
+    "settingsRowBackup": "Copia de seguridad de datos",
+    "settingsRowRestore": "Restaurar datos",
     "createTitle": "Crear copia de seguridad",
     "createDescription": "Guarda una copia de seguridad cifrada de todos tus datos. Necesitarás la clave para restaurarla.",
     "createButton": "Crear copia de seguridad",
     "generating": "Creando copia de seguridad…",
     "keyLabel": "Tu clave de respaldo",
+    "keyWarningTitle": "Guarda tu clave ahora",
     "keyWarning": "Tu copia de seguridad está cifrada. Sin esta clave, nadie puede leer tus datos — ni siquiera Bluma. Guárdala antes de continuar. No se puede mostrar de nuevo.",
     "copyKey": "Copiar clave",
     "keyCopied": "Clave copiada",

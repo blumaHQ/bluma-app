@@ -10,18 +10,22 @@
   "screenTitles": {
     "reminders": "Lembretes",
     "appLock": "Bloqueio da Aplicação",
-    "backup": "Cópia de segurança",
+    "backup": "Cópia de segurança de dados",
+    "restore": "Restaurar dados",
     "about": "Acerca",
     "privacyPolicy": "Política de privacidade",
     "calendarView": "Vista do calendário"
   },
   "backup": {
     "settingsRow": "Cópia de segurança",
+    "settingsRowBackup": "Cópia de segurança de dados",
+    "settingsRowRestore": "Restaurar dados",
     "createTitle": "Criar cópia de segurança",
     "createDescription": "Guarda uma cópia de segurança encriptada de todos os teus dados. Precisarás da chave para a restaurar.",
     "createButton": "Criar cópia de segurança",
     "generating": "A criar cópia de segurança…",
     "keyLabel": "A tua chave de cópia de segurança",
+    "keyWarningTitle": "Guarda sua chave agora",
     "keyWarning": "O teu ficheiro de cópia de segurança está encriptado. Sem esta chave, ninguém consegue ler os teus dados — nem mesmo a Bluma. Guarda-a antes de continuar. Não pode ser mostrada novamente.",
     "copyKey": "Copiar chave",
     "keyCopied": "Chave copiada",

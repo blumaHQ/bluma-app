@@ -65,7 +65,20 @@ export default function Settings() {
             <SettingsIcon name="cloud-upload-outline" />
           </View>
           <Text style={[typography.bodyLg, { flex: 1 }]}>
-            {t('backup.settingsRow')}
+            {t('backup.settingsRowBackup')}
+          </Text>
+          <ChevronIcon />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.settingRow, { borderBottomColor: colors.border }]}
+          onPress={() => router.push('/settings/restore')}
+        >
+          <View style={styles.iconContainer}>
+            <SettingsIcon name="cloud-download-outline" />
+          </View>
+          <Text style={[typography.bodyLg, { flex: 1 }]}>
+            {t('backup.settingsRowRestore')}
           </Text>
           <ChevronIcon />
         </TouchableOpacity>
