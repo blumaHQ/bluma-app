@@ -59,23 +59,32 @@ export interface BackupResult {
   filePath: string;
 }
 
-export async function createBackup(): Promise<BackupResult> {
-  const backupKey = generateBackupKey();
+export async function createBackupForKey(backupKey: string): Promise<string> {
   const db = getDB();
 
-  const payload = JSON.stringify({
-    schemaVersion: SCHEMA_VERSION,
-    exportedAt: new Date().toISOString(),
-    data: {
-      periodDates: await db.select().from(periodDates),
-      healthLogs: await db.select().from(healthLogs),
-      settings: await db.select().from(settings),
-    },
-  });
+  // Fire all DB queries before blocking on scrypt — SQLite runs on a native thread
+  // so I/O completes in the background while JS is occupied with key derivation.
+  const payloadPromise = Promise.all([
+    db.select().from(periodDates),
+    db.select().from(healthLogs),
+    db.select().from(settings),
+  ]).then(([pd, hl, s]) =>
+    JSON.stringify({
+      schemaVersion: SCHEMA_VERSION,
+      exportedAt: new Date().toISOString(),
+      data: { periodDates: pd, healthLogs: hl, settings: s },
+    })
+  );
+
+  // Yield the JS thread so the UI can render the key before scrypt blocks it.
+  await new Promise<void>(resolve => setTimeout(resolve, 0));
 
   const salt = Crypto.getRandomBytes(32);
   const nonce = Crypto.getRandomBytes(12);
-  const key = deriveKey(backupKey, salt);
+  const key = deriveKey(backupKey, salt); // blocks ~500ms–2s; native DB I/O runs in parallel
+
+  const payload = await payloadPromise; // likely already resolved by now
+
   const ciphertext = gcm(key, nonce, AAD).encrypt(new TextEncoder().encode(payload));
 
   // [1 byte version][32 bytes salt][12 bytes nonce][ciphertext + 16 byte GCM tag]
@@ -91,7 +100,7 @@ export async function createBackup(): Promise<BackupResult> {
     encoding: FileSystem.EncodingType.Base64,
   });
 
-  return { backupKey, filePath };
+  return filePath;
 }
 
 export async function shareBackup(filePath: string): Promise<void> {

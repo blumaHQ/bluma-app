@@ -17,7 +17,8 @@ import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../styles/theme';
 import { useAppStyles } from '../../hooks/useStyles';
 import {
-  createBackup,
+  generateBackupKey,
+  createBackupForKey,
   shareBackup,
   cleanupBackupFile,
   validateBackupFile,
@@ -26,8 +27,7 @@ import {
 
 type BackupPhase =
   | { type: 'idle' }
-  | { type: 'generating' }
-  | { type: 'key_display'; key: string; filePath: string; keyCopied: boolean; shared: boolean };
+  | { type: 'key_display'; key: string; filePath: string | null; keyCopied: boolean; shared: boolean };
 
 type RestorePhase =
   | { type: 'idle' }
@@ -44,10 +44,14 @@ export default function BackupScreen() {
   const [restore, setRestore] = useState<RestorePhase>({ type: 'idle' });
 
   const handleCreateBackup = useCallback(async () => {
-    setBackup({ type: 'generating' });
+    const backupKey = generateBackupKey();
+    const backupPromise = createBackupForKey(backupKey);
+    setBackup({ type: 'key_display', key: backupKey, filePath: null, keyCopied: false, shared: false });
     try {
-      const result = await createBackup();
-      setBackup({ type: 'key_display', key: result.backupKey, filePath: result.filePath, keyCopied: false, shared: false });
+      const filePath = await backupPromise;
+      setBackup(prev =>
+        prev.type === 'key_display' ? { ...prev, filePath } : prev
+      );
     } catch {
       setBackup({ type: 'idle' });
       Alert.alert(t('backup.error.title'), t('backup.error.createFailed'));
@@ -61,7 +65,7 @@ export default function BackupScreen() {
   }, [backup]);
 
   const handleShareBackup = useCallback(async () => {
-    if (backup.type !== 'key_display') return;
+    if (backup.type !== 'key_display' || !backup.filePath) return;
     try {
       await shareBackup(backup.filePath);
       setBackup({ ...backup, shared: true });
@@ -71,7 +75,7 @@ export default function BackupScreen() {
   }, [backup, t]);
 
   const handleDoneBackup = useCallback(async () => {
-    if (backup.type === 'key_display') {
+    if (backup.type === 'key_display' && backup.filePath) {
       await cleanupBackupFile(backup.filePath);
     }
     setBackup({ type: 'idle' });
@@ -178,15 +182,6 @@ export default function BackupScreen() {
           </TouchableOpacity>
         )}
 
-        {backup.type === 'generating' && (
-          <View style={styles.loadingRow}>
-            <ActivityIndicator size="small" color={colors.primary} />
-            <Text style={[typography.body, { color: colors.textSecondary, marginLeft: 8 }]}>
-              {t('backup.generating')}
-            </Text>
-          </View>
-        )}
-
         {backup.type === 'key_display' && (
           <View style={styles.keySection}>
             <Text style={[typography.caption, { color: colors.textSecondary }]}>
@@ -250,16 +245,25 @@ export default function BackupScreen() {
                 style={[
                   styles.primaryButton,
                   {
-                    backgroundColor: backup.keyCopied ? colors.primary : colors.border,
-                    opacity: backup.keyCopied ? 1 : 0.6,
+                    backgroundColor: backup.keyCopied && backup.filePath ? colors.primary : colors.border,
+                    opacity: backup.keyCopied && backup.filePath ? 1 : 0.6,
                   },
                 ]}
                 onPress={handleShareBackup}
-                disabled={!backup.keyCopied}
+                disabled={!backup.keyCopied || !backup.filePath}
               >
-                <Text style={[typography.bodyBold, { color: backup.keyCopied ? '#fff' : colors.textSecondary }]}>
-                  {t('backup.savedKey')}
-                </Text>
+                {!backup.filePath ? (
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+                    <ActivityIndicator size="small" color={colors.textSecondary} />
+                    <Text style={[typography.bodyBold, { color: colors.textSecondary }]}>
+                      {t('backup.preparingFile')}
+                    </Text>
+                  </View>
+                ) : (
+                  <Text style={[typography.bodyBold, { color: backup.keyCopied ? '#fff' : colors.textSecondary }]}>
+                    {t('backup.savedBackup')}
+                  </Text>
+                )}
               </TouchableOpacity>
             )}
           </View>
@@ -366,11 +370,6 @@ const styles = StyleSheet.create({
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  loadingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
   },
   keySection: {
     gap: 12,
