@@ -81,7 +81,7 @@ export async function createBackupForKey(backupKey: string): Promise<string> {
 
   const salt = Crypto.getRandomBytes(32);
   const nonce = Crypto.getRandomBytes(12);
-  const key = deriveKey(backupKey, salt); // blocks ~500ms–2s; native DB I/O runs in parallel
+  const key = deriveKey(backupKey.replace(/-/g, ''), salt); // blocks ~500ms–2s; native DB I/O runs in parallel
 
   const payload = await payloadPromise; // likely already resolved by now
 
