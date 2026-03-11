@@ -42,7 +42,7 @@ export default function RestoreScreen() {
           onPress: async () => {
             try {
               const result = await DocumentPicker.getDocumentAsync({
-                type: '*/*',
+                type: 'application/octet-stream',
                 copyToCacheDirectory: true,
               });
               if (result.canceled) return;
@@ -90,9 +90,21 @@ export default function RestoreScreen() {
         },
       ]);
     } catch (err) {
-      const msg = err instanceof Error && err.message === 'WRONG_KEY'
-        ? t('backup.restore.error.wrongKey')
-        : t('backup.restore.error.failed');
+      let msg = t('backup.restore.error.failed');
+      if (err instanceof Error) {
+        switch (err.message) {
+          case 'WRONG_KEY':
+            msg = t('backup.restore.error.wrongKey');
+            break;
+          case 'INVALID_FILE':
+            msg = t('backup.restore.error.invalidFile');
+            break;
+          case 'UNSUPPORTED_VERSION':
+          case 'UNSUPPORTED_SCHEMA':
+            msg = t('backup.restore.error.unsupportedVersion');
+            break;
+        }
+      }
       Alert.alert(t('backup.error.title'), msg);
       setRestore({ type: 'entering_key', fileUri, keyInput });
     }
@@ -150,9 +162,9 @@ export default function RestoreScreen() {
               }
               placeholder={t('backup.restore.keyPlaceholder')}
               placeholderTextColor={colors.textSecondary}
-              autoCapitalize="characters"
+              autoCapitalize="none"
               autoCorrect={false}
-              editable={restore.type === 'entering_key'}
+              autoComplete="off"
             />
 
             <View style={styles.restoreActions}>

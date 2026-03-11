@@ -64,7 +64,11 @@ export default function BackupScreen() {
 
   const handleDoneBackup = useCallback(async () => {
     if (backup.type === 'key_display' && backup.filePath) {
-      await cleanupBackupFile(backup.filePath);
+      try {
+        await cleanupBackupFile(backup.filePath);
+      } catch {
+        // Cleanup failure is non-critical; cache will be cleared eventually
+      }
     }
     setBackup({ type: 'idle' });
   }, [backup]);
@@ -117,8 +121,7 @@ export default function BackupScreen() {
                 styles.warningContainer,
                 {
                   borderColor: colors.warning,
-                  backgroundColor: '#FFF0CE',
-
+                  backgroundColor: colors.warningLight,
                 },
               ]}
             >

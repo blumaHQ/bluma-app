@@ -102,7 +102,7 @@ export const lightColors: ColorScheme = {
   // semantic status colors
   success: '#10B981', // Green for success states
   warning: '#F59E0B', // Orange for warnings
-  warningLight: '#FEF3C7', // Light orange for warning backgrounds
+  warningLight: '#8B6200', // Light orange for warning backgrounds
   error: '#EF4444', // Red for errors/destructive actions
   info: '#3B82F6', // Blue for informational states
 

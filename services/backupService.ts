@@ -11,6 +11,38 @@ const SCHEMA_VERSION = 1;
 const AAD = new TextEncoder().encode('bluma-backup-v1');
 const SCRYPT_PARAMS = { N: 16384, r: 8, p: 1, dkLen: 32 } as const;
 
+interface BackupPayload {
+  schemaVersion: number;
+  exportedAt: string;
+  data: {
+    periodDates: { id: number; date: string; createdAt?: string | null }[];
+    healthLogs: {
+      id: number;
+      date: string;
+      type: string;
+      item_id: string;
+      name?: string | null;
+      createdAt?: string | null;
+    }[];
+    settings: { id: number; key: string; value: string; updatedAt?: string | null }[];
+  };
+}
+
+function isValidBackupPayload(obj: unknown): obj is BackupPayload {
+  if (typeof obj !== 'object' || obj === null) return false;
+  const p = obj as Record<string, unknown>;
+  if (typeof p.schemaVersion !== 'number') return false;
+
+  const data = p.data as Record<string, unknown> | undefined;
+  if (!data || typeof data !== 'object') return false;
+
+  return (
+    Array.isArray(data.periodDates) &&
+    Array.isArray(data.healthLogs) &&
+    Array.isArray(data.settings)
+  );
+}
+
 function uint8ToBase64(bytes: Uint8Array): string {
   let binary = '';
   for (let i = 0; i < bytes.length; i++) {
@@ -94,8 +126,8 @@ export async function createBackupForKey(backupKey: string): Promise<string> {
   wire.set(nonce, 33);
   wire.set(ciphertext, 45);
 
-  const date = new Date().toISOString().split('T')[0];
-  const filePath = `${FileSystem.cacheDirectory}bluma-backup-${date}.bluma`;
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const filePath = `${FileSystem.cacheDirectory}bluma-backup-${timestamp}.bluma`;
   await FileSystem.writeAsStringAsync(filePath, uint8ToBase64(wire), {
     encoding: FileSystem.EncodingType.Base64,
   });
@@ -148,8 +180,15 @@ export async function restoreBackup(fileUri: string, backupKey: string): Promise
     throw new Error('WRONG_KEY');
   }
 
-  const { schemaVersion, data } = JSON.parse(new TextDecoder().decode(plaintext));
-  if (schemaVersion !== SCHEMA_VERSION) throw new Error('UNSUPPORTED_SCHEMA');
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(new TextDecoder().decode(plaintext));
+  } catch {
+    throw new Error('INVALID_FILE');
+  }
+  if (!isValidBackupPayload(parsed)) throw new Error('INVALID_FILE');
+  if (parsed.schemaVersion !== SCHEMA_VERSION) throw new Error('UNSUPPORTED_SCHEMA');
+  const { data } = parsed;
 
   // Intentionally bypass validatePeriodDate — backup data may include dates older
   // than 1 year, which is valid in a restore context.

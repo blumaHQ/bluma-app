@@ -25,7 +25,7 @@
     "createButton": "Criar cópia de segurança",
     "generating": "A criar cópia de segurança…",
     "keyLabel": "A tua chave de cópia de segurança",
-    "keyWarningTitle": "Guarda sua chave agora",
+    "keyWarningTitle": "Guarda a tua chave agora",
     "keyWarning": "O teu ficheiro de cópia de segurança está encriptado. Sem esta chave, ninguém consegue ler os teus dados — nem mesmo a Bluma. Guarda-a antes de continuar. Não pode ser mostrada novamente.",
     "copyKey": "Copiar chave",
     "keyCopied": "Chave copiada",
