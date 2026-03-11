@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -30,6 +30,7 @@ export default function BackupScreen() {
   const { t } = useTranslation('settings');
 
   const [backup, setBackup] = useState<BackupPhase>({ type: 'idle' });
+  const keyCopiedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleCreateBackup = useCallback(async () => {
     const backupKey = generateBackupKey();
@@ -50,6 +51,10 @@ export default function BackupScreen() {
     if (backup.type !== 'key_display') return;
     await Clipboard.setStringAsync(backup.key);
     setBackup({ ...backup, keyCopied: true });
+    if (keyCopiedTimer.current) clearTimeout(keyCopiedTimer.current);
+    keyCopiedTimer.current = setTimeout(() => {
+      setBackup(prev => (prev.type === 'key_display' ? { ...prev, keyCopied: false } : prev));
+    }, 2000);
   }, [backup]);
 
   const handleShareBackup = useCallback(async () => {

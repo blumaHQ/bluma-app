@@ -16,16 +16,9 @@ interface BackupPayload {
   schemaVersion: number;
   exportedAt: string;
   data: {
-    periodDates: { id: number; date: string; createdAt?: string | null }[];
-    healthLogs: {
-      id: number;
-      date: string;
-      type: string;
-      item_id: string;
-      name?: string | null;
-      createdAt?: string | null;
-    }[];
-    settings: { id: number; key: string; value: string; updatedAt?: string | null }[];
+    periodDates: { id: number; date: string }[];
+    healthLogs: { id: number; date: string; type: string; item_id: string; name?: string | null }[];
+    settings: { id: number; key: string; value: string }[];
   };
 }
 
@@ -98,9 +91,9 @@ export async function createBackupForKey(backupKey: string): Promise<string> {
   // Fire all DB queries before blocking on scrypt — SQLite runs on a native thread
   // so I/O completes in the background while JS is occupied with key derivation.
   const payloadPromise = Promise.all([
-    db.select().from(periodDates),
-    db.select().from(healthLogs),
-    db.select().from(settings),
+    db.select({ id: periodDates.id, date: periodDates.date }).from(periodDates),
+    db.select({ id: healthLogs.id, date: healthLogs.date, type: healthLogs.type, item_id: healthLogs.item_id, name: healthLogs.name }).from(healthLogs),
+    db.select({ id: settings.id, key: settings.key, value: settings.value }).from(settings),
   ]).then(([pd, hl, s]) =>
     JSON.stringify({
       schemaVersion: SCHEMA_VERSION,
