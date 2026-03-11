@@ -159,36 +159,25 @@ export default function BackupScreen() {
             </TouchableOpacity>
 
             {backup.shared ? (
-              <View style={styles.sharedActions}>
-                <TouchableOpacity
-                  style={[styles.secondaryButton, { borderColor: colors.border }]}
-                  onPress={handleShareBackup}
-                >
-                  <Ionicons name="share-outline" size={16} color={colors.textSecondary} />
-                  <Text style={[typography.body, { marginLeft: 6, color: colors.textSecondary }]}>
-                    {t('backup.shareAgain')}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.primaryButton, { backgroundColor: colors.primary }]}
-                  onPress={handleDoneBackup}
-                >
-                  <Text style={[typography.bodyBold, { color: '#fff' }]}>
-                    {t('backup.done')}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity
+                style={[styles.primaryButton, { backgroundColor: colors.primary }]}
+                onPress={handleDoneBackup}
+              >
+                <Text style={[typography.bodyBold, { color: '#fff' }]}>
+                  {t('backup.done')}
+                </Text>
+              </TouchableOpacity>
             ) : (
               <TouchableOpacity
                 style={[
                   styles.primaryButton,
                   {
-                    backgroundColor: backup.keyCopied && backup.filePath ? colors.primary : colors.border,
-                    opacity: backup.keyCopied && backup.filePath ? 1 : 0.6,
+                    backgroundColor: backup.filePath ? colors.primary : colors.border,
+                    opacity: backup.filePath ? 1 : 0.6,
                   },
                 ]}
                 onPress={handleShareBackup}
-                disabled={!backup.keyCopied || !backup.filePath}
+                disabled={!backup.filePath}
               >
                 {!backup.filePath ? (
                   <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -198,7 +187,7 @@ export default function BackupScreen() {
                     </Text>
                   </View>
                 ) : (
-                  <Text style={[typography.bodyBold, { color: backup.keyCopied ? '#fff' : colors.textSecondary }]}>
+                  <Text style={[typography.bodyBold, { color: '#fff' }]}>
                     {t('backup.savedBackup')}
                   </Text>
                 )}

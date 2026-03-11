@@ -1,6 +1,7 @@
 import * as Crypto from 'expo-crypto';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
+import { Platform } from 'react-native';
 import { gcm } from '@noble/ciphers/aes.js';
 import { scrypt } from '@noble/hashes/scrypt.js';
 import { getDB } from '../db';
@@ -136,10 +137,30 @@ export async function createBackupForKey(backupKey: string): Promise<string> {
 }
 
 export async function shareBackup(filePath: string): Promise<void> {
-  await Sharing.shareAsync(filePath, {
-    mimeType: 'application/octet-stream',
-    dialogTitle: 'Save Bluma Backup',
-  });
+  if (Platform.OS === 'android') {
+    const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+    if (!permissions.granted) return;
+
+    const base64 = await FileSystem.readAsStringAsync(filePath, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+
+    const fileName = filePath.split('/').pop()!;
+    const destUri = await FileSystem.StorageAccessFramework.createFileAsync(
+      permissions.directoryUri,
+      fileName,
+      'application/octet-stream'
+    );
+    await FileSystem.writeAsStringAsync(destUri, base64, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+  } else {
+    await Sharing.shareAsync(filePath, {
+      mimeType: 'application/octet-stream',
+      dialogTitle: 'Save Bluma Backup',
+      UTI: 'public.data',
+    });
+  }
 }
 
 export async function cleanupBackupFile(filePath: string): Promise<void> {
