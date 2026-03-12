@@ -7,10 +7,10 @@ import { scrypt } from '@noble/hashes/scrypt.js';
 import { getDB } from '../db';
 import { periodDates, healthLogs, settings } from '../db/schema';
 
-const WIRE_VERSION = 1;
+const WIRE_VERSION = 2;
 const SCHEMA_VERSION = 1;
 const AAD = new TextEncoder().encode('bluma-backup-v1');
-const SCRYPT_PARAMS = { N: 16384, r: 8, p: 1, dkLen: 32 } as const;
+const SCRYPT_PARAMS = { N: 2048, r: 8, p: 1, dkLen: 32 } as const;
 
 interface BackupPayload {
   schemaVersion: number;
@@ -113,12 +113,13 @@ export async function createBackupForKey(backupKey: string): Promise<string> {
 
   const ciphertext = gcm(key, nonce, AAD).encrypt(new TextEncoder().encode(payload));
 
-  // [1 byte version][32 bytes salt][12 bytes nonce][ciphertext + 16 byte GCM tag]
-  const wire = new Uint8Array(1 + 32 + 12 + ciphertext.length);
+  // [1 byte version][2 bytes N/256 as uint16][32 bytes salt][12 bytes nonce][ciphertext + 16 byte GCM tag]
+  const wire = new Uint8Array(1 + 2 + 32 + 12 + ciphertext.length);
   wire[0] = WIRE_VERSION;
-  wire.set(salt, 1);
-  wire.set(nonce, 33);
-  wire.set(ciphertext, 45);
+  new DataView(wire.buffer).setUint16(1, SCRYPT_PARAMS.N / 256, false);
+  wire.set(salt, 3);
+  wire.set(nonce, 35);
+  wire.set(ciphertext, 47);
 
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const filePath = `${FileSystem.cacheDirectory}bluma-backup-${timestamp}.bluma`;
@@ -160,14 +161,22 @@ export async function cleanupBackupFile(filePath: string): Promise<void> {
   await FileSystem.deleteAsync(filePath, { idempotent: true });
 }
 
+function parseWire(wire: Uint8Array): { scryptN: number; salt: Uint8Array; nonce: Uint8Array; ciphertext: Uint8Array } {
+  if (wire[0] !== WIRE_VERSION) throw new Error('UNSUPPORTED_VERSION');
+  if (wire.length < 63) throw new Error('INVALID_FILE');
+  return {
+    scryptN: new DataView(wire.buffer, wire.byteOffset).getUint16(1, false) * 256,
+    salt: wire.slice(3, 35),
+    nonce: wire.slice(35, 47),
+    ciphertext: wire.slice(47),
+  };
+}
+
 export async function validateBackupFile(fileUri: string): Promise<void> {
   const raw = await FileSystem.readAsStringAsync(fileUri, {
     encoding: FileSystem.EncodingType.Base64,
   });
-  const wire = base64ToUint8(raw);
-
-  if (wire.length < 61) throw new Error('INVALID_FILE');
-  if (wire[0] !== WIRE_VERSION) throw new Error('UNSUPPORTED_VERSION');
+  parseWire(base64ToUint8(raw));
 }
 
 export async function restoreBackup(fileUri: string, backupKey: string): Promise<void> {
@@ -176,16 +185,11 @@ export async function restoreBackup(fileUri: string, backupKey: string): Promise
   });
   const wire = base64ToUint8(raw);
 
-  if (wire.length < 61) throw new Error('INVALID_FILE');
-  if (wire[0] !== WIRE_VERSION) throw new Error('UNSUPPORTED_VERSION');
-
-  const salt = wire.slice(1, 33);
-  const nonce = wire.slice(33, 45);
-  const ciphertext = wire.slice(45);
+  const { scryptN, salt, nonce, ciphertext } = parseWire(wire);
 
   // Strip dashes from key before deriving (user may have typed it with or without them)
   const normalizedKey = backupKey.replace(/-/g, '');
-  const key = deriveKey(normalizedKey, salt);
+  const key = scrypt(normalizedKey, salt, { ...SCRYPT_PARAMS, N: scryptN });
 
   let plaintext: Uint8Array;
   try {
