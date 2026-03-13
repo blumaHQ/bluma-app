@@ -29,6 +29,13 @@ export const dynamicScreens: ScreenConfig[] = [
     backgroundColorKey: 'background',
   },
   {
+    name: 'settings/encrypted-backups',
+    headerShown: true,
+    titleKey: 'settings:screenTitles.encryptedBackups',
+    headerShadowVisible: false,
+    backgroundColorKey: 'background',
+  },
+  {
     name: 'settings/backup',
     headerShown: true,
     titleKey: 'settings:screenTitles.backup',

@@ -59,26 +59,13 @@ export default function Settings() {
 
         <TouchableOpacity
           style={[styles.settingRow, { borderBottomColor: colors.border }]}
-          onPress={() => router.push('/settings/backup')}
+          onPress={() => router.push('/settings/encrypted-backups')}
         >
           <View style={styles.iconContainer}>
-            <SettingsIcon name="cloud-upload-outline" />
+            <SettingsIcon name="cloud-outline" />
           </View>
           <Text style={[typography.bodyLg, { flex: 1 }]}>
-            {t('backup.settingsRowBackup')}
-          </Text>
-          <ChevronIcon />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.settingRow, { borderBottomColor: colors.border }]}
-          onPress={() => router.push('/settings/restore')}
-        >
-          <View style={styles.iconContainer}>
-            <SettingsIcon name="cloud-download-outline" />
-          </View>
-          <Text style={[typography.bodyLg, { flex: 1 }]}>
-            {t('backup.settingsRowRestore')}
+            {t('backup.settingsRowEncryptedBackups')}
           </Text>
           <ChevronIcon />
         </TouchableOpacity>
