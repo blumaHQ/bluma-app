@@ -50,6 +50,7 @@
     "restoreDescription": "Restore your data from a previously created .bluma backup file.",
     "restoreButton": "Choose backup file",
     "restore": {
+      "chooseFileTitle": "Choose your backup file",
       "confirmTitle": "Restore backup",
       "confirmMessage": "This will permanently replace all your current data with the backup. This cannot be undone.",
       "continue": "Continue",

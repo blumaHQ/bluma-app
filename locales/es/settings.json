@@ -50,6 +50,7 @@
     "restoreDescription": "Restaura tus datos desde un archivo de copia de seguridad .bluma creado anteriormente.",
     "restoreButton": "Elegir archivo de respaldo",
     "restore": {
+      "chooseFileTitle": "Elige tu archivo de copia de seguridad",
       "confirmTitle": "Restaurar copia de seguridad",
       "confirmMessage": "Esto reemplazará permanentemente todos tus datos actuales con los del respaldo. Esta acción no se puede deshacer.",
       "continue": "Continuar",

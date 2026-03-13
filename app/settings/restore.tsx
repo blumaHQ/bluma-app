@@ -6,10 +6,10 @@ import {
   ScrollView,
   TextInput,
   Alert,
+  Image,
 } from 'react-native';
 import { Button } from '../../components/Button';
 import * as DocumentPicker from 'expo-document-picker';
-import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../styles/theme';
@@ -111,82 +111,105 @@ export default function RestoreScreen() {
 
   return (
     <ScrollView
-      style={commonStyles.scrollView}
-      contentContainerStyle={[scrollContentContainerWithSafeArea, { paddingTop: 16 }]}
+      style={[commonStyles.scrollView, { backgroundColor: colors.surface, paddingTop: 16 }]}
+      contentContainerStyle={scrollContentContainerWithSafeArea}
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
-      <View style={[commonStyles.sectionContainer, styles.section]}>
-        <View style={styles.sectionHeader}>
-          <Ionicons name="cloud-download-outline" size={20} color={colors.primary} />
-          <Text style={[typography.bodyBold, { marginLeft: 8, color: colors.textPrimary }]}>
-            {t('backup.restoreTitle')}
-          </Text>
-        </View>
-
-        <Text style={[typography.body, { color: colors.textSecondary }]}>
-          {t('backup.restoreDescription')}
-        </Text>
-
+      <View>
         {restore.type === 'idle' && (
-          <Button
-            variant="outlined"
-            icon="folder-open-outline"
-            title={t('backup.restoreButton')}
-            onPress={handlePickFile}
-            fullWidth
-          />
+          <View style={styles.centeredSection}>
+            <View style={styles.illustrationWrapper}>
+              <Image
+                source={require('../../assets/images/password.png')}
+                style={styles.illustration}
+                resizeMode="contain"
+              />
+            </View>
+            <Text
+              style={[
+                typography.headingMd,
+                {
+                  color: colors.textPrimary,
+                  textAlign: 'center',
+                  marginBottom: 24,
+                  marginTop: 8,
+                  paddingHorizontal: 16,
+                  fontSize: 24,
+                  lineHeight: 28,
+                  fontWeight: '500',
+                },
+              ]}
+            >
+              {t('backup.restore.chooseFileTitle')}
+            </Text>
+            <Button
+              variant="outlined"
+              icon="folder-open-outline"
+              title={t('backup.restoreButton')}
+              onPress={handlePickFile}
+              fullWidth
+            />
+          </View>
         )}
 
         {(restore.type === 'entering_key' || restore.type === 'restoring') && (
-          <View style={styles.keyInputSection}>
-            <Text style={[typography.caption, { color: colors.textSecondary }]}>
-              {t('backup.restore.keyLabel')}
-            </Text>
-            <TextInput
-              style={[
-                styles.keyInput,
-                {
-                  backgroundColor: colors.surface,
-                  borderColor: colors.border,
-                  color: colors.textPrimary,
-                },
-              ]}
-              value={restore.keyInput}
-              onChangeText={text =>
-                restore.type === 'entering_key' &&
-                setRestore({ ...restore, keyInput: text })
-              }
-              placeholder={t('backup.restore.keyPlaceholder')}
-              placeholderTextColor={colors.textSecondary}
-              autoCapitalize="none"
-              autoCorrect={false}
-              autoComplete="off"
-            />
-
-            <View style={styles.restoreActions}>
-              <Button
-                variant="outlined"
-                title={t('backup.restore.cancel')}
-                onPress={() => setRestore({ type: 'idle' })}
-                disabled={restore.type === 'restoring'}
-                style={{ flex: 1 }}
+          <View style={styles.centeredSection}>
+            <View style={styles.illustrationWrapper}>
+              <Image
+                source={require('../../assets/images/password.png')}
+                style={styles.illustration}
+                resizeMode="contain"
               />
+            </View>
+            <View style={styles.keyInputSection}>
+              <Text
+                style={[
+                  typography.headingMd,
+                  {
+                    color: colors.textPrimary,
+                    textAlign: 'center',
+                    marginBottom: 16,
+                    marginTop: 8,
+                    paddingHorizontal: 16,
+                    fontSize: 24,
+                    lineHeight: 28,
+                    fontWeight: '500',
+                  },
+                ]}
+              >
+                {t('backup.restore.keyLabel')}
+              </Text>
+              <TextInput
+                style={[
+                  styles.keyInput,
+                  {
+                    backgroundColor: colors.surface,
+                    borderColor: colors.neutral150,
+                    color: colors.textPrimary,
+                    textAlign: 'center',
+                  },
+                ]}
+                value={restore.keyInput}
+                onChangeText={text =>
+                  restore.type === 'entering_key' &&
+                  setRestore({ ...restore, keyInput: text })
+                }
+                placeholder={t('backup.restore.keyPlaceholder')}
+                placeholderTextColor={colors.placeholder}
+                autoCapitalize="none"
+                autoCorrect={false}
+                autoComplete="off"
+              />
+
               <Button
                 title={t('backup.restore.restoreButton')}
                 onPress={handleRestore}
                 disabled={restore.type === 'restoring'}
                 loading={restore.type === 'restoring'}
-                style={{ flex: 1 }}
+                fullWidth
               />
             </View>
-
-            <Button
-              variant="text"
-              title={t('backup.restore.pickDifferentFile')}
-              onPress={handlePickFile}
-              disabled={restore.type === 'restoring'}
-            />
           </View>
         )}
       </View>
@@ -195,29 +218,30 @@ export default function RestoreScreen() {
 }
 
 const styles = StyleSheet.create({
-  section: {
-    padding: 16,
-    gap: 12,
-    marginBottom: 16,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
+  centeredSection: {
     alignItems: 'center',
+  },
+  illustrationWrapper: {
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  illustration: {
+    width: 190,
+    height: 170,
   },
   keyInputSection: {
     gap: 12,
+    width: '100%',
   },
   keyInput: {
     borderWidth: 1,
     borderRadius: 8,
     padding: 14,
-    fontSize: 15,
+    fontSize: 20,
     fontFamily: 'monospace',
-    letterSpacing: 0.5,
-  },
-  restoreActions: {
-    flexDirection: 'row',
-    gap: 8,
+    letterSpacing: 0.8,
+    marginBottom: 8,
+
   },
 });
 
