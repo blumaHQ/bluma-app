@@ -136,7 +136,10 @@ export async function shareBackup(
 ): Promise<void> {
   if (Platform.OS === 'android') {
     const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
-    if (!permissions.granted) return;
+    if (!permissions.granted) {
+      throw new Error('SHARE_CANCELLED');
+    }
+    
 
     const base64 = await FileSystem.readAsStringAsync(filePath, {
       encoding: FileSystem.EncodingType.Base64,

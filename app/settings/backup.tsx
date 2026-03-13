@@ -1,13 +1,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Alert,
-} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, Image } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
-import { Stack, useRouter } from 'expo-router';
+import { Stack, useNavigation, useRouter } from 'expo-router';
 import { Button } from '../../components/Button';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../styles/theme';
@@ -18,6 +12,7 @@ import {
   shareBackup,
   cleanupBackupFile,
 } from '../../services/backupService';
+import { InfoIcon } from '../../components/icons/general/info';
 
 type BackupPhase =
   | { type: 'key_display'; key: string; filePath: string | null; keyCopied: boolean }
@@ -29,10 +24,12 @@ export default function BackupScreen() {
   const { typography, commonStyles, scrollContentContainerWithSafeArea } = useAppStyles();
   const { t } = useTranslation('settings');
   const router = useRouter();
+  const navigation = useNavigation();
 
+  const keyRef = useRef<string>(generateBackupKey());
   const [backup, setBackup] = useState<BackupPhase>(() => ({
     type: 'key_display',
-    key: generateBackupKey(),
+    key: keyRef.current,
     filePath: null,
     keyCopied: false,
   }));
@@ -79,6 +76,14 @@ export default function BackupScreen() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (backup.type !== 'save_file') return;
+    return navigation.addListener('beforeRemove', e => {
+      e.preventDefault();
+      setBackup({ type: 'key_display', key: keyRef.current, filePath: filePathRef.current, keyCopied: true });
+    });
+  }, [backup.type, navigation]);
 
   const screenTitle =
     backup.type === 'key_display'
@@ -127,7 +132,7 @@ export default function BackupScreen() {
 
   return (
     <>
-      <Stack.Screen options={{ title: screenTitle }} />
+      <Stack.Screen options={{ headerTitle: screenTitle, headerShown: backup.type !== 'success' }} />
       <ScrollView
         style={commonStyles.scrollView}
         contentContainerStyle={[
@@ -140,11 +145,20 @@ export default function BackupScreen() {
         <View style={[commonStyles.sectionContainer, styles.section]}>
           {backup.type === 'key_display' && (
             <View style={styles.stepSection}>
-              <Text style={[typography.caption, { color: colors.textSecondary }]}>
-                {t('backup.keyLabel')}
-              </Text>
+              <View style={styles.illustrationWrapper}>
+                <Image
+                  source={require('../../assets/images/password.png')}
+                  style={styles.illustration}
+                  resizeMode="contain"
+                />
+              </View>
 
-              <View style={[styles.keyBox, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View
+                style={[
+                  styles.keyBox,
+                  { backgroundColor: colors.surface, borderColor: colors.neutral150 },
+                ]}
+              >
                 <Text style={[styles.keyText, { color: colors.textPrimary }]} selectable>
                   {backup.key}
                 </Text>
@@ -165,10 +179,11 @@ export default function BackupScreen() {
                   { borderColor: colors.warning, backgroundColor: colors.warningLight },
                 ]}
               >
-                <Text style={[typography.bodyBold, { color: colors.warning }]}>
-                  {t('backup.keyWarningTitle')}
-                </Text>
-                <Text style={[typography.caption, { color: colors.textSecondary, marginTop: 4 }]}>
+                <InfoIcon size={20} color={colors.warning} style={styles.warningIcon} />
+                <Text style={[typography.caption, { color: colors.textSecondary, flex: 1 }]}>
+                  <Text style={[typography.caption, { fontWeight: '600' }]}>
+                    {t('backup.keyWarningTitle')}
+                  </Text>{' '}
                   {t('backup.keyWarning')}
                 </Text>
               </View>
@@ -184,6 +199,14 @@ export default function BackupScreen() {
 
           {backup.type === 'save_file' && (
             <View style={styles.centeredSection}>
+            <View style={styles.illustrationWrapper}>
+              <Image
+                source={require('../../assets/images/password.png')}
+                style={styles.illustration}
+                resizeMode="contain"
+              />
+            </View>
+
               <Text
                 style={[
                   typography.bodyBold,
@@ -205,6 +228,14 @@ export default function BackupScreen() {
 
           {backup.type === 'success' && (
             <View style={styles.centeredSection}>
+            <View style={styles.illustrationWrapper}>
+              <Image
+                source={require('../../assets/images/password.png')}
+                style={styles.illustration}
+                resizeMode="contain"
+              />
+            </View>
+
               <Text
                 style={[
                   typography.bodyBold,
@@ -250,14 +281,28 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   keyText: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'monospace',
-    letterSpacing: 1,
+    letterSpacing: 1.5,
     textAlign: 'center',
+  },
+  illustrationWrapper: {
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  illustration: {
+    width: 190,
+    height: 170,
   },
   warningContainer: {
     borderWidth: 1,
     borderRadius: 10,
     padding: 12,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    columnGap: 8,
+  },
+  warningIcon: {
+    marginRight: 3,
   },
 });
