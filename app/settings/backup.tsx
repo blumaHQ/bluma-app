@@ -4,13 +4,11 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   Alert,
-  ActivityIndicator,
 } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
-import { Ionicons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
+import { Button } from '../../components/Button';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../styles/theme';
 import { useAppStyles } from '../../hooks/useStyles';
@@ -111,7 +109,7 @@ export default function BackupScreen() {
     if (backup.type !== 'save_file' || !backup.filePath) return;
     const filePath = backup.filePath;
     try {
-      await shareBackup(filePath);
+      await shareBackup(filePath, { dialogTitle: t('backup.shareTitle') });
       completedRef.current = true;
       filePathRef.current = null;
       cleanupBackupFile(filePath).catch(() => {});
@@ -152,27 +150,14 @@ export default function BackupScreen() {
                 </Text>
               </View>
 
-              <TouchableOpacity
-                style={[
-                  styles.secondaryButton,
-                  { borderColor: showCopiedFeedback ? colors.success : colors.primary },
-                ]}
+              <Button
+                variant="outlined"
+                color={showCopiedFeedback ? colors.success : colors.primary}
+                icon={showCopiedFeedback ? 'checkmark-outline' : 'copy-outline'}
+                title={showCopiedFeedback ? t('backup.keyCopied') : t('backup.copyKey')}
                 onPress={handleCopyKey}
-              >
-                <Ionicons
-                  name={showCopiedFeedback ? 'checkmark-outline' : 'copy-outline'}
-                  size={16}
-                  color={showCopiedFeedback ? colors.success : colors.primary}
-                />
-                <Text
-                  style={[
-                    typography.bodyBold,
-                    { marginLeft: 6, color: showCopiedFeedback ? colors.success : colors.primary },
-                  ]}
-                >
-                  {showCopiedFeedback ? t('backup.keyCopied') : t('backup.copyKey')}
-                </Text>
-              </TouchableOpacity>
+                fullWidth
+              />
 
               <View
                 style={[
@@ -188,26 +173,12 @@ export default function BackupScreen() {
                 </Text>
               </View>
 
-              <TouchableOpacity
-                style={[
-                  styles.primaryButton,
-                  {
-                    backgroundColor: backup.keyCopied ? colors.primary : colors.border,
-                    opacity: backup.keyCopied ? 1 : 0.5,
-                  },
-                ]}
+              <Button
+                title={t('backup.continueButton')}
                 onPress={handleContinueToFile}
                 disabled={!backup.keyCopied}
-              >
-                <Text
-                  style={[
-                    typography.bodyBold,
-                    { color: backup.keyCopied ? '#fff' : colors.textSecondary },
-                  ]}
-                >
-                  {t('backup.continueButton')}
-                </Text>
-              </TouchableOpacity>
+                fullWidth
+              />
             </View>
           )}
 
@@ -222,30 +193,13 @@ export default function BackupScreen() {
                 {t('backup.downloadReadyTitle')}
               </Text>
 
-              <TouchableOpacity
-                style={[
-                  styles.primaryButton,
-                  {
-                    backgroundColor: backup.filePath ? colors.primary : colors.border,
-                    opacity: backup.filePath ? 1 : 0.6,
-                  },
-                ]}
+              <Button
+                title={backup.filePath ? t('backup.downloadButton') : t('backup.preparingFile')}
                 onPress={handleDownloadBackup}
                 disabled={!backup.filePath}
-              >
-                {!backup.filePath ? (
-                  <View style={styles.loadingRow}>
-                    <ActivityIndicator size="small" color={colors.textSecondary} />
-                    <Text style={[typography.bodyBold, { color: colors.textSecondary }]}>
-                      {t('backup.preparingFile')}
-                    </Text>
-                  </View>
-                ) : (
-                  <Text style={[typography.bodyBold, { color: '#fff' }]}>
-                    {t('backup.downloadButton')}
-                  </Text>
-                )}
-              </TouchableOpacity>
+                loading={!backup.filePath}
+                fullWidth
+              />
             </View>
           )}
 
@@ -260,14 +214,11 @@ export default function BackupScreen() {
                 {t('backup.successTitle')}
               </Text>
 
-              <TouchableOpacity
-                style={[styles.primaryButton, { backgroundColor: colors.primary }]}
+              <Button
+                title={t('backup.backToSettings')}
                 onPress={handleBackToSettings}
-              >
-                <Text style={[typography.bodyBold, { color: '#fff' }]}>
-                  {t('backup.backToSettings')}
-                </Text>
-              </TouchableOpacity>
+                fullWidth
+              />
             </View>
           )}
         </View>
@@ -304,31 +255,9 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     textAlign: 'center',
   },
-  primaryButton: {
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    width: '100%',
-  },
-  secondaryButton: {
-    borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    borderWidth: 1,
-  },
   warningContainer: {
     borderWidth: 1,
     borderRadius: 10,
     padding: 12,
-  },
-  loadingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
   },
 });

@@ -4,11 +4,10 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   TextInput,
   Alert,
-  ActivityIndicator,
 } from 'react-native';
+import { Button } from '../../components/Button';
 import * as DocumentPicker from 'expo-document-picker';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -20,7 +19,7 @@ import { validateBackupFile, restoreBackup } from '../../services/backupService'
 type RestorePhase =
   | { type: 'idle' }
   | { type: 'entering_key'; fileUri: string; keyInput: string }
-  | { type: 'restoring' };
+  | { type: 'restoring'; fileUri: string; keyInput: string };
 
 export default function RestoreScreen() {
   const router = useRouter();
@@ -77,7 +76,7 @@ export default function RestoreScreen() {
       return;
     }
 
-    setRestore({ type: 'restoring' });
+    setRestore({ type: 'restoring', fileUri, keyInput });
     try {
       await restoreBackup(fileUri, keyInput.trim());
       Alert.alert(t('backup.restore.successTitle'), t('backup.restore.successMessage'), [
@@ -130,15 +129,13 @@ export default function RestoreScreen() {
         </Text>
 
         {restore.type === 'idle' && (
-          <TouchableOpacity
-            style={[styles.secondaryButton, { borderColor: colors.border }]}
+          <Button
+            variant="outlined"
+            icon="folder-open-outline"
+            title={t('backup.restoreButton')}
             onPress={handlePickFile}
-          >
-            <Ionicons name="folder-open-outline" size={16} color={colors.textPrimary} />
-            <Text style={[typography.bodyBold, { marginLeft: 6, color: colors.textPrimary }]}>
-              {t('backup.restoreButton')}
-            </Text>
-          </TouchableOpacity>
+            fullWidth
+          />
         )}
 
         {(restore.type === 'entering_key' || restore.type === 'restoring') && (
@@ -155,7 +152,7 @@ export default function RestoreScreen() {
                   color: colors.textPrimary,
                 },
               ]}
-              value={restore.type === 'entering_key' ? restore.keyInput : ''}
+              value={restore.keyInput}
               onChangeText={text =>
                 restore.type === 'entering_key' &&
                 setRestore({ ...restore, keyInput: text })
@@ -168,36 +165,28 @@ export default function RestoreScreen() {
             />
 
             <View style={styles.restoreActions}>
-              <TouchableOpacity
-                style={[styles.secondaryButton, { borderColor: colors.border, flex: 1 }]}
+              <Button
+                variant="outlined"
+                title={t('backup.restore.cancel')}
                 onPress={() => setRestore({ type: 'idle' })}
                 disabled={restore.type === 'restoring'}
-              >
-                <Text style={[typography.body, { color: colors.textSecondary }]}>
-                  {t('backup.restore.cancel')}
-                </Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={[styles.primaryButton, { backgroundColor: colors.primary, flex: 1 }]}
+                style={{ flex: 1 }}
+              />
+              <Button
+                title={t('backup.restore.restoreButton')}
                 onPress={handleRestore}
                 disabled={restore.type === 'restoring'}
-              >
-                {restore.type === 'restoring' ? (
-                  <ActivityIndicator size="small" color="#fff" />
-                ) : (
-                  <Text style={[typography.bodyBold, { color: '#fff' }]}>
-                    {t('backup.restore.restoreButton')}
-                  </Text>
-                )}
-              </TouchableOpacity>
+                loading={restore.type === 'restoring'}
+                style={{ flex: 1 }}
+              />
             </View>
 
-            <TouchableOpacity onPress={handlePickFile}>
-              <Text style={[typography.caption, { color: colors.primary, textAlign: 'center' }]}>
-                {t('backup.restore.pickDifferentFile')}
-              </Text>
-            </TouchableOpacity>
+            <Button
+              variant="text"
+              title={t('backup.restore.pickDifferentFile')}
+              onPress={handlePickFile}
+              disabled={restore.type === 'restoring'}
+            />
           </View>
         )}
       </View>
@@ -214,22 +203,6 @@ const styles = StyleSheet.create({
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  primaryButton: {
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  secondaryButton: {
-    borderRadius: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    borderWidth: 1,
   },
   keyInputSection: {
     gap: 12,

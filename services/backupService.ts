@@ -130,7 +130,10 @@ export async function createBackupForKey(backupKey: string): Promise<string> {
   return filePath;
 }
 
-export async function shareBackup(filePath: string): Promise<void> {
+export async function shareBackup(
+  filePath: string,
+  options?: { dialogTitle?: string }
+): Promise<void> {
   if (Platform.OS === 'android') {
     const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
     if (!permissions.granted) return;
@@ -151,7 +154,7 @@ export async function shareBackup(filePath: string): Promise<void> {
   } else {
     await Sharing.shareAsync(filePath, {
       mimeType: 'application/octet-stream',
-      dialogTitle: 'Save Bluma Backup',
+      dialogTitle: options?.dialogTitle ?? 'Save Bluma Backup',
       UTI: 'public.data',
     });
   }
@@ -164,8 +167,12 @@ export async function cleanupBackupFile(filePath: string): Promise<void> {
 function parseWire(wire: Uint8Array): { scryptN: number; salt: Uint8Array; nonce: Uint8Array; ciphertext: Uint8Array } {
   if (wire[0] !== WIRE_VERSION) throw new Error('UNSUPPORTED_VERSION');
   if (wire.length < 63) throw new Error('INVALID_FILE');
+  const scryptN = new DataView(wire.buffer, wire.byteOffset).getUint16(1, false) * 256;
+  const MAX_SCRYPT_N = 2 ** 17;
+  if (scryptN < 256 || scryptN > MAX_SCRYPT_N || (scryptN & (scryptN - 1)) !== 0)
+    throw new Error('INVALID_FILE');
   return {
-    scryptN: new DataView(wire.buffer, wire.byteOffset).getUint16(1, false) * 256,
+    scryptN,
     salt: wire.slice(3, 35),
     nonce: wire.slice(35, 47),
     ciphertext: wire.slice(47),
