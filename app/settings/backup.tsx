@@ -128,21 +128,22 @@ export default function BackupScreen() {
     router.replace('/(tabs)/settings');
   }, [router]);
 
-  const isCentered = backup.type === 'save_file' || backup.type === 'success';
-
   return (
     <>
-      <Stack.Screen options={{ headerTitle: screenTitle, headerShown: backup.type !== 'success' }} />
+      <Stack.Screen
+        options={{
+          headerTitle: backup.type === 'success' ? '' : screenTitle,
+          headerBackVisible: backup.type !== 'success',
+          headerStyle: { backgroundColor: colors.surface },
+        }}
+      />
       <ScrollView
-        style={commonStyles.scrollView}
-        contentContainerStyle={[
-          scrollContentContainerWithSafeArea,
-          isCentered ? styles.centeredContent : { paddingTop: 16 },
-        ]}
+        style={[commonStyles.scrollView, { backgroundColor: colors.surface, paddingTop: 16 }]}
+        contentContainerStyle={[scrollContentContainerWithSafeArea]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <View style={[commonStyles.sectionContainer, styles.section]}>
+        <View>
           {backup.type === 'key_display' && (
             <View style={styles.stepSection}>
               <View style={styles.illustrationWrapper}>
@@ -180,8 +181,8 @@ export default function BackupScreen() {
                 ]}
               >
                 <InfoIcon size={20} color={colors.warning} style={styles.warningIcon} />
-                <Text style={[typography.caption, { color: colors.textSecondary, flex: 1 }]}>
-                  <Text style={[typography.caption, { fontWeight: '600' }]}>
+                <Text style={[typography.body, { color: colors.textSecondary, flex: 1, fontSize: 15, lineHeight: 20, letterSpacing: 0.2 }]}>
+                  <Text style={[typography.body, { fontWeight: '600', fontSize: 15, lineHeight: 20, letterSpacing: 0.2 }]}>
                     {t('backup.keyWarningTitle')}
                   </Text>{' '}
                   {t('backup.keyWarning')}
@@ -209,8 +210,8 @@ export default function BackupScreen() {
 
               <Text
                 style={[
-                  typography.bodyBold,
-                  { color: colors.textPrimary, textAlign: 'center', marginBottom: 24 },
+                  typography.headingMd,
+                  { color: colors.textPrimary, textAlign: 'center', marginBottom: 24, marginTop: 8, paddingHorizontal: 16, fontSize: 24, lineHeight: 28, fontWeight: '500'},
                 ]}
               >
                 {t('backup.downloadReadyTitle')}
@@ -238,8 +239,8 @@ export default function BackupScreen() {
 
               <Text
                 style={[
-                  typography.bodyBold,
-                  { color: colors.textPrimary, textAlign: 'center', marginBottom: 24 },
+                  typography.headingMd,
+                  { color: colors.textPrimary, textAlign: 'center', marginBottom: 24, marginTop: 8, paddingHorizontal: 16, fontSize: 24, lineHeight: 28, fontWeight: '500'},
                 ]}
               >
                 {t('backup.successTitle')}
@@ -259,21 +260,11 @@ export default function BackupScreen() {
 }
 
 const styles = StyleSheet.create({
-  section: {
-    padding: 16,
-    gap: 12,
-    marginBottom: 16,
-  },
   stepSection: {
-    gap: 12,
+    gap: 14,
   },
   centeredSection: {
     alignItems: 'center',
-    paddingVertical: 8,
-  },
-  centeredContent: {
-    flex: 1,
-    justifyContent: 'center',
   },
   keyBox: {
     padding: 16,
@@ -281,9 +272,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   keyText: {
-    fontSize: 18,
+    fontSize: 20,
     fontFamily: 'monospace',
-    letterSpacing: 1.5,
+    letterSpacing: 1.2,
     textAlign: 'center',
   },
   illustrationWrapper: {
