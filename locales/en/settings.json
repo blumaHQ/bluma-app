@@ -13,6 +13,7 @@
     "encryptedBackups": "Encrypted backups",
     "backup": "Save backup key",
     "restore": "Restore backup",
+    "restoreKey": "Enter backup key",
     "about": "About",
     "privacyPolicy": "Privacy policy",
     "calendarView": "Calendar view",

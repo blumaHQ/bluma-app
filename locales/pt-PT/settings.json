@@ -11,8 +11,9 @@
     "reminders": "Lembretes",
     "appLock": "Bloqueio da Aplicação",
     "encryptedBackups": "Cópias de segurança cifradas",
-    "backup": "Guarda a tua chave de segurança",
+    "backup": "Guarda a tua chave de cópia de segurança",
     "restore": "Restaurar dados",
+    "restoreKey": "Introduz a tua chave",
     "about": "Acerca",
     "privacyPolicy": "Política de privacidade",
     "calendarView": "Vista do calendário",
@@ -50,6 +51,7 @@
     "restoreDescription": "Restaura os teus dados a partir de um ficheiro de cópia de segurança .bluma criado anteriormente.",
     "restoreButton": "Escolher ficheiro de cópia de segurança",
     "restore": {
+      "chooseFileTitle": "Escolhe a cópia de segurança a restaurar",
       "confirmTitle": "Restaurar cópia de segurança",
       "confirmMessage": "Isto irá substituir permanentemente todos os teus dados atuais pela cópia de segurança. Esta ação não pode ser anulada.",
       "continue": "Continuar",

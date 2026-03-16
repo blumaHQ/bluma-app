@@ -168,8 +168,8 @@ export async function cleanupBackupFile(filePath: string): Promise<void> {
 }
 
 function parseWire(wire: Uint8Array): { scryptN: number; salt: Uint8Array; nonce: Uint8Array; ciphertext: Uint8Array } {
-  if (wire[0] !== WIRE_VERSION) throw new Error('UNSUPPORTED_VERSION');
   if (wire.length < 63) throw new Error('INVALID_FILE');
+  if (wire[0] !== WIRE_VERSION) throw new Error('UNSUPPORTED_VERSION');
   const scryptN = new DataView(wire.buffer, wire.byteOffset).getUint16(1, false) * 256;
   const MAX_SCRYPT_N = 2 ** 17;
   if (scryptN < 256 || scryptN > MAX_SCRYPT_N || (scryptN & (scryptN - 1)) !== 0)

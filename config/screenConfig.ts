@@ -42,11 +42,18 @@ export const dynamicScreens: ScreenConfig[] = [
     headerShadowVisible: false,
   },
   {
-    name: 'settings/restore',
+    name: 'settings/restore-file',
     headerShown: true,
     titleKey: 'settings:screenTitles.restore',
     headerShadowVisible: false,
-    backgroundColorKey: 'panel',
+    backgroundColorKey: 'surface',
+  },
+  {
+    name: 'settings/restore-key',
+    headerShown: true,
+    titleKey: 'settings:screenTitles.restoreKey',
+    headerShadowVisible: false,
+    backgroundColorKey: 'surface',
   },
   {
     name: 'settings/about',

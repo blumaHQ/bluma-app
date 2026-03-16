@@ -30,7 +30,7 @@ export default function EncryptedBackupsScreen() {
 
         <TouchableOpacity
           style={[styles.row, styles.lastRow]}
-          onPress={() => router.push('/settings/restore')}
+          onPress={() => router.push('/settings/restore-file')}
         >
           <View style={styles.iconContainer}>
             <Ionicons name="cloud-download-outline" size={24} color={colors.neutral200} />

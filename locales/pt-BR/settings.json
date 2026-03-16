@@ -13,6 +13,7 @@
     "encryptedBackups": "Backups criptografados",
     "backup": "Salve sua chave de backup",
     "restore": "Restaurar dados",
+    "restoreKey": "Digite sua chave de backup",
     "about": "Sobre",
     "privacyPolicy": "Política de privacidade",
     "calendarView": "Visualização do calendário",
@@ -50,6 +51,7 @@
     "restoreDescription": "Restaure seus dados a partir de um arquivo de backup .bluma criado anteriormente.",
     "restoreButton": "Escolher arquivo de backup",
     "restore": {
+      "chooseFileTitle": "Escolha o backup para restaurar",
       "confirmTitle": "Restaurar backup",
       "confirmMessage": "Isso substituirá permanentemente todos os seus dados atuais pelo backup. Esta ação não pode ser desfeita.",
       "continue": "Continuar",

@@ -119,7 +119,8 @@ export default function BackupScreen() {
       filePathRef.current = null;
       cleanupBackupFile(filePath).catch(() => {});
       setBackup({ type: 'success' });
-    } catch {
+    } catch (err) {
+      if (err instanceof Error && err.message === 'SHARE_CANCELLED') return;
       Alert.alert(t('backup.error.title'), t('backup.error.shareFailed'));
     }
   }, [backup, t]);

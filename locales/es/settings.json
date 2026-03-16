@@ -13,6 +13,7 @@
     "encryptedBackups": "Copias de seguridad cifradas",
     "backup": "Guarda tu clave de respaldo",
     "restore": "Restaurar datos",
+    "restoreKey": "Introduce tu clave de respaldo",
     "about": "Acerca de",
     "privacyPolicy": "Política de privacidad",
     "calendarView": "Vista del calendario",
