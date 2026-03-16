@@ -5,15 +5,16 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Alert,
   DeviceEventEmitter,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../styles/theme';
 import { useAppStyles } from '../../hooks/useStyles';
 import { ThemeSelectionModal } from '../../components/ThemeSelectionModal';
+import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { DataDeletionService } from '../../services/dataDeletionService';
 import { useNotes } from '../../contexts/NotesContext';
 import { useAuth } from '../../contexts/AuthContext';
@@ -36,6 +37,7 @@ export default function Settings() {
   const { refreshLockStatus } = useAuth();
   const { t } = useTranslation('settings');
   const [themeModalVisible, setThemeModalVisible] = useState(false);
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
   return (
     <ScrollView
@@ -114,45 +116,7 @@ export default function Settings() {
 
         <TouchableOpacity
           style={[styles.settingRow, styles.lastRow]}
-          onPress={() => {
-            Alert.alert(
-              t('deleteDataConfirm.title'),
-              t('deleteDataConfirm.message'),
-              [
-                { text: t('deleteDataConfirm.cancel'), style: 'cancel' },
-                {
-                  text: t('deleteDataConfirm.delete'),
-                  style: 'destructive',
-                  onPress: async () => {
-                    try {
-                      await DataDeletionService.deleteAllUserData();
-                      clearNotes();
-                      await refreshLockStatus();
-
-                      DeviceEventEmitter.emit('dataDeleted');
-
-                      Alert.alert(
-                        t('deleteDataConfirm.success'),
-                        t('deleteDataConfirm.successMessage'),
-                        [
-                          {
-                            text: 'OK',
-                            onPress: () => router.replace('/onboarding'),
-                          },
-                        ]
-                      );
-                    } catch (error) {
-                      console.error('Failed to delete user data:', error);
-                      Alert.alert(
-                        t('deleteDataConfirm.error'),
-                        t('deleteDataConfirm.errorMessage')
-                      );
-                    }
-                  },
-                },
-              ]
-            );
-          }}
+          onPress={() => setDeleteDialogVisible(true)}
         >
           <View style={styles.iconContainer}>
             <SettingsIcon name="trash-outline" color={colors.error} />
@@ -204,6 +168,39 @@ export default function Settings() {
       <ThemeSelectionModal
         visible={themeModalVisible}
         onClose={() => setThemeModalVisible(false)}
+      />
+
+      <ConfirmDialog
+        visible={deleteDialogVisible}
+        title={t('deleteDataConfirm.title')}
+        message={t('deleteDataConfirm.message')}
+        confirmLabel={t('deleteDataConfirm.delete')}
+        cancelLabel={t('deleteDataConfirm.cancel')}
+        onConfirm={async () => {
+          setDeleteDialogVisible(false);
+          try {
+            await DataDeletionService.deleteAllUserData();
+            clearNotes();
+            await refreshLockStatus();
+
+            DeviceEventEmitter.emit('dataDeleted');
+
+            Toast.show({
+              type: 'success',
+              text1: t('deleteDataConfirm.successMessage'),
+              visibilityTime: 3000,
+              onShow: () => setTimeout(() => router.replace('/onboarding'), 1000),
+            });
+          } catch (error) {
+            console.error('Failed to delete user data:', error);
+            Toast.show({
+              type: 'error',
+              text1: t('deleteDataConfirm.error'),
+              text2: t('deleteDataConfirm.errorMessage'),
+            });
+          }
+        }}
+        onCancel={() => setDeleteDialogVisible(false)}
       />
     </ScrollView>
   );

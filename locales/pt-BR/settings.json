@@ -82,14 +82,14 @@
     "app": "App"
   },
   "deleteDataConfirm": {
-    "title": "Excluir todos os dados",
-    "message": "Esta ação excluirá permanentemente todos os seus dados de menstruação, histórico de ciclos, registros de saúde e configurações do app. Esta ação não pode ser desfeita.",
-    "delete": "Excluir todos os dados",
-    "cancel": "Cancelar",
-    "success": "Sucesso",
-    "successMessage": "Todos os seus dados foram excluídos. O app será reiniciado.",
-    "error": "Erro",
-    "errorMessage": "Falha ao excluir dados. Por favor, tente novamente."
+  "title": "Excluir todos os dados",
+  "message": "Esta ação excluirá permanentemente todos os seus dados de menstruação, histórico de ciclos, registros de saúde e configurações do app. Esta ação não pode ser desfeita.",
+  "delete": "Excluir todos os dados",
+  "cancel": "Cancelar",
+  "success": "Sucesso",
+  "successMessage": "Todos os dados foram excluídos.",
+  "error": "Erro",
+  "errorMessage": "Falha ao excluir dados. Por favor, tente novamente."
   },
   "themeModal": {
     "title": "Escolher tema"

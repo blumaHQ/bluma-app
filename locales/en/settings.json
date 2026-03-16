@@ -82,14 +82,14 @@
     "app": "App"
   },
   "deleteDataConfirm": {
-    "title": "Delete all data",
-    "message": "This will permanently delete all your period data, cycle history, health logs, and app settings. This action cannot be undone.",
-    "delete": "Delete all data",
-    "cancel": "Cancel",
-    "success": "Success",
-    "successMessage": "All your data has been deleted. The app will now restart.",
-    "error": "Error",
-    "errorMessage": "Failed to delete data. Please try again."
+  "title": "Delete all data",
+  "message": "This will permanently delete all your period data, cycle history, health logs, and app settings. This action cannot be undone.",
+  "delete": "Delete all data",
+  "cancel": "Cancel",
+  "success": "Success",
+  "successMessage": "All data deleted.",
+  "error": "Error",
+  "errorMessage": "Failed to delete data. Please try again."
   },
   "themeModal": {
     "title": "Choose theme"

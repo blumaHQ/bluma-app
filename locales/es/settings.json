@@ -82,14 +82,14 @@
     "app": "Aplicación"
   },
   "deleteDataConfirm": {
-    "title": "Eliminar todos los datos",
-    "message": "Esta acción eliminará permanentemente todos tus datos de periodo, historial de ciclos, registros de salud y ajustes de la aplicación. Esta acción no se puede deshacer.",
-    "delete": "Eliminar todos los datos",
-    "cancel": "Cancelar",
-    "success": "Éxito",
-    "successMessage": "Todos tus datos han sido eliminados. La aplicación se reiniciará ahora.",
-    "error": "Error",
-    "errorMessage": "Error al eliminar los datos. Por favor, inténtalo de nuevo."
+  "title": "Eliminar todos los datos",
+  "message": "Esta acción eliminará permanentemente todos tus datos de periodo, historial de ciclos, registros de salud y ajustes de la aplicación. Esta acción no se puede deshacer.",
+  "delete": "Eliminar todos los datos",
+  "cancel": "Cancelar",
+  "success": "Éxito",
+  "successMessage": "Todos los datos se han eliminado.",
+  "error": "Error",
+  "errorMessage": "Error al eliminar los datos. Por favor, inténtalo de nuevo."
   },
   "themeModal": {
     "title": "Elegir tema"

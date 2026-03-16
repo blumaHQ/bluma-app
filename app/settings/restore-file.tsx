@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import { Button } from '../../components/Button';
-import { ConfirmSheet } from '../../components/ConfirmSheet';
+import { ConfirmDialog } from '../../components/ConfirmDialog';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ export default function RestoreFileScreen() {
   const { t } = useTranslation('settings');
 
   const [showConfirm, setShowConfirm] = useState(false);
+  const [fileErrorDialog, setFileErrorDialog] = useState<{ title: string; message: string } | null>(null);
 
   const pickFile = useCallback(async () => {
     try {
@@ -33,13 +34,13 @@ export default function RestoreFileScreen() {
           err instanceof Error && err.message === 'UNSUPPORTED_VERSION'
             ? t('backup.restore.error.unsupportedVersion')
             : t('backup.restore.error.invalidFile');
-        Alert.alert(t('backup.error.title'), msg);
+        setFileErrorDialog({ title: t('backup.error.title'), message: msg });
         return;
       }
 
       router.push(`/settings/restore-key?fileUri=${encodeURIComponent(fileUri)}`);
     } catch {
-      Alert.alert(t('backup.error.title'), t('backup.restore.error.pickFailed'));
+      setFileErrorDialog({ title: t('backup.error.title'), message: t('backup.restore.error.pickFailed') });
     }
   }, [t, router]);
 
@@ -82,7 +83,7 @@ export default function RestoreFileScreen() {
         </View>
       </ScrollView>
 
-      <ConfirmSheet
+      <ConfirmDialog
         visible={showConfirm}
         title={t('backup.restore.confirmTitle')}
         message={t('backup.restore.confirmMessage')}
@@ -93,6 +94,14 @@ export default function RestoreFileScreen() {
           pickFile();
         }}
         onCancel={() => setShowConfirm(false)}
+      />
+
+      <ConfirmDialog
+        visible={!!fileErrorDialog}
+        title={fileErrorDialog?.title ?? ''}
+        message={fileErrorDialog?.message ?? ''}
+        confirmLabel={t('backup.restoreButton')}
+        onConfirm={() => setFileErrorDialog(null)}
       />
     </View>
   );

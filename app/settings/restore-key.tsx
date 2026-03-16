@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, Image } from 'react-native';
+import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { Button } from '../../components/Button';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +18,7 @@ export default function RestoreKeyScreen() {
   const [keyInput, setKeyInput] = useState('');
   const [restoring, setRestoring] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [fileErrorDialog, setFileErrorDialog] = useState<{ title: string; message: string } | null>(null);
 
   const handleRestore = useCallback(async () => {
     if (!keyInput.trim()) {
@@ -30,22 +32,22 @@ export default function RestoreKeyScreen() {
       await restoreBackup(fileUri, keyInput.trim());
       router.replace('/settings/restore-success');
     } catch (err) {
-      let msg = t('backup.restore.error.failed');
-      if (err instanceof Error) {
-        switch (err.message) {
-          case 'WRONG_KEY':
-            msg = t('backup.restore.error.wrongKey');
-            break;
-          case 'INVALID_FILE':
-            msg = t('backup.restore.error.invalidFile');
-            break;
-          case 'UNSUPPORTED_VERSION':
-          case 'UNSUPPORTED_SCHEMA':
-            msg = t('backup.restore.error.unsupportedVersion');
-            break;
-        }
+      const code = err instanceof Error ? err.message : '';
+
+      if (code === 'WRONG_KEY') {
+        setErrorMessage(t('backup.restore.error.wrongKey'));
+        setRestoring(false);
+        return;
       }
-      setErrorMessage(msg);
+
+      let fileMsg = t('backup.restore.error.failed');
+      if (code === 'INVALID_FILE') {
+        fileMsg = t('backup.restore.error.invalidFile');
+      } else if (code === 'UNSUPPORTED_VERSION' || code === 'UNSUPPORTED_SCHEMA') {
+        fileMsg = t('backup.restore.error.unsupportedVersion');
+      }
+
+      setFileErrorDialog({ title: t('backup.error.title'), message: fileMsg });
       setRestoring(false);
     }
   }, [fileUri, keyInput, router, t]);
@@ -127,6 +129,16 @@ export default function RestoreKeyScreen() {
             fullWidth
           />
       </View>
+      <ConfirmDialog
+        visible={!!fileErrorDialog}
+        title={fileErrorDialog?.title ?? ''}
+        message={fileErrorDialog?.message ?? ''}
+        confirmLabel={t('backup.restore.pickDifferentFile')}
+        onConfirm={() => {
+          setFileErrorDialog(null);
+          router.back();
+        }}
+      />
     </ScrollView>
   );
 }
