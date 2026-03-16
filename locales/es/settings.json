@@ -38,7 +38,7 @@
     "keyWarningTitle": "Guarda esta clave en un lugar seguro.",
     "keyWarning": "La necesitarás para restaurar tus datos.",
     "copyKey": "Copiar",
-    "keyCopied": "Copiada",
+    "keyCopied": "Copiada!",
     "savedBackup": "Guardar archivo de respaldo",
     "preparingFile": "Preparando archivo…",
     "downloadReadyTitle": "Tu copia de seguridad cifrada está lista para descargar",
@@ -75,6 +75,11 @@
       "createFailed": "No se pudo crear la copia de seguridad. Por favor inténtalo de nuevo.",
       "shareFailed": "No se pudo guardar el archivo de respaldo en tu dispositivo. Por favor inténtalo de nuevo."
     }
+  },
+  "sections": {
+    "general": "General",
+    "dataAndPrivacy": "Privacidad y seguridad",
+    "app": "Aplicación"
   },
   "deleteDataConfirm": {
     "title": "Eliminar todos los datos",

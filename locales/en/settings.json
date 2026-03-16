@@ -38,7 +38,7 @@
     "keyWarningTitle": "Store this key in a secure location.",
     "keyWarning": "You’ll need it to restore your backup.",
     "copyKey": "Copy",
-    "keyCopied": "Copied",
+    "keyCopied": "Copied!",
     "savedBackup": "Save backup file",
     "preparingFile": "Preparing file…",
     "downloadReadyTitle": "Your backup is ready!",
@@ -75,6 +75,11 @@
       "createFailed": "Could not create the backup. Please try again.",
       "shareFailed": "Could not save the backup file to your device. Please try again."
     }
+  },
+  "sections": {
+    "general": "General",
+    "dataAndPrivacy": "Privacy & Security",
+    "app": "App"
   },
   "deleteDataConfirm": {
     "title": "Delete all data",

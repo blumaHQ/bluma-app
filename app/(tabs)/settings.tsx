@@ -43,7 +43,11 @@ export default function Settings() {
       contentContainerStyle={commonStyles.scrollContentContainer}
       showsVerticalScrollIndicator={false}
     >
-      <View style={[commonStyles.sectionContainer, {padding: 0}]}>
+      <View style={{ marginBottom: 8 }}>
+        <Text style={typography.caption}>{t('sections.general')}</Text>
+      </View>
+
+      <View style={[commonStyles.sectionContainer, { padding: 0 }]}>
         <TouchableOpacity
           style={[styles.settingRow, { borderBottomColor: colors.border }]}
           onPress={() => router.push('/settings/reminders')}
@@ -53,58 +57,6 @@ export default function Settings() {
           </View>
           <Text style={[typography.bodyLg, { flex: 1 }]}>
             {t('reminders')}
-          </Text>
-          <ChevronIcon />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.settingRow, { borderBottomColor: colors.border }]}
-          onPress={() => router.push('/settings/encrypted-backups')}
-        >
-          <View style={styles.iconContainer}>
-            <SettingsIcon name="cloud-outline" />
-          </View>
-          <Text style={[typography.bodyLg, { flex: 1 }]}>
-            {t('backup.settingsRowEncryptedBackups')}
-          </Text>
-          <ChevronIcon />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.settingRow, { borderBottomColor: colors.border }]}
-          onPress={() => router.push('/settings/app-lock')}
-        >
-          <View style={styles.iconContainer}>
-            <SettingsIcon name="lock-closed-outline" />
-          </View>
-          <Text style={[typography.bodyLg, { flex: 1 }]}>
-            {t('appLock')}
-          </Text>
-          <ChevronIcon />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.settingRow, { borderBottomColor: colors.border }]}
-          onPress={() => router.push('/settings/privacy-policy')}
-        >
-          <View style={styles.iconContainer}>
-            <SettingsIcon name="document-text-outline" />
-          </View>
-          <Text style={[typography.bodyLg, { flex: 1 }]}>
-            {t('privacyPolicy')}
-          </Text>
-          <ChevronIcon />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.settingRow, { borderBottomColor: colors.border }]}
-          onPress={() => router.push('/settings/about')}
-        >
-          <View style={styles.iconContainer}>
-            <SettingsIcon name="information-circle-outline" />
-          </View>
-          <Text style={[typography.bodyLg, { flex: 1 }]}>
-            {t('about')}
           </Text>
           <ChevronIcon />
         </TouchableOpacity>
@@ -129,7 +81,37 @@ export default function Settings() {
         </TouchableOpacity>
       </View>
 
-      <View style={[commonStyles.sectionContainer, {padding: 0}]}>
+      <View style={{ marginTop: 24, marginBottom: 8 }}>
+        <Text style={typography.caption}>{t('sections.dataAndPrivacy')}</Text>
+      </View>
+
+      <View style={[commonStyles.sectionContainer, { padding: 0 }]}>
+        <TouchableOpacity
+          style={[styles.settingRow, { borderBottomColor: colors.border }]}
+          onPress={() => router.push('/settings/app-lock')}
+        >
+          <View style={styles.iconContainer}>
+            <SettingsIcon name="lock-closed-outline" />
+          </View>
+          <Text style={[typography.bodyLg, { flex: 1 }]}>
+            {t('appLock')}
+          </Text>
+          <ChevronIcon />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.settingRow, { borderBottomColor: colors.border }]}
+          onPress={() => router.push('/settings/encrypted-backups')}
+        >
+          <View style={styles.iconContainer}>
+            <SettingsIcon name="cloud-outline" />
+          </View>
+          <Text style={[typography.bodyLg, { flex: 1 }]}>
+            {t('backup.settingsRowEncryptedBackups')}
+          </Text>
+          <ChevronIcon />
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={[styles.settingRow, styles.lastRow]}
           onPress={() => {
@@ -184,6 +166,38 @@ export default function Settings() {
             {t('deleteData')}
           </Text>
           <ChevronIcon color={colors.error} />
+        </TouchableOpacity>
+      </View>
+
+      <View style={{ marginTop: 24, marginBottom: 8 }}>
+        <Text style={typography.caption}>{t('sections.app')}</Text>
+      </View>
+
+      <View style={[commonStyles.sectionContainer, { padding: 0 }]}>
+        <TouchableOpacity
+          style={[styles.settingRow, { borderBottomColor: colors.border }]}
+          onPress={() => router.push('/settings/privacy-policy')}
+        >
+          <View style={styles.iconContainer}>
+            <SettingsIcon name="document-text-outline" />
+          </View>
+          <Text style={[typography.bodyLg, { flex: 1 }]}>
+            {t('privacyPolicy')}
+          </Text>
+          <ChevronIcon />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.settingRow, styles.lastRow]}
+          onPress={() => router.push('/settings/about')}
+        >
+          <View style={styles.iconContainer}>
+            <SettingsIcon name="information-circle-outline" />
+          </View>
+          <Text style={[typography.bodyLg, { flex: 1 }]}>
+            {t('about')}
+          </Text>
+          <ChevronIcon />
         </TouchableOpacity>
       </View>
 
