@@ -11,18 +11,18 @@
     "reminders": "Reminders",
     "appLock": "App Lock",
     "encryptedBackups": "Encrypted backups",
-    "backup": "Save your backup key",
-    "restore": "Restore data",
+    "backup": "Save backup key",
+    "restore": "Restore backup",
     "about": "About",
     "privacyPolicy": "Privacy policy",
     "calendarView": "Calendar view",
-    "backupDownload": "Download your backup"
+    "backupDownload": "Download backup"
   },
   "backup": {
     "settingsRow": "Back up & restore",
     "settingsRowEncryptedBackups": "Encrypted backups",
-    "settingsRowBackup": "Backup your data",
-    "settingsRowRestore": "Restore your data",
+    "settingsRowBackup": "Create backup",
+    "settingsRowRestore": "Restore backup",
     "createTitle": "Create backup",
     "createDescription": "Save an encrypted backup of all your data. You'll need the backup key to restore it.",
     "createButton": "Create backup",
@@ -34,23 +34,23 @@
     "continueButton": "Continue. I've saved my key",
     "successTitle": "Your encrypted backup is saved!",
     "successMessage": "Your backup has been saved. Keep your key safe — you'll need it to restore your data.",
-    "keyWarningTitle": "Save this key in a secure location.",
-    "keyWarning": "You’ll need it to restore your data.",
+    "keyWarningTitle": "Store this key in a secure location.",
+    "keyWarning": "You’ll need it to restore your backup.",
     "copyKey": "Copy",
     "keyCopied": "Copied",
     "savedBackup": "Save backup file",
     "preparingFile": "Preparing file…",
-    "downloadReadyTitle": "Your backup is ready",
+    "downloadReadyTitle": "Your backup is ready!",
     "downloadButton": "Download backup",
     "shareTitle": "Save Bluma Backup",
     "backToSettings": "Back to settings",
     "shareAgain": "Share again",
     "done": "Done",
-    "restoreTitle": "Restore backup",
+    "restoreTitle": "Choose backup to restore",
     "restoreDescription": "Restore your data from a previously created .bluma backup file.",
     "restoreButton": "Choose backup file",
     "restore": {
-      "chooseFileTitle": "Choose your backup file",
+      "chooseFileTitle": "Choose backup to restore",
       "confirmTitle": "Restore backup",
       "confirmMessage": "This will permanently replace all your current data with the backup. This cannot be undone.",
       "continue": "Continue",
@@ -73,7 +73,7 @@
     "error": {
       "title": "Error",
       "createFailed": "Could not create the backup. Please try again.",
-      "shareFailed": "Could not share the backup file. Please try again."
+      "shareFailed": "Could not save the backup file to your device. Please try again."
     }
   },
   "deleteDataConfirm": {

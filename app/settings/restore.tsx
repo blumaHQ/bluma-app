@@ -7,10 +7,12 @@ import {
   TextInput,
   Alert,
   Image,
+  Pressable,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Button } from '../../components/Button';
 import * as DocumentPicker from 'expo-document-picker';
-import { useRouter } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../styles/theme';
 import { useAppStyles } from '../../hooks/useStyles';
@@ -109,9 +111,23 @@ export default function RestoreScreen() {
     }
   }, [restore, router, t]);
 
+  const isEnteringKey = restore.type === 'entering_key' || restore.type === 'restoring';
+
   return (
+    <>
+    <Stack.Screen
+      options={{
+        headerLeft: isEnteringKey
+          ? () => (
+              <Pressable onPress={() => setRestore({ type: 'idle' })} style={{ paddingRight: 16 }}>
+                <Ionicons name="arrow-back" size={24} color={colors.textPrimary} />
+              </Pressable>
+            )
+          : undefined,
+      }}
+    />
     <ScrollView
-      style={[commonStyles.scrollView, { backgroundColor: colors.surface, paddingTop: 16 }]}
+      style={[commonStyles.scrollView, { backgroundColor: colors.panel, paddingTop: 16 }]}
       contentContainerStyle={scrollContentContainerWithSafeArea}
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
@@ -214,6 +230,7 @@ export default function RestoreScreen() {
         )}
       </View>
     </ScrollView>
+    </>
   );
 }
 
@@ -226,8 +243,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   illustration: {
-    width: 190,
-    height: 170,
+    width: 200,
+    height: 200,
   },
   keyInputSection: {
     gap: 12,

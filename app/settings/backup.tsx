@@ -134,11 +134,11 @@ export default function BackupScreen() {
         options={{
           headerTitle: backup.type === 'success' ? '' : screenTitle,
           headerBackVisible: backup.type !== 'success',
-          headerStyle: { backgroundColor: colors.surface },
+          headerStyle: { backgroundColor: colors.panel },
         }}
       />
       <ScrollView
-        style={[commonStyles.scrollView, { backgroundColor: colors.surface, paddingTop: 16 }]}
+        style={[commonStyles.scrollView, { backgroundColor: colors.panel, paddingTop: 16 }]}
         contentContainerStyle={[scrollContentContainerWithSafeArea]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
@@ -261,7 +261,7 @@ export default function BackupScreen() {
 
 const styles = StyleSheet.create({
   stepSection: {
-    gap: 14,
+    gap: 24,
   },
   centeredSection: {
     alignItems: 'center',
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   keyBox: {
     padding: 16,
     borderRadius: 8,
-    borderWidth: 1,
+    borderWidth: 1.5,
   },
   keyText: {
     fontSize: 20,
@@ -282,8 +282,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   illustration: {
-    width: 190,
-    height: 170,
+    width: 200,
+    height: 200,
   },
   warningContainer: {
     borderWidth: 1,

@@ -72,7 +72,7 @@
     "error": {
       "title": "Erro",
       "createFailed": "Não foi possível criar a cópia de segurança. Por favor, tenta novamente.",
-      "shareFailed": "Não foi possível partilhar o ficheiro de cópia de segurança. Por favor, tenta novamente."
+      "shareFailed": "Não foi possível guardar o ficheiro de cópia de segurança no seu dispositivo. Por favor, tenta novamente."
     }
   },
   "deleteDataConfirm": {

@@ -73,7 +73,7 @@
     "error": {
       "title": "Error",
       "createFailed": "No se pudo crear la copia de seguridad. Por favor inténtalo de nuevo.",
-      "shareFailed": "No se pudo compartir el archivo de respaldo. Por favor inténtalo de nuevo."
+      "shareFailed": "No se pudo guardar el archivo de respaldo en tu dispositivo. Por favor inténtalo de nuevo."
     }
   },
   "deleteDataConfirm": {

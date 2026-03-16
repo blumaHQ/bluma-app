@@ -158,8 +158,8 @@ export const darkColors: ColorScheme = {
 
   // semantic status colors (lighter for dark mode contrast)
   success: '#34D399', // Lighter green for dark mode
-  warning: '#FBBF24', // Lighter orange for dark mode
-  warningLight: '#8B6200', // Dark orange for warning backgrounds
+  warning: '#FBAA32', // Lighter orange for dark mode
+  warningLight: '#46391A', // Dark orange for warning backgrounds
   error: '#F87171', // Lighter red for dark mode
   info: '#60A5FA', // Lighter blue for dark mode
 
