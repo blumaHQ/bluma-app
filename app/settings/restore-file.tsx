@@ -55,12 +55,12 @@ export default function RestoreFileScreen() {
 
   return (
     <ScrollView
-      style={[commonStyles.scrollView, { backgroundColor: colors.surface, paddingTop: 16 }]}
+      style={[commonStyles.scrollView, { backgroundColor: colors.panel}]}
       contentContainerStyle={scrollContentContainerWithSafeArea}
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
-      <View style={styles.centeredSection}>
+      <View style={styles.contentSection}>
         <View style={styles.illustrationWrapper}>
           <Image
             source={require('../../assets/images/password.png')}
@@ -73,13 +73,9 @@ export default function RestoreFileScreen() {
             typography.headingMd,
             {
               color: colors.textPrimary,
-              textAlign: 'center',
-              marginBottom: 24,
-              marginTop: 8,
-              paddingHorizontal: 16,
-              fontSize: 24,
-              lineHeight: 28,
-              fontWeight: '500',
+              fontSize: 28,
+              lineHeight: 34,
+              fontWeight: '600',
             },
           ]}
         >
@@ -98,15 +94,17 @@ export default function RestoreFileScreen() {
 }
 
 const styles = StyleSheet.create({
-  centeredSection: {
+  contentSection: {
     alignItems: 'center',
+    gap: 32,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
   },
   illustrationWrapper: {
     alignItems: 'center',
-    marginBottom: 8,
   },
   illustration: {
-    width: 190,
-    height: 170,
+    width: 200,
+    height: 200,
   },
 });

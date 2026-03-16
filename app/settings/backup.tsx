@@ -40,7 +40,7 @@ export default function BackupScreen() {
   const completedRef = useRef(false);
 
   useEffect(() => {
-    const key = (backup as Extract<BackupPhase, { type: 'key_display' }>).key;
+    const key = keyRef.current;
     let cancelled = false;
 
     createBackupForKey(key)
@@ -139,14 +139,15 @@ export default function BackupScreen() {
         }}
       />
       <ScrollView
-        style={[commonStyles.scrollView, { backgroundColor: colors.panel, paddingTop: 16 }]}
+        style={[commonStyles.scrollView, { backgroundColor: colors.panel}]}
         contentContainerStyle={[scrollContentContainerWithSafeArea]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
-        <View>
+  
+        <View style={styles.contentContainer}>
           {backup.type === 'key_display' && (
-            <View style={styles.stepSection}>
+            <>
               <View style={styles.illustrationWrapper}>
                 <Image
                   source={require('../../assets/images/password.png')}
@@ -155,25 +156,26 @@ export default function BackupScreen() {
                 />
               </View>
 
-              <View
-                style={[
-                  styles.keyBox,
-                  { backgroundColor: colors.surface, borderColor: colors.neutral150 },
-                ]}
-              >
-                <Text style={[styles.keyText, { color: colors.textPrimary }]} selectable>
-                  {backup.key}
-                </Text>
+              <View style={[styles.copyKeyContainer, { backgroundColor: colors.surface}]}>
+                <View
+                  style={[
+                    styles.keyBox,
+                    { backgroundColor: colors.surface, borderColor: colors.neutral150 },
+                  ]}
+                >
+                  <Text style={[styles.keyText, { color: colors.textPrimary }]} selectable>
+                    {backup.key}
+                  </Text>
+                </View>
+                <Button
+                  variant="outlined"
+                  color={showCopiedFeedback ? colors.success : colors.primary}
+                  icon={showCopiedFeedback ? 'checkmark-outline' : 'copy-outline'}
+                  title={showCopiedFeedback ? t('backup.keyCopied') : t('backup.copyKey')}
+                  onPress={handleCopyKey}
+                  fullWidth
+                />
               </View>
-
-              <Button
-                variant="outlined"
-                color={showCopiedFeedback ? colors.success : colors.primary}
-                icon={showCopiedFeedback ? 'checkmark-outline' : 'copy-outline'}
-                title={showCopiedFeedback ? t('backup.keyCopied') : t('backup.copyKey')}
-                onPress={handleCopyKey}
-                fullWidth
-              />
 
               <View
                 style={[
@@ -182,8 +184,29 @@ export default function BackupScreen() {
                 ]}
               >
                 <InfoIcon size={20} color={colors.warning} style={styles.warningIcon} />
-                <Text style={[typography.body, { color: colors.textSecondary, flex: 1, fontSize: 15, lineHeight: 20, letterSpacing: 0.2 }]}>
-                  <Text style={[typography.body, { fontWeight: '600', fontSize: 15, lineHeight: 20, letterSpacing: 0.2 }]}>
+                <Text
+                  style={[
+                    typography.body,
+                    {
+                      color: colors.textSecondary,
+                      flex: 1,
+                      fontSize: 15,
+                      lineHeight: 20,
+                      letterSpacing: 0.2,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      typography.body,
+                      {
+                        fontWeight: '600',
+                        fontSize: 15,
+                        lineHeight: 20,
+                        letterSpacing: 0.2,
+                      },
+                    ]}
+                  >
                     {t('backup.keyWarningTitle')}
                   </Text>{' '}
                   {t('backup.keyWarning')}
@@ -196,11 +219,11 @@ export default function BackupScreen() {
                 disabled={!backup.keyCopied}
                 fullWidth
               />
-            </View>
+            </>
           )}
 
           {backup.type === 'save_file' && (
-            <View style={styles.centeredSection}>
+            <View style={styles.contentContainer}>
             <View style={styles.illustrationWrapper}>
               <Image
                 source={require('../../assets/images/password.png')}
@@ -209,10 +232,11 @@ export default function BackupScreen() {
               />
             </View>
 
+              <View style={styles.titleButtonContainer}>
               <Text
                 style={[
                   typography.headingMd,
-                  { color: colors.textPrimary, textAlign: 'center', marginBottom: 24, marginTop: 8, paddingHorizontal: 16, fontSize: 24, lineHeight: 28, fontWeight: '500'},
+                  { color: colors.textPrimary, fontSize: 28, lineHeight: 34, fontWeight: '600'},
                 ]}
               >
                 {t('backup.downloadReadyTitle')}
@@ -226,10 +250,11 @@ export default function BackupScreen() {
                 fullWidth
               />
             </View>
+            </View>
           )}
 
           {backup.type === 'success' && (
-            <View style={styles.centeredSection}>
+            <View style={styles.contentContainer}>
             <View style={styles.illustrationWrapper}>
               <Image
                 source={require('../../assets/images/password.png')}
@@ -238,10 +263,11 @@ export default function BackupScreen() {
               />
             </View>
 
+              <View style={styles.titleButtonContainer}>
               <Text
                 style={[
                   typography.headingMd,
-                  { color: colors.textPrimary, textAlign: 'center', marginBottom: 24, marginTop: 8, paddingHorizontal: 16, fontSize: 24, lineHeight: 28, fontWeight: '500'},
+                  { color: colors.textPrimary, fontSize: 28, lineHeight: 34, textAlign: 'center'},
                 ]}
               >
                 {t('backup.successTitle')}
@@ -253,6 +279,7 @@ export default function BackupScreen() {
                 fullWidth
               />
             </View>
+            </View>
           )}
         </View>
       </ScrollView>
@@ -261,12 +288,21 @@ export default function BackupScreen() {
 }
 
 const styles = StyleSheet.create({
-  stepSection: {
-    gap: 24,
+  contentContainer: {
+    gap: 32,
+    paddingVertical: 24,
   },
-  centeredSection: {
+  copyKeyContainer: {
+    gap: 16,
+    padding: 16,
+    borderRadius: 8,
+  },
+  titleButtonContainer: {
+    paddingHorizontal: 16,
+    gap: 32,
     alignItems: 'center',
-  },
+    },
+
   keyBox: {
     padding: 16,
     borderRadius: 8,
@@ -280,7 +316,6 @@ const styles = StyleSheet.create({
   },
   illustrationWrapper: {
     alignItems: 'center',
-    marginBottom: 8,
   },
   illustration: {
     width: 200,

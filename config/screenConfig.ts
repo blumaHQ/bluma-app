@@ -40,6 +40,7 @@ export const dynamicScreens: ScreenConfig[] = [
     headerShown: true,
     titleKey: 'settings:screenTitles.backup',
     headerShadowVisible: false,
+    backgroundColorKey: 'panel',
   },
   {
     name: 'settings/restore-file',

@@ -52,12 +52,12 @@ export default function RestoreKeyScreen() {
 
   return (
     <ScrollView
-      style={[commonStyles.scrollView, { backgroundColor: colors.surface, paddingTop: 16 }]}
+      style={[commonStyles.scrollView, { backgroundColor: colors.panel}]}
       contentContainerStyle={scrollContentContainerWithSafeArea}
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
-      <View style={styles.centeredSection}>
+      <View style={styles.contentSection}>
         <View style={styles.illustrationWrapper}>
           <Image
             source={require('../../assets/images/password.png')}
@@ -65,19 +65,17 @@ export default function RestoreKeyScreen() {
             resizeMode="contain"
           />
         </View>
+
         <View style={styles.keyInputSection}>
           <Text
             style={[
               typography.headingMd,
               {
                 color: colors.textPrimary,
+                fontSize: 28,
+                lineHeight: 34,
+                fontWeight: '600',
                 textAlign: 'center',
-                marginBottom: 16,
-                marginTop: 8,
-                paddingHorizontal: 16,
-                fontSize: 24,
-                lineHeight: 28,
-                fontWeight: '500',
               },
             ]}
           >
@@ -101,6 +99,7 @@ export default function RestoreKeyScreen() {
             autoCorrect={false}
             autoComplete="off"
           />
+        </View>
           <Button
             title={t('backup.restore.restoreButton')}
             onPress={handleRestore}
@@ -108,27 +107,29 @@ export default function RestoreKeyScreen() {
             loading={restoring}
             fullWidth
           />
-        </View>
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  centeredSection: {
+  contentSection: {
     alignItems: 'center',
+    gap: 32,
+    paddingVertical: 24,
+    paddingHorizontal: 16,
   },
   illustrationWrapper: {
     alignItems: 'center',
     marginBottom: 8,
   },
   illustration: {
-    width: 190,
-    height: 170,
+    width: 200,
+    height: 200,
   },
   keyInputSection: {
-    gap: 12,
     width: '100%',
+    gap: 24,
   },
   keyInput: {
     borderWidth: 1,

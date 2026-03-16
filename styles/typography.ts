@@ -11,16 +11,18 @@ export const createTypography = (colors: ColorScheme) =>
     },
     headingMd: {
       fontSize: 22,
+      lineHeight: 28,
       fontWeight: '600',
       color: colors.textPrimary,
     },
     headingSm: {
       fontSize: 18,
+      lineHeight: 24,
       fontWeight: '600',
       color: colors.textPrimary,
     },
     body: {
-      fontSize: 16,
+      fontSize: 17,
       lineHeight: 22,
       fontWeight: '400',
       letterSpacing: 0.25,
