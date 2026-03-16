@@ -1,6 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert, Image } from 'react-native';
 import { Button } from '../../components/Button';
+import { ConfirmSheet } from '../../components/ConfirmSheet';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -14,86 +15,93 @@ export default function RestoreFileScreen() {
   const { typography, commonStyles, scrollContentContainerWithSafeArea } = useAppStyles();
   const { t } = useTranslation('settings');
 
-  const handlePickFile = useCallback(async () => {
-    Alert.alert(
-      t('backup.restore.confirmTitle'),
-      t('backup.restore.confirmMessage'),
-      [
-        { text: t('backup.restore.cancel'), style: 'cancel' },
-        {
-          text: t('backup.restore.continue'),
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const result = await DocumentPicker.getDocumentAsync({
-                type: 'application/octet-stream',
-                copyToCacheDirectory: true,
-              });
-              if (result.canceled) return;
+  const [showConfirm, setShowConfirm] = useState(false);
 
-              const fileUri = result.assets[0].uri;
-              try {
-                await validateBackupFile(fileUri);
-              } catch (err) {
-                const msg =
-                  err instanceof Error && err.message === 'UNSUPPORTED_VERSION'
-                    ? t('backup.restore.error.unsupportedVersion')
-                    : t('backup.restore.error.invalidFile');
-                Alert.alert(t('backup.error.title'), msg);
-                return;
-              }
+  const pickFile = useCallback(async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/octet-stream',
+        copyToCacheDirectory: true,
+      });
+      if (result.canceled) return;
 
-              router.push(`/settings/restore-key?fileUri=${encodeURIComponent(fileUri)}`);
-            } catch {
-              Alert.alert(t('backup.error.title'), t('backup.restore.error.pickFailed'));
-            }
-          },
-        },
-      ]
-    );
+      const fileUri = result.assets[0].uri;
+      try {
+        await validateBackupFile(fileUri);
+      } catch (err) {
+        const msg =
+          err instanceof Error && err.message === 'UNSUPPORTED_VERSION'
+            ? t('backup.restore.error.unsupportedVersion')
+            : t('backup.restore.error.invalidFile');
+        Alert.alert(t('backup.error.title'), msg);
+        return;
+      }
+
+      router.push(`/settings/restore-key?fileUri=${encodeURIComponent(fileUri)}`);
+    } catch {
+      Alert.alert(t('backup.error.title'), t('backup.restore.error.pickFailed'));
+    }
   }, [t, router]);
 
   return (
-    <ScrollView
-      style={[commonStyles.scrollView, { backgroundColor: colors.panel}]}
-      contentContainerStyle={scrollContentContainerWithSafeArea}
-      showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
-    >
-      <View style={styles.contentSection}>
-        <View style={styles.illustrationWrapper}>
-          <Image
-            source={require('../../assets/images/password.png')}
-            style={styles.illustration}
-            resizeMode="contain"
+    <View style={[styles.root, { backgroundColor: colors.panel }]}>
+      <ScrollView
+        style={commonStyles.scrollView}
+        contentContainerStyle={scrollContentContainerWithSafeArea}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.contentSection}>
+          <View style={styles.illustrationWrapper}>
+            <Image
+              source={require('../../assets/images/password.png')}
+              style={styles.illustration}
+              resizeMode="contain"
+            />
+          </View>
+          <Text
+            style={[
+              typography.headingMd,
+              {
+                color: colors.textPrimary,
+                fontSize: 28,
+                lineHeight: 34,
+                fontWeight: '600',
+              },
+            ]}
+          >
+            {t('backup.restore.chooseFileTitle')}
+          </Text>
+          <Button
+            variant="outlined"
+            icon="folder-open-outline"
+            title={t('backup.restoreButton')}
+            onPress={() => setShowConfirm(true)}
+            fullWidth
           />
         </View>
-        <Text
-          style={[
-            typography.headingMd,
-            {
-              color: colors.textPrimary,
-              fontSize: 28,
-              lineHeight: 34,
-              fontWeight: '600',
-            },
-          ]}
-        >
-          {t('backup.restore.chooseFileTitle')}
-        </Text>
-        <Button
-          variant="outlined"
-          icon="folder-open-outline"
-          title={t('backup.restoreButton')}
-          onPress={handlePickFile}
-          fullWidth
-        />
-      </View>
-    </ScrollView>
+      </ScrollView>
+
+      <ConfirmSheet
+        visible={showConfirm}
+        title={t('backup.restore.confirmTitle')}
+        message={t('backup.restore.confirmMessage')}
+        confirmLabel={t('backup.restore.continue')}
+        cancelLabel={t('backup.restore.cancel')}
+        onConfirm={() => {
+          setShowConfirm(false);
+          pickFile();
+        }}
+        onCancel={() => setShowConfirm(false)}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   contentSection: {
     alignItems: 'center',
     gap: 32,

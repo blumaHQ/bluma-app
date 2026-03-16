@@ -60,8 +60,7 @@
       "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
       "restoreButton": "Restaurar",
       "pickDifferentFile": "Elegir otro archivo",
-      "successTitle": "Restauración completa",
-      "successMessage": "Tus datos han sido restaurados correctamente.",
+      "successTitle": "Restauración de copia de seguridad completada",
       "error": {
         "invalidFile": "Este archivo no parece ser una copia de seguridad válida de Bluma.",
         "unsupportedVersion": "Esta copia de seguridad fue creada con una versión más nueva de Bluma. Por favor actualiza la aplicación.",

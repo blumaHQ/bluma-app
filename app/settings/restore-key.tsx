@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput, Alert, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, Image } from 'react-native';
 import { Button } from '../../components/Button';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -16,19 +16,19 @@ export default function RestoreKeyScreen() {
 
   const [keyInput, setKeyInput] = useState('');
   const [restoring, setRestoring] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleRestore = useCallback(async () => {
     if (!keyInput.trim()) {
-      Alert.alert(t('backup.error.title'), t('backup.restore.error.emptyKey'));
+      setErrorMessage(t('backup.restore.error.emptyKey'));
       return;
     }
 
+    setErrorMessage(null);
     setRestoring(true);
     try {
       await restoreBackup(fileUri, keyInput.trim());
-      Alert.alert(t('backup.restore.successTitle'), t('backup.restore.successMessage'), [
-        { text: 'OK', onPress: () => router.replace('/(tabs)') },
-      ]);
+      router.replace('/settings/restore-success');
     } catch (err) {
       let msg = t('backup.restore.error.failed');
       if (err instanceof Error) {
@@ -45,7 +45,7 @@ export default function RestoreKeyScreen() {
             break;
         }
       }
-      Alert.alert(t('backup.error.title'), msg);
+      setErrorMessage(msg);
       setRestoring(false);
     }
   }, [fileUri, keyInput, router, t]);
@@ -86,24 +86,43 @@ export default function RestoreKeyScreen() {
               styles.keyInput,
               {
                 backgroundColor: colors.surface,
-                borderColor: colors.neutral150,
+                borderColor: errorMessage ? colors.error : colors.neutral150,
                 color: colors.textPrimary,
                 textAlign: 'center',
               },
             ]}
             value={keyInput}
-            onChangeText={setKeyInput}
+            onChangeText={text => {
+              setKeyInput(text);
+              if (errorMessage) {
+                setErrorMessage(null);
+              }
+            }}
             placeholder={t('backup.restore.keyPlaceholder')}
             placeholderTextColor={colors.placeholder}
             autoCapitalize="none"
             autoCorrect={false}
             autoComplete="off"
           />
+          {errorMessage ? (
+            <Text
+              style={[
+                typography.caption,
+                {
+                  color: colors.error,
+                  textAlign: 'center',
+                  marginTop: -4,
+                },
+              ]}
+            >
+              {errorMessage}
+            </Text>
+          ) : null}
         </View>
           <Button
             title={t('backup.restore.restoreButton')}
             onPress={handleRestore}
-            disabled={restoring}
+            disabled={restoring || !keyInput.trim()}
             loading={restoring}
             fullWidth
           />

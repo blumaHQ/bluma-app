@@ -60,8 +60,7 @@
       "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
       "restoreButton": "Restore",
       "pickDifferentFile": "Choose a different file",
-      "successTitle": "Restore complete",
-      "successMessage": "Your data has been restored successfully.",
+      "successTitle": "Backup restore completed!",
       "error": {
         "invalidFile": "This file doesn't appear to be a valid Bluma backup.",
         "unsupportedVersion": "This backup was created with a newer version of Bluma. Please update the app.",
