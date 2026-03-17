@@ -135,7 +135,6 @@ export default function BackupScreen() {
         options={{
           headerTitle: backup.type === 'success' ? '' : screenTitle,
           headerBackVisible: backup.type !== 'success',
-          headerStyle: { backgroundColor: colors.panel },
         }}
       />
       <ScrollView
@@ -156,7 +155,7 @@ export default function BackupScreen() {
                 />
               </View>
 
-              <View style={[styles.copyKeyContainer, { backgroundColor: colors.surface}]}>
+              <View style={[styles.copyKeyContainer, { backgroundColor: colors.surfaceVariant}]}>
                 <View
                   style={[
                     styles.keyBox,

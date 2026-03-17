@@ -56,9 +56,9 @@ export default function RestoreFileScreen() {
   }, [t, router]);
 
   return (
-    <View style={[styles.root, { backgroundColor: colors.panel }]}>
+    <View style={[styles.root]}>
       <ScrollView
-        style={commonStyles.scrollView}
+        style={[commonStyles.scrollView, { backgroundColor: colors.panel }]}
         contentContainerStyle={scrollContentContainerWithSafeArea}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"

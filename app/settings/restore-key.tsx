@@ -67,7 +67,7 @@ export default function RestoreKeyScreen() {
 
   return (
     <ScrollView
-      style={[commonStyles.scrollView, { backgroundColor: colors.panel}]}
+      style={[commonStyles.scrollView, { backgroundColor: colors.panel }]}
       contentContainerStyle={scrollContentContainerWithSafeArea}
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"

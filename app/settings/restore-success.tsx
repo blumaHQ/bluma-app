@@ -13,9 +13,9 @@ export default function RestoreSuccessScreen() {
   const { t } = useTranslation('settings');
 
   return (
-    <View style={[styles.root, { backgroundColor: colors.panel }]}>
+    <View style={[styles.root]}>
       <ScrollView
-        style={commonStyles.scrollView}
+        style={[commonStyles.scrollView, { backgroundColor: colors.panel }]}
         contentContainerStyle={[scrollContentContainerWithSafeArea, styles.contentContainer]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
