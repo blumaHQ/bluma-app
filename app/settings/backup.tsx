@@ -236,7 +236,7 @@ export default function BackupScreen() {
               <Text
                 style={[
                   typography.headingMd,
-                  { color: colors.textPrimary, fontSize: 28, lineHeight: 34, fontWeight: '600'},
+                  { color: colors.textPrimary, fontSize: 28, lineHeight: 34, fontWeight: '600', textAlign: 'center'},
                 ]}
               >
                 {t('backup.downloadReadyTitle')}

@@ -13,7 +13,7 @@ export default function EncryptedBackupsScreen() {
   const { t } = useTranslation('settings');
 
   return (
-    <View style={commonStyles.scrollView}>
+    <View style={[commonStyles.scrollView, { paddingTop: 16 }]}>
       <View style={[commonStyles.sectionContainer, { padding: 0 }]}>
         <TouchableOpacity
           style={[styles.row, { borderBottomColor: colors.border }]}

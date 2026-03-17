@@ -16,7 +16,11 @@ export default function RestoreFileScreen() {
   const { t } = useTranslation('settings');
 
   const [showConfirm, setShowConfirm] = useState(false);
-  const [fileErrorDialog, setFileErrorDialog] = useState<{ title: string; message: string } | null>(null);
+  const [fileErrorDialog, setFileErrorDialog] = useState<{
+    title: string;
+    message: string;
+    action: 'retry' | 'ok';
+  } | null>(null);
 
   const pickFile = useCallback(async () => {
     try {
@@ -30,17 +34,24 @@ export default function RestoreFileScreen() {
       try {
         await validateBackupFile(fileUri);
       } catch (err) {
-        const msg =
-          err instanceof Error && err.message === 'UNSUPPORTED_VERSION'
+        const isUnsupported = err instanceof Error && err.message === 'UNSUPPORTED_VERSION';
+        setFileErrorDialog({
+          title: t('backup.error.title'),
+          message: isUnsupported
             ? t('backup.restore.error.unsupportedVersion')
-            : t('backup.restore.error.invalidFile');
-        setFileErrorDialog({ title: t('backup.error.title'), message: msg });
+            : t('backup.restore.error.invalidFile'),
+          action: isUnsupported ? 'ok' : 'retry',
+        });
         return;
       }
 
       router.push(`/settings/restore-key?fileUri=${encodeURIComponent(fileUri)}`);
     } catch {
-      setFileErrorDialog({ title: t('backup.error.title'), message: t('backup.restore.error.pickFailed') });
+      setFileErrorDialog({
+        title: t('backup.error.title'),
+        message: t('backup.restore.error.pickFailed'),
+        action: 'retry',
+      });
     }
   }, [t, router]);
 
@@ -68,6 +79,7 @@ export default function RestoreFileScreen() {
                 fontSize: 28,
                 lineHeight: 34,
                 fontWeight: '600',
+                textAlign: 'center',
               },
             ]}
           >
@@ -91,7 +103,7 @@ export default function RestoreFileScreen() {
         cancelLabel={t('backup.restore.cancel')}
         onConfirm={() => {
           setShowConfirm(false);
-          pickFile();
+          void pickFile();
         }}
         onCancel={() => setShowConfirm(false)}
       />
@@ -100,8 +112,15 @@ export default function RestoreFileScreen() {
         visible={!!fileErrorDialog}
         title={fileErrorDialog?.title ?? ''}
         message={fileErrorDialog?.message ?? ''}
-        confirmLabel={t('backup.restoreButton')}
-        onConfirm={() => setFileErrorDialog(null)}
+        confirmLabel={
+          fileErrorDialog?.action === 'ok' ? t('backup.restore.ok') : t('backup.restore.pickDifferentFile')
+        }
+        onConfirm={() => {
+          setFileErrorDialog(null);
+          if (fileErrorDialog?.action === 'retry') {
+            setTimeout(() => void pickFile(), 0);
+          }
+        }}
       />
     </View>
   );

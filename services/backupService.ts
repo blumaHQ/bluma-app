@@ -2,30 +2,50 @@ import * as Crypto from 'expo-crypto';
 import * as FileSystem from 'expo-file-system/legacy';
 import * as Sharing from 'expo-sharing';
 import { Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import { gcm } from '@noble/ciphers/aes.js';
 import { scrypt } from '@noble/hashes/scrypt.js';
 import { getDB } from '../db';
 import { periodDates, healthLogs, settings } from '../db/schema';
+import { NOTIFICATION_SETTINGS_KEYS } from '../constants/notificationKeys';
+import { NotificationService } from './notificationService';
 
 const WIRE_VERSION = 2;
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 const AAD = new TextEncoder().encode('bluma-backup-v1');
 const SCRYPT_PARAMS = { N: 2048, r: 8, p: 1, dkLen: 32 } as const;
 
-interface BackupPayload {
-  schemaVersion: number;
+const THEME_STORAGE_KEY = 'theme_mode';
+const SECURE_STORE_OPTIONS: SecureStore.SecureStoreOptions = {
+  keychainAccessible: SecureStore.AFTER_FIRST_UNLOCK,
+};
+
+interface BackupPayloadV1 {
+  schemaVersion: 2;
   exportedAt: string;
   data: {
     periodDates: { id: number; date: string }[];
     healthLogs: { id: number; date: string; type: string; item_id: string; name?: string | null }[];
     settings: { id: number; key: string; value: string }[];
+    preferences?: {
+      themeMode?: 'light' | 'dark' | 'system';
+      reminders?: {
+        beforePeriod?: boolean;
+        dayOfPeriod?: boolean;
+        latePeriod?: boolean;
+        fertilityWindow?: boolean;
+        timeHour?: string;
+        timeMinute?: string;
+      };
+    };
   };
 }
 
-function isValidBackupPayload(obj: unknown): obj is BackupPayload {
+function isValidBackupPayload(obj: unknown): obj is BackupPayloadV1 {
   if (typeof obj !== 'object' || obj === null) return false;
   const p = obj as Record<string, unknown>;
-  if (typeof p.schemaVersion !== 'number') return false;
+  if (p.schemaVersion !== 2) return false;
 
   const data = p.data as Record<string, unknown> | undefined;
   if (!data || typeof data !== 'object') return false;
@@ -94,11 +114,38 @@ export async function createBackupForKey(backupKey: string): Promise<string> {
     db.select({ id: periodDates.id, date: periodDates.date }).from(periodDates),
     db.select({ id: healthLogs.id, date: healthLogs.date, type: healthLogs.type, item_id: healthLogs.item_id, name: healthLogs.name }).from(healthLogs),
     db.select({ id: settings.id, key: settings.key, value: settings.value }).from(settings),
-  ]).then(([pd, hl, s]) =>
+    AsyncStorage.getItem(THEME_STORAGE_KEY),
+    Promise.all([
+      SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD, SECURE_STORE_OPTIONS),
+      SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD, SECURE_STORE_OPTIONS),
+      SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD, SECURE_STORE_OPTIONS),
+      SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW, SECURE_STORE_OPTIONS),
+      SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, SECURE_STORE_OPTIONS),
+      SecureStore.getItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, SECURE_STORE_OPTIONS),
+    ]),
+  ]).then(([pd, hl, s, themeModeRaw, notificationRaw]) =>
     JSON.stringify({
       schemaVersion: SCHEMA_VERSION,
       exportedAt: new Date().toISOString(),
-      data: { periodDates: pd, healthLogs: hl, settings: s },
+      data: {
+        periodDates: pd,
+        healthLogs: hl,
+        settings: s,
+        preferences: {
+          themeMode:
+            themeModeRaw === 'light' || themeModeRaw === 'dark' || themeModeRaw === 'system'
+              ? themeModeRaw
+              : undefined,
+          reminders: {
+            beforePeriod: notificationRaw[0] === 'true',
+            dayOfPeriod: notificationRaw[1] === 'true',
+            latePeriod: notificationRaw[2] === 'true',
+            fertilityWindow: notificationRaw[3] === 'true',
+            timeHour: notificationRaw[4] ?? undefined,
+            timeMinute: notificationRaw[5] ?? undefined,
+          },
+        },
+      },
     })
   );
 
@@ -215,7 +262,7 @@ export async function restoreBackup(fileUri: string, backupKey: string): Promise
     throw new Error('INVALID_FILE');
   }
   if (!isValidBackupPayload(parsed)) throw new Error('INVALID_FILE');
-  if (parsed.schemaVersion !== SCHEMA_VERSION) throw new Error('UNSUPPORTED_SCHEMA');
+  if (parsed.schemaVersion !== 2) throw new Error('UNSUPPORTED_SCHEMA');
   const { data } = parsed;
 
   // Intentionally bypass validatePeriodDate — backup data may include dates older
@@ -229,4 +276,48 @@ export async function restoreBackup(fileUri: string, backupKey: string): Promise
     if (data.healthLogs?.length) await tx.insert(healthLogs).values(data.healthLogs);
     if (data.settings?.length) await tx.insert(settings).values(data.settings);
   });
+
+  const prefs = data.preferences;
+  const themeMode = prefs?.themeMode;
+  if (themeMode === 'light' || themeMode === 'dark' || themeMode === 'system') {
+    await AsyncStorage.setItem(THEME_STORAGE_KEY, themeMode);
+  }
+
+  const reminders = prefs?.reminders;
+  if (reminders) {
+    await Promise.all([
+      SecureStore.setItemAsync(
+        NOTIFICATION_SETTINGS_KEYS.BEFORE_PERIOD,
+        reminders.beforePeriod ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
+      ),
+      SecureStore.setItemAsync(
+        NOTIFICATION_SETTINGS_KEYS.DAY_OF_PERIOD,
+        reminders.dayOfPeriod ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
+      ),
+      SecureStore.setItemAsync(
+        NOTIFICATION_SETTINGS_KEYS.LATE_PERIOD,
+        reminders.latePeriod ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
+      ),
+      SecureStore.setItemAsync(
+        NOTIFICATION_SETTINGS_KEYS.FERTILITY_WINDOW,
+        reminders.fertilityWindow ? 'true' : 'false',
+        SECURE_STORE_OPTIONS
+      ),
+      reminders.timeHour !== undefined
+        ? SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_HOUR, reminders.timeHour, SECURE_STORE_OPTIONS)
+        : Promise.resolve(),
+      reminders.timeMinute !== undefined
+        ? SecureStore.setItemAsync(NOTIFICATION_SETTINGS_KEYS.TIME_MINUTE, reminders.timeMinute, SECURE_STORE_OPTIONS)
+        : Promise.resolve(),
+    ]);
+
+    try {
+      await NotificationService.rescheduleNotifications();
+    } catch {
+      // If the OS denies scheduling (permissions/device state), the preference is still restored.
+    }
+  }
 }

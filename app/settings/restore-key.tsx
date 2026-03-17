@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ConfirmDialog } from '../../components/ConfirmDialog';
 import { Button } from '../../components/Button';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -10,7 +11,7 @@ import { restoreBackup } from '../../services/backupService';
 
 export default function RestoreKeyScreen() {
   const router = useRouter();
-  const { colors } = useTheme();
+  const { colors, themeMode, setThemeMode } = useTheme();
   const { typography, commonStyles, scrollContentContainerWithSafeArea } = useAppStyles();
   const { t } = useTranslation('settings');
   const { fileUri } = useLocalSearchParams<{ fileUri: string }>();
@@ -30,6 +31,18 @@ export default function RestoreKeyScreen() {
     setRestoring(true);
     try {
       await restoreBackup(fileUri, keyInput.trim());
+      try {
+        const restored = await AsyncStorage.getItem('theme_mode');
+        if (
+          restored &&
+          (restored === 'light' || restored === 'dark' || restored === 'system') &&
+          restored !== themeMode
+        ) {
+          await setThemeMode(restored);
+        }
+      } catch {
+        // ignore theme sync failure; theme will still apply on next app launch
+      }
       router.replace('/settings/restore-success');
     } catch (err) {
       const code = err instanceof Error ? err.message : '';
@@ -50,7 +63,7 @@ export default function RestoreKeyScreen() {
       setFileErrorDialog({ title: t('backup.error.title'), message: fileMsg });
       setRestoring(false);
     }
-  }, [fileUri, keyInput, router, t]);
+  }, [fileUri, keyInput, router, setThemeMode, t, themeMode]);
 
   return (
     <ScrollView

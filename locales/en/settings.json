@@ -51,7 +51,7 @@
     "restoreDescription": "Restore your data from a previously created .bluma backup file.",
     "restoreButton": "Choose backup file",
     "restore": {
-      "chooseFileTitle": "Choose backup to restore",
+      "chooseFileTitle": "Choose a backup file to restore",
       "confirmTitle": "Restore backup",
       "confirmMessage": "This will permanently replace all your current data with the backup. This cannot be undone.",
       "continue": "Continue",
@@ -59,11 +59,12 @@
       "keyLabel": "Enter your backup key",
       "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
       "restoreButton": "Restore",
+      "ok": "OK",
       "pickDifferentFile": "Choose a different file",
       "successTitle": "Backup restore completed!",
       "error": {
         "invalidFile": "This file doesn't appear to be a valid Bluma backup.",
-        "unsupportedVersion": "This backup was created with a newer version of Bluma. Please update the app.",
+        "unsupportedVersion": "This backup was created with a newer version of Bluma than the one installed on this device. Please update Bluma to restore it.",
         "wrongKey": "Incorrect backup key. Please check and try again.",
         "emptyKey": "Please enter your backup key.",
         "pickFailed": "Could not open the file. Please try again.",
