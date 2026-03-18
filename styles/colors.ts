@@ -4,6 +4,8 @@ export interface ColorScheme {
   surface: string; // main cards / panels
   surfaceVariant: string; // variant cards / panels
   surfaceVariant2: string;
+  surfaceVariant3: string;
+  surfaceVariant4: string;
   surfaceTabBar: string; // tab bar background
   panel: string; // subtle panel background
   border: string; // borders / dividers
@@ -35,6 +37,7 @@ export interface ColorScheme {
   neutral100: string;
   neutral150: string;
   neutral200: string;
+  neutral250: string;
   neutral300: string;
   neutral400: string;
 
@@ -60,6 +63,8 @@ export const lightColors: ColorScheme = {
   surface: '#FFFFFF', // main cards / panels
   surfaceVariant: '#F0F1FF', // variant cards / panels
   surfaceVariant2: '#FFFFFF', // variant cards / panels
+  surfaceVariant3: '#E8EAFF', // variant cards / panels
+  surfaceVariant4: '#F9FAFF', // variant cards / panels
   surfaceTabBar: '#F1F0F6', // tabs / sheets / panels
   panel: '#FFFFFF', // subtle panel background
   border: '#EFEFF6', // borders / dividers
@@ -89,8 +94,9 @@ export const lightColors: ColorScheme = {
 
   //Neutrals
   neutral100: '#DADAE4',
-  neutral150: '#E3E4F3',
+  neutral150: '#D9DBFB',
   neutral200: '#8A86A9',
+  neutral250: '#C5C6D9',
   neutral300: '#D8DAFF',
   neutral400: '#706D8C',
 
@@ -115,9 +121,11 @@ export const darkColors: ColorScheme = {
   background: '#000219', // dark page background
   surface: '#1A1C31', // dark cards / panels
   surfaceVariant: '#26253E', // dark variant cards / panels
-  surfaceVariant2: '#30304D', // dark variant cards / panels
+  surfaceVariant2: '#30304D',
+  surfaceVariant3: '#16182A', // dark variant 
+  surfaceVariant4: '#292B44', // dark variant cards / panels
   surfaceTabBar: '#22213F', // dark tab bar background
-  panel: '#0E0D23', // dark subtle panel background
+  panel: '#000219', // dark subtle panel background
   border: '#26253F', // dark borders / dividers
 
   // primary / main brand colors (keep brand consistent but adjust for contrast)
@@ -147,6 +155,7 @@ export const darkColors: ColorScheme = {
   neutral100: '#5E5D7F',
   neutral150: '#3E3D5C',
   neutral200: '#696981',
+  neutral250: '#4A4963',
   neutral300: '#26253E',
   neutral400: '#706D8C',
 
@@ -158,8 +167,8 @@ export const darkColors: ColorScheme = {
 
   // semantic status colors (lighter for dark mode contrast)
   success: '#34D399', // Lighter green for dark mode
-  warning: '#FBBF24', // Lighter orange for dark mode
-  warningLight: '#422006', // Dark orange for warning backgrounds
+  warning: '#FBAA32', // Lighter orange for dark mode
+  warningLight: '#46391A', // Dark orange for warning backgrounds
   error: '#F87171', // Lighter red for dark mode
   info: '#60A5FA', // Lighter blue for dark mode
 

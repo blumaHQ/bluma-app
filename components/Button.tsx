@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { Text, Pressable, StyleSheet } from 'react-native';
+import { Text, Pressable, StyleSheet, ActivityIndicator, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
 
@@ -11,6 +12,9 @@ interface ButtonProps {
   fullWidth?: boolean;
   style?: any;
   disabled?: boolean;
+  loading?: boolean;
+  icon?: React.ComponentProps<typeof Ionicons>['name'];
+  color?: string;
 }
 
 export function Button({
@@ -21,9 +25,14 @@ export function Button({
   fullWidth = false,
   style,
   disabled = false,
+  loading = false,
+  icon,
+  color,
 }: ButtonProps) {
   const { colors } = useTheme();
   const { typography } = useAppStyles();
+
+  const resolvedColor = color ?? colors.primary;
 
   const buttonStyle = useMemo(() => {
     switch (variant) {
@@ -33,24 +42,24 @@ export function Button({
         return {
           backgroundColor: 'transparent',
           borderWidth: 1,
-          borderColor: colors.primary,
+          borderColor: resolvedColor,
         };
       case 'contained':
       default:
-        return { backgroundColor: colors.primary };
+        return { backgroundColor: resolvedColor };
     }
-  }, [variant, colors.primary]);
+  }, [variant, resolvedColor]);
 
   const textColor = useMemo(() => {
     switch (variant) {
       case 'text':
       case 'outlined':
-        return colors.primary;
+        return resolvedColor;
       case 'contained':
       default:
         return colors.white;
     }
-  }, [variant, colors.primary, colors.white]);
+  }, [variant, resolvedColor, colors.white]);
 
   const textStyle = useMemo(
     () => [typography.body, { fontWeight: '500', color: textColor }],
@@ -60,19 +69,24 @@ export function Button({
   return (
     <Pressable
       onPress={onPress}
-      disabled={disabled}
+      disabled={disabled || loading}
       style={({ pressed }) => [
         styles.button,
         buttonStyle,
         fullWidth && styles.fullWidth,
-        disabled && styles.disabled,
+        (disabled || loading) && styles.disabled,
         pressed && styles.pressed,
         style,
       ]}
     >
-      <Text style={textStyle}>
-        {title}
-      </Text>
+      {loading ? (
+        <ActivityIndicator size="small" color={textColor} />
+      ) : (
+        <View style={styles.content}>
+          {icon && <Ionicons name={icon} size={16} color={textColor} />}
+          <Text style={textStyle}>{title}</Text>
+        </View>
+      )}
     </Pressable>
   );
 }
@@ -83,6 +97,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 80,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
   disabled: {
     opacity: 0.38,

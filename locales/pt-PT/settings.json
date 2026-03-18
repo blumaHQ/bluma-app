@@ -10,19 +10,88 @@
   "screenTitles": {
     "reminders": "Lembretes",
     "appLock": "Bloqueio da Aplicação",
+    "encryptedBackups": "Cópias de segurança encriptadas",
+    "backup": "Guarda a chave de cópia de segurança",
+    "restore": "Restaurar cópia de segurança",
+    "restoreKey": "Introduz a chave",
     "about": "Acerca",
     "privacyPolicy": "Política de privacidade",
-    "calendarView": "Vista do calendário"
+    "calendarView": "Vista do calendário",
+    "backupDownload": "Descarregar a cópia de segurança"
+  },
+  "backup": {
+    "settingsRow": "Cópia de segurança",
+    "settingsRowEncryptedBackups": "Cópias de segurança encriptadas",
+    "settingsRowBackup": "Fazer cópia de segurança",
+    "settingsRowRestore": "Restaurar cópia de segurança",
+    "createTitle": "Criar cópia de segurança",
+    "createDescription": "Guarda uma cópia de segurança encriptada de todos os teus dados. Precisarás da chave para a restaurar.",
+    "createButton": "Criar cópia de segurança",
+    "generating": "A criar cópia de segurança…",
+    "step1Label": "Passo 1 de 2",
+    "step2Label": "Passo 2 de 2",
+    "step2Description": "Agora guarda o ficheiro de cópia de segurança encriptado.",
+    "continueToFile": "Continuar",
+    "continueButton": "Continuar. Guardei a chave",
+    "successTitle": "A cópia de segurança encriptada foi guardada no dispositivo",
+    "successMessage": "A cópia de segurança foi guardada. Mantém a chave em segurança — precisarás dela para restaurar os dados.",
+    "keyWarningTitle": "Guarda esta chave num local seguro.",
+    "keyWarning": "Precisarás dela para restaurar os dados.",
+    "copyKey": "Copiar",
+    "keyCopied": "Copiada!",
+    "savedBackup": "Guardar ficheiro de cópia de segurança",
+    "preparingFile": "A preparar ficheiro…",
+    "downloadReadyTitle": "A cópia de segurança encriptada está pronta para ser descarregada",
+    "downloadKeyReminder": "Não te esqueças de guardar a chave num local seguro. Vais precisar dela para restaurar os dados.",
+    "downloadButton": "Descarregar cópia de segurança",
+    "shareTitle": "Guardar cópia de segurança do Bluma",
+    "backToSettings": "Voltar às definições",
+    "shareAgain": "Partilhar novamente",
+    "done": "Concluído",
+    "restoreTitle": "Restaurar cópia de segurança",
+    "restoreDescription": "Restaura os teus dados a partir de um ficheiro de cópia de segurança .bluma criado anteriormente.",
+    "restoreButton": "Escolher cópia de segurança",
+    "restore": {
+      "chooseFileTitle": "Escolhe a cópia de segurança a restaurar",
+      "confirmTitle": "Restaurar cópia de segurança",
+      "confirmMessage": "Isto irá substituir permanentemente todos os teus dados atuais pela cópia de segurança. Esta ação não pode ser anulada.",
+      "continue": "Continuar",
+      "cancel": "Cancelar",
+      "keyLabel": "Introduz a chave de cópia de segurança",
+      "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
+      "restoreButton": "Restaurar",
+      "ok": "OK",
+      "pickDifferentFile": "Escolher outro ficheiro",
+      "successTitle": "Restauração de cópia de segurança concluída",
+      "error": {
+        "invalidFile": "Este ficheiro não parece ser uma cópia de segurança válida da Bluma.",
+        "unsupportedVersion": "Esta cópia de segurança foi criada com uma versão mais recente da Bluma que a instalada neste dispositivo. Por favor, atualiza Bluma para restaurar a cópia de segurança.",
+        "wrongKey": "Chave de cópia de segurança incorreta. Por favor, verifica e tenta novamente.",
+        "emptyKey": "Por favor, introduz a chave de cópia de segurança que guardaste.",
+        "pickFailed": "Não foi possível abrir o ficheiro. Por favor, tenta novamente.",
+        "failed": "A restauração falhou. Por favor, tenta novamente."
+      }
+    },
+    "error": {
+      "title": "Erro",
+      "createFailed": "Não foi possível criar a cópia de segurança. Por favor, tenta novamente.",
+      "shareFailed": "Não foi possível guardar o ficheiro de cópia de segurança no teu dispositivo. Por favor, tenta novamente."
+    }
+  },
+  "sections": {
+    "general": "Geral",
+    "dataAndPrivacy": "Privacidade e segurança",
+    "app": "Aplicação"
   },
   "deleteDataConfirm": {
-    "title": "Eliminar todos os dados",
-    "message": "Esta ação irá eliminar permanentemente todos os teus dados de período, histórico de ciclos, registos de saúde e definições da aplicação. Esta ação não pode ser anulada.",
-    "delete": "Eliminar todos os dados",
-    "cancel": "Cancelar",
-    "success": "Sucesso",
-    "successMessage": "Todos os teus dados foram eliminados. A aplicação irá reiniciar.",
-    "error": "Erro",
-    "errorMessage": "Falha ao eliminar dados. Por favor, tenta novamente."
+  "title": "Eliminar todos os dados",
+  "message": "Esta ação irá eliminar permanentmente todos os teus dados de período, histórico de ciclos, registos de saúde e definições da aplicação. Esta ação não pode ser anulada.",
+  "delete": "Eliminar todos os dados",
+  "cancel": "Cancelar",
+  "success": "Sucesso",
+  "successMessage": "Todos os dados foram eliminados.",
+  "error": "Erro",
+  "errorMessage": "Falha ao eliminar dados. Por favor, tenta novamente."
   },
   "themeModal": {
     "title": "Escolher tema"

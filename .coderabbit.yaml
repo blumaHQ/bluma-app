@@ -51,7 +51,13 @@ reviews:
         Database schema and operations with Drizzle ORM. Verify proper migrations,
         data encryption for sensitive health information, and efficient queries.
         Check for proper indexing and data integrity.
-        
+
+        Breaking change rules (flag as blocking):
+        - Any column removal, rename, or type change in db/schema.ts MUST have a corresponding new file in db/migrations/.
+        - Column renames must use an explicit migration (not drop+add) to avoid data loss.
+        - New NOT NULL columns without a default value are breaking for existing rows — require a default or a migration that backfills.
+        - Prefer additive migrations (add column/table) over destructive ones.
+
         IMPORTANT: App has no production users yet. Plaintext-to-encrypted DB migration
         is NOT required - users will uninstall/reinstall during development.
         Do not flag missing plaintext upgrade handling.

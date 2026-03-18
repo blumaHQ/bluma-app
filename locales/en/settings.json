@@ -10,19 +10,88 @@
   "screenTitles": {
     "reminders": "Reminders",
     "appLock": "App Lock",
+    "encryptedBackups": "Encrypted backups",
+    "backup": "Save backup key",
+    "restore": "Restore backup",
+    "restoreKey": "Enter backup key",
     "about": "About",
     "privacyPolicy": "Privacy policy",
-    "calendarView": "Calendar view"
+    "calendarView": "Calendar view",
+    "backupDownload": "Download backup"
+  },
+  "backup": {
+    "settingsRow": "Back up & restore",
+    "settingsRowEncryptedBackups": "Encrypted backups",
+    "settingsRowBackup": "Create backup",
+    "settingsRowRestore": "Restore backup",
+    "createTitle": "Create backup",
+    "createDescription": "Save an encrypted backup of all your data. You'll need the backup key to restore it.",
+    "createButton": "Create backup",
+    "generating": "Creating backup…",
+    "step1Label": "Step 1 of 2",
+    "step2Label": "Step 2 of 2",
+    "step2Description": "Now save the encrypted backup file.",
+    "continueToFile": "Continue",
+    "continueButton": "Continue. I've saved the key",
+    "successTitle": "Your encrypted backup is saved on your device!",
+    "successMessage": "Your backup has been saved. Keep your key safe — you'll need it to restore your data.",
+    "keyWarningTitle": "Store this key in a secure location.",
+    "keyWarning": "You’ll need it to restore your backup.",
+    "copyKey": "Copy",
+    "keyCopied": "Copied!",
+    "savedBackup": "Save backup file",
+    "preparingFile": "Preparing file…",
+    "downloadReadyTitle": "Your backup is ready!",
+    "downloadKeyReminder": "Remember to store the key in a secure location. You'll need it to restore the data.",
+    "downloadButton": "Download backup",
+    "shareTitle": "Save Bluma Backup",
+    "backToSettings": "Back to settings",
+    "shareAgain": "Share again",
+    "done": "Done",
+    "restoreTitle": "Choose backup to restore",
+    "restoreDescription": "Restore your data from a previously created .bluma backup file.",
+    "restoreButton": "Choose backup file",
+    "restore": {
+      "chooseFileTitle": "Choose a backup file to restore",
+      "confirmTitle": "Restore backup",
+      "confirmMessage": "This will permanently replace all your current data with the backup. This cannot be undone.",
+      "continue": "Continue",
+      "cancel": "Cancel",
+      "keyLabel": "Enter your backup key",
+      "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
+      "restoreButton": "Restore",
+      "ok": "OK",
+      "pickDifferentFile": "Choose a different file",
+      "successTitle": "Backup restore completed!",
+      "error": {
+        "invalidFile": "This file doesn't appear to be a valid Bluma backup.",
+        "unsupportedVersion": "This backup was created with a newer version of Bluma than the one installed on this device. Please update Bluma to restore it.",
+        "wrongKey": "Incorrect backup key. Please check and try again.",
+        "emptyKey": "Please enter your backup key.",
+        "pickFailed": "Could not open the file. Please try again.",
+        "failed": "Restore failed. Please try again."
+      }
+    },
+    "error": {
+      "title": "Error",
+      "createFailed": "Could not create the backup. Please try again.",
+      "shareFailed": "Could not save the backup file to your device. Please try again."
+    }
+  },
+  "sections": {
+    "general": "General",
+    "dataAndPrivacy": "Privacy & Security",
+    "app": "App"
   },
   "deleteDataConfirm": {
-    "title": "Delete all data",
-    "message": "This will permanently delete all your period data, cycle history, health logs, and app settings. This action cannot be undone.",
-    "delete": "Delete all data",
-    "cancel": "Cancel",
-    "success": "Success",
-    "successMessage": "All your data has been deleted. The app will now restart.",
-    "error": "Error",
-    "errorMessage": "Failed to delete data. Please try again."
+  "title": "Delete all data",
+  "message": "This will permanently delete all your period data, cycle history, health logs, and app settings. This action cannot be undone.",
+  "delete": "Delete all data",
+  "cancel": "Cancel",
+  "success": "Success",
+  "successMessage": "All data deleted.",
+  "error": "Error",
+  "errorMessage": "Failed to delete data. Please try again."
   },
   "themeModal": {
     "title": "Choose theme"

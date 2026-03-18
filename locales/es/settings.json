@@ -10,19 +10,88 @@
   "screenTitles": {
     "reminders": "Recordatorios",
     "appLock": "Bloqueo de aplicación",
+    "encryptedBackups": "Copias de seguridad cifradas",
+    "backup": "Guarda la clave de copia de seguridad",
+    "restore": "Restaurar copia de seguridad",
+    "restoreKey": "Introduce la clave",
     "about": "Acerca de",
     "privacyPolicy": "Política de privacidad",
-    "calendarView": "Vista del calendario"
+    "calendarView": "Vista del calendario",
+    "backupDownload": "Descarga la copia de seguridad"
+  },
+  "backup": {
+    "settingsRow": "Copia de seguridad",
+    "settingsRowEncryptedBackups": "Copias de seguridad cifradas",
+    "settingsRowBackup": "Hacer copia de seguridad",
+    "settingsRowRestore": "Restaurar copia de seguridad",
+    "createTitle": "Crear copia de seguridad",
+    "createDescription": "Guarda una copia de seguridad cifrada de todos tus datos. Necesitarás la clave para restaurarla.",
+    "createButton": "Crear copia de seguridad",
+    "generating": "Creando copia de seguridad…",
+    "step1Label": "Paso 1 de 2",
+    "step2Label": "Paso 2 de 2",
+    "step2Description": "Ahora guarda la copia de seguridad cifrada.",
+    "continueToFile": "Continuar",
+    "continueButton": "Continuar. He guardado mi clave",
+    "successTitle": "La copia de seguridad cifrada ya está guardada en tu dispositivo",
+    "successMessage": "La copia de seguridad ha sido guardada. Mantén la clave a salvo — la necesitarás para restaurar tus datos.",
+    "keyWarningTitle": "Guarda esta clave en un lugar seguro.",
+    "keyWarning": "La necesitarás para restaurar tus datos.",
+    "copyKey": "Copiar",
+    "keyCopied": "Copiada!",
+    "savedBackup": "Guardar copia de seguridad",
+    "preparingFile": "Preparando copia de seguridad…",
+    "downloadReadyTitle": "La copia de seguridad cifrada está lista para descargar",
+    "downloadKeyReminder": "No olvides guardar la clave en un lugar seguro. La necesitarás para restaurar tus datos.",
+    "downloadButton": "Descargar copia de seguridad",
+    "shareTitle": "Guardar copia de seguridad de Bluma",
+    "backToSettings": "Volver a ajustes",
+    "shareAgain": "Compartir de nuevo",
+    "done": "Listo",
+    "restoreTitle": "Restaurar copia de seguridad",
+    "restoreDescription": "Restaura tus datos desde un archivo de copia de seguridad .bluma creado anteriormente.",
+    "restoreButton": "Elegir copia de seguridad",
+    "restore": {
+      "chooseFileTitle": "Elige la copia de seguridad a restaurar",
+      "confirmTitle": "Restaurar copia de seguridad",
+      "confirmMessage": "Esto reemplazará permanentemente todos tus datos actuales con los de la copia de seguridad. Esta acción no se puede deshacer.",
+      "continue": "Continuar",
+      "cancel": "Cancelar",
+      "keyLabel": "Introduce tu clave de copia de seguridad",
+      "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
+      "restoreButton": "Restaurar",
+      "ok": "OK",
+      "pickDifferentFile": "Elegir otro archivo",
+      "successTitle": "Restauración de copia de seguridad completada",
+      "error": {
+        "invalidFile": "Este archivo no parece ser una copia de seguridad válida de Bluma.",
+        "unsupportedVersion": "Esta copia de seguridad fue creada con una versión más nueva de Bluma que la instalada en este dispositivo. Por favor actualiza Bluma para restaurarla.",
+        "wrongKey": "Clave de copia de seguridad incorrecta. Por favor verifica e inténtalo de nuevo.",
+        "emptyKey": "Por favor introduce tu clave de copia de seguridad.",
+        "pickFailed": "No se pudo abrir el archivo. Por favor inténtalo de nuevo.",
+        "failed": "La restauración falló. Por favor inténtalo de nuevo."
+      }
+    },
+    "error": {
+      "title": "Error",
+      "createFailed": "No se pudo crear la copia de seguridad. Por favor inténtalo de nuevo.",
+      "shareFailed": "No se pudo guardar la copia de seguridad en tu dispositivo. Por favor inténtalo de nuevo."
+    }
+  },
+  "sections": {
+    "general": "General",
+    "dataAndPrivacy": "Privacidad y seguridad",
+    "app": "Aplicación"
   },
   "deleteDataConfirm": {
-    "title": "Eliminar todos los datos",
-    "message": "Esta acción eliminará permanentemente todos tus datos de periodo, historial de ciclos, registros de salud y ajustes de la aplicación. Esta acción no se puede deshacer.",
-    "delete": "Eliminar todos los datos",
-    "cancel": "Cancelar",
-    "success": "Éxito",
-    "successMessage": "Todos tus datos han sido eliminados. La aplicación se reiniciará ahora.",
-    "error": "Error",
-    "errorMessage": "Error al eliminar los datos. Por favor, inténtalo de nuevo."
+  "title": "Eliminar todos los datos",
+  "message": "Esta acción eliminará permanentemente todos tus datos de periodo, historial de ciclos, registros de salud y ajustes de la aplicación. Esta acción no se puede deshacer.",
+  "delete": "Eliminar todos los datos",
+  "cancel": "Cancelar",
+  "success": "Éxito",
+  "successMessage": "Todos los datos se han eliminado.",
+  "error": "Error",
+  "errorMessage": "Error al eliminar los datos. Por favor, inténtalo de nuevo."
   },
   "themeModal": {
     "title": "Elegir tema"

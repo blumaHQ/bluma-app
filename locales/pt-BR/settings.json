@@ -10,19 +10,88 @@
   "screenTitles": {
     "reminders": "Lembretes",
     "appLock": "Bloqueio do App",
+    "encryptedBackups": "Backups criptografados",
+    "backup": "Salve a chave de backup",
+    "restore": "Restaurar backup",
+    "restoreKey": "Digite a chave de backup",
     "about": "Sobre",
     "privacyPolicy": "Política de privacidade",
-    "calendarView": "Visualização do calendário"
+    "calendarView": "Visualização do calendário",
+    "backupDownload": "Baixar o backup"
+  },
+  "backup": {
+    "settingsRow": "Backup e restauração",
+    "settingsRowEncryptedBackups": "Backups criptografados",
+    "settingsRowBackup": "Fazer backup",
+    "settingsRowRestore": "Restaurar backup",
+    "createTitle": "Criar backup",
+    "createDescription": "Salve um backup criptografado de todos os seus dados. Você precisará da chave de backup para restaurá-lo.",
+    "createButton": "Criar backup",
+    "generating": "Criando backup…",
+    "step1Label": "Etapa 1 de 2",
+    "step2Label": "Etapa 2 de 2",
+    "step2Description": "Agora salve o arquivo de backup criptografado.",
+    "continueToFile": "Continuar",
+    "continueButton": "Continuar. Salvei a chave",
+    "successTitle": "O backup criptografado foi salvo no dispositivo",
+    "successMessage": "O backup foi salvo. Guarde a chave em um local seguro — você precisará dela para restaurar seus dados.",
+    "keyWarningTitle": "Guarde esta chave em um local seguro.",
+    "keyWarning": "Você precisará da chave para restaurar os dados.",
+    "copyKey": "Copiar",
+    "keyCopied": "Copiada!",
+    "savedBackup": "Salvar arquivo de backup",
+    "preparingFile": "Preparando arquivo…",
+    "downloadReadyTitle": "O backup criptografado está pronto para ser baixado",
+    "downloadKeyReminder": "Não se esqueça de guardar a chave em um local seguro. Vai precisar dela para restaurar os dados.",
+    "downloadButton": "Baixar backup",
+    "shareTitle": "Salvar backup do Bluma",
+    "backToSettings": "Voltar para configurações",
+    "shareAgain": "Compartilhar novamente",
+    "done": "Concluído",
+    "restoreTitle": "Restaurar backup",
+    "restoreDescription": "Restaure seus dados a partir de um arquivo de backup .bluma criado anteriormente.",
+    "restoreButton": "Escolher arquivo de backup",
+    "restore": {
+      "chooseFileTitle": "Escolha o backup para restaurar",
+      "confirmTitle": "Restaurar backup",
+      "confirmMessage": "Isso substituirá permanentemente todos os seus dados atuais pelo backup. Esta ação não pode ser desfeita.",
+      "continue": "Continuar",
+      "cancel": "Cancelar",
+      "keyLabel": "Digite a chave de backup",
+      "keyPlaceholder": "XXXXXXXXXXX-XXXXXXXXXXX",
+      "restoreButton": "Restaurar",
+      "ok": "OK",
+      "pickDifferentFile": "Escolher outro arquivo",
+      "successTitle": "Restauração de backup concluída",
+      "error": {
+        "invalidFile": "Este arquivo não parece ser um backup válido da Bluma.",
+        "unsupportedVersion": "Este backup foi criado com uma versão mais nova da Bluma que a instalada neste dispositivo. Por favor, atualize Bluma para restaurar o backup.",
+        "wrongKey": "Chave de backup incorreta. Por favor, verifique e tente novamente.",
+        "emptyKey": "Por favor, digite sua chave de backup.",
+        "pickFailed": "Não foi possível abrir o arquivo. Por favor, tente novamente.",
+        "failed": "A restauração falhou. Por favor, tente novamente."
+      }
+    },
+    "error": {
+      "title": "Erro",
+      "createFailed": "Não foi possível criar o backup. Por favor, tente novamente.",
+      "shareFailed": "Não foi possível salvar o arquivo de backup no seu dispositivo. Por favor, tente novamente."
+    }
+  },
+  "sections": {
+    "general": "Geral",
+    "dataAndPrivacy": "Privacidade e segurança",
+    "app": "App"
   },
   "deleteDataConfirm": {
-    "title": "Excluir todos os dados",
-    "message": "Esta ação excluirá permanentemente todos os seus dados de menstruação, histórico de ciclos, registros de saúde e configurações do app. Esta ação não pode ser desfeita.",
-    "delete": "Excluir todos os dados",
-    "cancel": "Cancelar",
-    "success": "Sucesso",
-    "successMessage": "Todos os seus dados foram excluídos. O app será reiniciado.",
-    "error": "Erro",
-    "errorMessage": "Falha ao excluir dados. Por favor, tente novamente."
+  "title": "Excluir todos os dados",
+  "message": "Esta ação excluirá permanentemente todos os seus dados de menstruação, histórico de ciclos, registros de saúde e configurações do app. Esta ação não pode ser desfeita.",
+  "delete": "Excluir todos os dados",
+  "cancel": "Cancelar",
+  "success": "Sucesso",
+  "successMessage": "Todos os dados foram excluídos.",
+  "error": "Erro",
+  "errorMessage": "Falha ao excluir dados. Por favor, tente novamente."
   },
   "themeModal": {
     "title": "Escolher tema"
