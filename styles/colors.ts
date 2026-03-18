@@ -37,6 +37,7 @@ export interface ColorScheme {
   neutral100: string;
   neutral150: string;
   neutral200: string;
+  neutral250: string;
   neutral300: string;
   neutral400: string;
 
@@ -62,8 +63,8 @@ export const lightColors: ColorScheme = {
   surface: '#FFFFFF', // main cards / panels
   surfaceVariant: '#F0F1FF', // variant cards / panels
   surfaceVariant2: '#FFFFFF', // variant cards / panels
-  surfaceVariant3: '#F0F1FF', // variant cards / panels
-  surfaceVariant4: '#F0F1FF', // variant cards / panels
+  surfaceVariant3: '#E8EAFF', // variant cards / panels
+  surfaceVariant4: '#F9FAFF', // variant cards / panels
   surfaceTabBar: '#F1F0F6', // tabs / sheets / panels
   panel: '#FFFFFF', // subtle panel background
   border: '#EFEFF6', // borders / dividers
@@ -93,8 +94,9 @@ export const lightColors: ColorScheme = {
 
   //Neutrals
   neutral100: '#DADAE4',
-  neutral150: '#E3E4F3',
+  neutral150: '#D9DBFB',
   neutral200: '#8A86A9',
+  neutral250: '#C5C6D9',
   neutral300: '#D8DAFF',
   neutral400: '#706D8C',
 
@@ -153,6 +155,7 @@ export const darkColors: ColorScheme = {
   neutral100: '#5E5D7F',
   neutral150: '#3E3D5C',
   neutral200: '#696981',
+  neutral250: '#4A4963',
   neutral300: '#26253E',
   neutral400: '#706D8C',
 

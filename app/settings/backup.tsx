@@ -135,18 +135,27 @@ export default function BackupScreen() {
     <>
       <Stack.Screen
         options={{
+          headerShown: backup.type !== 'success',
           headerTitle: backup.type === 'success' ? '' : screenTitle,
           headerBackVisible: backup.type !== 'success',
         }}
       />
       <ScrollView
         style={[commonStyles.scrollView, { backgroundColor: colors.panel}]}
-        contentContainerStyle={[scrollContentContainerWithSafeArea]}
+        contentContainerStyle={[
+          scrollContentContainerWithSafeArea,
+          backup.type === 'success' && styles.successScrollContainer,
+        ]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
       >
   
-        <View style={styles.contentContainer}>
+        <View
+          style={[
+            styles.contentContainer,
+            backup.type !== 'success' && styles.contentContainerWithTopMargin,
+          ]}
+        >
           {backup.type === 'key_display' && (
             <>
               <View style={styles.illustrationWrapper}>
@@ -224,7 +233,7 @@ export default function BackupScreen() {
           )}
 
           {backup.type === 'save_file' && (
-            <View style={styles.contentContainer}>
+            <View style={[styles.contentContainer, styles.contentContainerWithTopMargin]}>
             <View style={styles.illustrationWrapper}>
               <Image
                 source={require('../../assets/images/password.png')}
@@ -264,32 +273,33 @@ export default function BackupScreen() {
           )}
 
           {backup.type === 'success' && (
-            <View style={styles.contentContainer}>
-            <View style={styles.illustrationWrapper}>
-              <AnimatedCheckmark
-                backgroundColor={colors.accentPink}
-                iconColor={colors.white}
-                size={120}
-                iconSize={80}
-              />
-            </View>
+            <View style={styles.successSection}>
+              <View style={styles.illustrationWrapper}>
+                <AnimatedCheckmark
+                  backgroundColor={colors.accentPink}
+                  iconColor={colors.white}
+                  size={120}
+                  iconSize={80}
+                />
+              </View>
 
-              <View style={styles.titleButtonContainer}>
               <Text
                 style={[
                   typography.headingMd,
-                  { color: colors.textPrimary, fontSize: 28, lineHeight: 34, textAlign: 'center', marginTop: 16},
+                  {
+                    color: colors.textPrimary,
+                    fontSize: 28,
+                    lineHeight: 34,
+                    fontWeight: '600',
+                    textAlign: 'center',
+                    marginBottom: 16,
+                  },
                 ]}
               >
                 {t('backup.successTitle')}
               </Text>
 
-              <Button
-                title={t('backup.backToSettings')}
-                onPress={handleBackToSettings}
-                fullWidth
-              />
-            </View>
+              <Button title={t('backup.backToSettings')} onPress={handleBackToSettings} fullWidth />
             </View>
           )}
         </View>
@@ -301,7 +311,18 @@ export default function BackupScreen() {
 const styles = StyleSheet.create({
   contentContainer: {
     gap: 16,
+  },
+  contentContainerWithTopMargin: {
     marginTop: 24,
+  },
+  successScrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  successSection: {
+    alignItems: 'center',
+    gap: 24,
+    paddingHorizontal: 16,
   },
   copyKeyContainer: {
     gap: 16,
@@ -318,7 +339,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   keyText: {
-    fontSize: 20,
+    fontSize: 19,
     fontFamily: 'monospace',
     letterSpacing: 1.2,
     textAlign: 'center',

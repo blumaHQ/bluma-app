@@ -101,7 +101,7 @@ export default function RestoreKeyScreen() {
               styles.keyInput,
               {
                 backgroundColor: colors.surface,
-                borderColor: errorMessage ? colors.error : colors.neutral150,
+                borderColor: errorMessage ? colors.error : colors.neutral250,
                 color: colors.textPrimary,
                 textAlign: 'center',
               },
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     gap: 24,
   },
   keyInput: {
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderRadius: 8,
     padding: 14,
     fontSize: 20,
