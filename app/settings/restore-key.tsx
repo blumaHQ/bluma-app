@@ -22,6 +22,10 @@ export default function RestoreKeyScreen() {
   const [fileErrorDialog, setFileErrorDialog] = useState<{ title: string; message: string } | null>(null);
 
   const handleRestore = useCallback(async () => {
+    if (!fileUri) {
+      setFileErrorDialog({ title: t('backup.error.title'), message: t('backup.restore.error.invalidFile') });
+      return;
+    }
     if (!keyInput.trim()) {
       setErrorMessage(t('backup.restore.error.emptyKey'));
       return;

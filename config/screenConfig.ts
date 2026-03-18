@@ -59,7 +59,6 @@ export const dynamicScreens: ScreenConfig[] = [
   {
     name: 'settings/restore-success',
     headerShown: false,
-    titleKey: 'settings:screenTitles.restoreSuccess',
     headerShadowVisible: false,
     backgroundColorKey: 'panel',
   },

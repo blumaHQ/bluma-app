@@ -10,7 +10,7 @@
   "screenTitles": {
     "reminders": "Lembretes",
     "appLock": "Bloqueio da Aplicação",
-    "encryptedBackups": "Cópias de segurança cifradas",
+    "encryptedBackups": "Cópias de segurança encriptadas",
     "backup": "Guarda a chave de cópia de segurança",
     "restore": "Restaurar cópia de segurança",
     "restoreKey": "Introduz a chave",
