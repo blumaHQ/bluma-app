@@ -45,8 +45,8 @@ export default function Settings() {
       contentContainerStyle={commonStyles.scrollContentContainer}
       showsVerticalScrollIndicator={false}
     >
-      <View style={{ marginBottom: 8 }}>
-        <Text style={typography.caption}>{t('sections.general')}</Text>
+      <View style={{ marginBottom: 10, marginTop: 10 }}>
+        <Text style={[typography.caption, { fontSize: 15 }, { fontWeight: '500' }]}>{t('sections.general')}</Text>
       </View>
 
       <View style={[commonStyles.sectionContainer, { padding: 0 }]}>
@@ -83,8 +83,8 @@ export default function Settings() {
         </TouchableOpacity>
       </View>
 
-      <View style={{ marginTop: 24, marginBottom: 8 }}>
-        <Text style={typography.caption}>{t('sections.dataAndPrivacy')}</Text>
+      <View style={{ marginTop: 20, marginBottom: 10 }}>
+        <Text style={[typography.caption, { fontSize: 15 }, { fontWeight: '500' }]}>{t('sections.dataAndPrivacy')}</Text>
       </View>
 
       <View style={[commonStyles.sectionContainer, { padding: 0 }]}>
@@ -133,8 +133,8 @@ export default function Settings() {
         </TouchableOpacity>
       </View>
 
-      <View style={{ marginTop: 24, marginBottom: 8 }}>
-        <Text style={typography.caption}>{t('sections.app')}</Text>
+      <View style={{ marginTop: 20, marginBottom: 10 }}>
+        <Text style={[typography.caption, { fontSize: 15 }, { fontWeight: '500' }]}>{t('sections.app')}</Text>
       </View>
 
       <View style={[commonStyles.sectionContainer, { padding: 0 }]}>
