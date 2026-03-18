@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../styles/theme';
 import { useAppStyles } from '../../hooks/useStyles';
 import { Button } from '../../components/Button';
+import { AnimatedCheckmark } from '../../components/AnimatedCheckmark';
 
 export default function RestoreSuccessScreen() {
   const router = useRouter();
@@ -22,10 +23,11 @@ export default function RestoreSuccessScreen() {
       >
         <View style={styles.contentSection}>
           <View style={styles.illustrationWrapper}>
-            <Image
-              source={require('../../assets/images/password.png')}
-              style={styles.illustration}
-              resizeMode="contain"
+            <AnimatedCheckmark
+              backgroundColor={colors.accentPink}
+              iconColor={colors.white}
+              size={120}
+              iconSize={80}
             />
           </View>
 
@@ -72,10 +74,6 @@ const styles = StyleSheet.create({
   illustrationWrapper: {
     alignItems: 'center',
     marginBottom: 8,
-  },
-  illustration: {
-    width: 200,
-    height: 200,
   },
 });
 

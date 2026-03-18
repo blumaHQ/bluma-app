@@ -13,6 +13,7 @@ import {
   cleanupBackupFile,
 } from '../../services/backupService';
 import { InfoIcon } from '../../components/icons/general/info';
+import { AnimatedCheckmark } from '../../components/AnimatedCheckmark';
 
 type BackupPhase =
   | { type: 'key_display'; key: string; filePath: string | null; keyCopied: boolean }
@@ -256,10 +257,11 @@ export default function BackupScreen() {
           {backup.type === 'success' && (
             <View style={styles.contentContainer}>
             <View style={styles.illustrationWrapper}>
-              <Image
-                source={require('../../assets/images/password.png')}
-                style={styles.illustration}
-                resizeMode="contain"
+              <AnimatedCheckmark
+                backgroundColor={colors.accentPink}
+                iconColor={colors.white}
+                size={120}
+                iconSize={80}
               />
             </View>
 
