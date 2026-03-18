@@ -160,7 +160,7 @@ export default function BackupScreen() {
             <>
               <View style={styles.illustrationWrapper}>
                 <Image
-                  source={require('../../assets/images/password.png')}
+                  source={require('../../assets/images/save-key.png')}
                   style={styles.illustration}
                   resizeMode="contain"
                 />
@@ -236,7 +236,7 @@ export default function BackupScreen() {
             <View style={[styles.contentContainer, styles.contentContainerWithTopMargin]}>
             <View style={styles.illustrationWrapper}>
               <Image
-                source={require('../../assets/images/password.png')}
+                source={require('../../assets/images/download-key.png')}
                 style={styles.illustration}
                 resizeMode="contain"
               />

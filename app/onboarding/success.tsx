@@ -26,8 +26,6 @@ export default function SuccessScreen() {
         <AnimatedCheckmark
           backgroundColor={colors.accentPink}
           iconColor={colors.white}
-          size={120}
-          iconSize={80}
         />
 
         <Text

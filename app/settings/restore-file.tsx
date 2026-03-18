@@ -66,7 +66,7 @@ export default function RestoreFileScreen() {
         <View style={styles.contentSection}>
           <View style={styles.illustrationWrapper}>
             <Image
-              source={require('../../assets/images/password.png')}
+              source={require('../../assets/images/encrypted-file.png')}
               style={styles.illustration}
               resizeMode="contain"
             />
