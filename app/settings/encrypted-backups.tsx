@@ -20,12 +20,11 @@ export default function EncryptedBackupsScreen() {
           onPress={() => router.push('/settings/backup')}
         >
           <View style={styles.iconContainer}>
-            <Ionicons name="cloud-upload-outline" size={24} color={colors.neutral200} />
+            <Ionicons name="arrow-up-outline" size={24} color={colors.neutral200} />
           </View>
           <Text style={[typography.bodyLg, { flex: 1 }]}>
             {t('backup.settingsRowBackup')}
           </Text>
-          <Ionicons name="chevron-forward" size={24} color={colors.textPrimary} />
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -33,12 +32,11 @@ export default function EncryptedBackupsScreen() {
           onPress={() => router.push('/settings/restore-file')}
         >
           <View style={styles.iconContainer}>
-            <Ionicons name="cloud-download-outline" size={24} color={colors.neutral200} />
+            <Ionicons name="download-outline" size={24} color={colors.neutral200} />
           </View>
           <Text style={[typography.bodyLg, { flex: 1 }]}>
             {t('backup.settingsRowRestore')}
           </Text>
-          <Ionicons name="chevron-forward" size={24} color={colors.textPrimary} />
         </TouchableOpacity>
       </View>
     </View>

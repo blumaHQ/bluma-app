@@ -56,8 +56,9 @@ export default function BackupScreen() {
           return prev;
         });
       })
-      .catch(() => {
+      .catch(err => {
         if (cancelled) return;
+        console.error('[BackupScreen] createBackupForKey failed:', err);
         Alert.alert(t('backup.error.title'), t('backup.error.createFailed'));
         router.back();
       });

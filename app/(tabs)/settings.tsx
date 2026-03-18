@@ -106,7 +106,7 @@ export default function Settings() {
           onPress={() => router.push('/settings/encrypted-backups')}
         >
           <View style={styles.iconContainer}>
-            <SettingsIcon name="cloud-outline" />
+            <SettingsIcon name="shield-outline" />
           </View>
           <Text style={[typography.bodyLg, { flex: 1 }]}>
             {t('backup.settingsRowEncryptedBackups')}

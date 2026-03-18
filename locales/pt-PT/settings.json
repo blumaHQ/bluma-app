@@ -21,7 +21,7 @@
   },
   "backup": {
     "settingsRow": "Cópia de segurança",
-    "settingsRowEncryptedBackups": "Cópias de segurança cifradas",
+    "settingsRowEncryptedBackups": "Cópias de segurança encriptadas",
     "settingsRowBackup": "Fazer cópia de segurança",
     "settingsRowRestore": "Restaurar cópia de segurança",
     "createTitle": "Criar cópia de segurança",
@@ -32,8 +32,8 @@
     "step2Label": "Passo 2 de 2",
     "step2Description": "Agora guarda o ficheiro de cópia de segurança encriptado.",
     "continueToFile": "Continuar",
-    "continueButton": "Continuar. Guardei a minha chave",
-    "successTitle": "A cópia de segurança cifrada foi guardada no dispositivo",
+    "continueButton": "Continuar. Guardei a chave",
+    "successTitle": "A cópia de segurança encriptada foi guardada no dispositivo",
     "successMessage": "A cópia de segurança foi guardada. Mantém a chave em segurança — precisarás dela para restaurar os dados.",
     "keyWarningTitle": "Guarda esta chave num local seguro.",
     "keyWarning": "Precisarás dela para restaurar os dados.",
@@ -41,7 +41,7 @@
     "keyCopied": "Copiada!",
     "savedBackup": "Guardar ficheiro de cópia de segurança",
     "preparingFile": "A preparar ficheiro…",
-    "downloadReadyTitle": "A cópia de segurança cifrada está pronta para ser descarregada",
+    "downloadReadyTitle": "A cópia de segurança encriptada está pronta para ser descarregada",
     "downloadButton": "Descarregar cópia de segurança",
     "shareTitle": "Guardar cópia de segurança do Bluma",
     "backToSettings": "Voltar às definições",
@@ -66,7 +66,7 @@
         "invalidFile": "Este ficheiro não parece ser uma cópia de segurança válida da Bluma.",
         "unsupportedVersion": "Esta cópia de segurança foi criada com uma versão mais recente da Bluma que a instalada neste dispositivo. Por favor, atualiza Bluma para restaurar a cópia de segurança.",
         "wrongKey": "Chave de cópia de segurança incorreta. Por favor, verifica e tenta novamente.",
-        "emptyKey": "Por favor, introduz a tua chave de cópia de segurança.",
+        "emptyKey": "Por favor, introduz a chave de cópia de segurança que guardaste.",
         "pickFailed": "Não foi possível abrir o ficheiro. Por favor, tenta novamente.",
         "failed": "A restauração falhou. Por favor, tenta novamente."
       }
