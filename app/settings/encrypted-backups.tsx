@@ -20,7 +20,7 @@ export default function EncryptedBackupsScreen() {
           onPress={() => router.push('/settings/backup')}
         >
           <View style={styles.iconContainer}>
-            <Ionicons name="arrow-up-outline" size={24} color={colors.neutral200} />
+            <Ionicons name="document-lock-outline" size={24} color={colors.neutral200} />
           </View>
           <Text style={[typography.bodyLg, { flex: 1 }]}>
             {t('backup.settingsRowBackup')}
@@ -32,7 +32,7 @@ export default function EncryptedBackupsScreen() {
           onPress={() => router.push('/settings/restore-file')}
         >
           <View style={styles.iconContainer}>
-            <Ionicons name="download-outline" size={24} color={colors.neutral200} />
+            <Ionicons name="sync-circle-outline" size={24} color={colors.neutral200} />
           </View>
           <Text style={[typography.bodyLg, { flex: 1 }]}>
             {t('backup.settingsRowRestore')}
