@@ -42,6 +42,7 @@
     "savedBackup": "Salvar arquivo de backup",
     "preparingFile": "Preparando arquivo…",
     "downloadReadyTitle": "O backup criptografado está pronto para ser baixado",
+    "downloadKeyReminder": "Não se esqueça de guardar a chave em um local seguro. Vai precisar dela para restaurar os dados.",
     "downloadButton": "Baixar backup",
     "shareTitle": "Salvar backup do Bluma",
     "backToSettings": "Voltar para configurações",

@@ -243,6 +243,15 @@ export default function BackupScreen() {
                 {t('backup.downloadReadyTitle')}
               </Text>
 
+              <Text
+                style={[
+                  typography.body,
+                  { color: colors.textSecondary, textAlign: 'center' },
+                ]}
+              >
+                {t('backup.downloadKeyReminder')}
+              </Text>
+
               <Button
                 title={backup.filePath ? t('backup.downloadButton') : t('backup.preparingFile')}
                 onPress={handleDownloadBackup}
@@ -269,7 +278,7 @@ export default function BackupScreen() {
               <Text
                 style={[
                   typography.headingMd,
-                  { color: colors.textPrimary, fontSize: 28, lineHeight: 34, textAlign: 'center'},
+                  { color: colors.textPrimary, fontSize: 28, lineHeight: 34, textAlign: 'center', marginTop: 16},
                 ]}
               >
                 {t('backup.successTitle')}
@@ -292,6 +301,7 @@ export default function BackupScreen() {
 const styles = StyleSheet.create({
   contentContainer: {
     gap: 16,
+    marginTop: 24,
   },
   copyKeyContainer: {
     gap: 16,
@@ -303,7 +313,6 @@ const styles = StyleSheet.create({
     gap: 32,
     alignItems: 'center',
     },
-
   keyBox: {
     padding: 16,
     borderRadius: 8,
@@ -320,6 +329,7 @@ const styles = StyleSheet.create({
   illustration: {
     width: 200,
     height: 200,
+    marginBottom: 8,
   },
   warningContainer: {
     borderWidth: 1,
@@ -328,6 +338,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     columnGap: 8,
+    marginBottom: 16,
   },
   warningIcon: {
     marginRight: 3,

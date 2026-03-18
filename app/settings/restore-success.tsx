@@ -40,6 +40,7 @@ export default function RestoreSuccessScreen() {
                 lineHeight: 34,
                 fontWeight: '600',
                 textAlign: 'center',
+                marginBottom: 16,
               },
             ]}
           >

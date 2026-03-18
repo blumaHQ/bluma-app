@@ -42,6 +42,7 @@
     "savedBackup": "Save backup file",
     "preparingFile": "Preparing file…",
     "downloadReadyTitle": "Your backup is ready!",
+    "downloadKeyReminder": "Remember to store the key in a secure location. You'll need it to restore the data.",
     "downloadButton": "Download backup",
     "shareTitle": "Save Bluma Backup",
     "backToSettings": "Back to settings",

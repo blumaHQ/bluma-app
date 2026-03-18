@@ -42,6 +42,7 @@
     "savedBackup": "Guardar copia de seguridad",
     "preparingFile": "Preparando copia de seguridad…",
     "downloadReadyTitle": "La copia de seguridad cifrada está lista para descargar",
+    "downloadKeyReminder": "No olvides guardar la clave en un lugar seguro. La necesitarás para restaurar tus datos.",
     "downloadButton": "Descargar copia de seguridad",
     "shareTitle": "Guardar copia de seguridad de Bluma",
     "backToSettings": "Volver a ajustes",
