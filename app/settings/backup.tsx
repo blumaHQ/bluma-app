@@ -278,8 +278,6 @@ export default function BackupScreen() {
                 <AnimatedCheckmark
                   backgroundColor={colors.accentPink}
                   iconColor={colors.white}
-                  size={120}
-                  iconSize={80}
                 />
               </View>
 
@@ -293,6 +291,7 @@ export default function BackupScreen() {
                     fontWeight: '600',
                     textAlign: 'center',
                     marginBottom: 16,
+                    marginTop: 16,
                   },
                 ]}
               >

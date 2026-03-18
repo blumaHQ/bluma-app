@@ -26,8 +26,6 @@ export default function RestoreSuccessScreen() {
             <AnimatedCheckmark
               backgroundColor={colors.accentPink}
               iconColor={colors.white}
-              size={120}
-              iconSize={80}
             />
           </View>
 
@@ -41,6 +39,7 @@ export default function RestoreSuccessScreen() {
                 fontWeight: '600',
                 textAlign: 'center',
                 marginBottom: 16,
+                marginTop: 16,
               },
             ]}
           >

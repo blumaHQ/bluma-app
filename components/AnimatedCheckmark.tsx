@@ -20,8 +20,8 @@ type AnimatedCheckmarkProps = {
 export function AnimatedCheckmark({
   backgroundColor,
   iconColor,
-  size = 120,
-  iconSize = 60,
+  size = 100,
+  iconSize = 70,
   style,
 }: AnimatedCheckmarkProps) {
   const scale = useSharedValue(0);
@@ -29,8 +29,8 @@ export function AnimatedCheckmark({
 
   useEffect(() => {
     scale.value = withSequence(
-      withSpring(1.2, { damping: 8 }),
-      withSpring(1, { damping: 10 })
+      withSpring(1.2, { damping: 14, stiffness: 1000, mass: 4 }),
+      withSpring(1.2, { damping: 16, stiffness: 1000, mass: 4 }),
     );
     opacity.value = withTiming(1, { duration: 300 });
   }, [opacity, scale]);
