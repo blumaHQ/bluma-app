@@ -157,11 +157,11 @@ export default function BackupScreen() {
                 />
               </View>
 
-              <View style={[styles.copyKeyContainer, { backgroundColor: colors.surfaceVariant}]}>
+              <View style={[styles.copyKeyContainer, { backgroundColor: colors.surfaceVariant3}]}>
                 <View
                   style={[
                     styles.keyBox,
-                    { backgroundColor: colors.surface, borderColor: colors.neutral150 },
+                    { backgroundColor: colors.surfaceVariant4},
                   ]}
                 >
                   <Text style={[styles.keyText, { color: colors.textPrimary }]} selectable>
@@ -291,8 +291,7 @@ export default function BackupScreen() {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    gap: 32,
-    paddingVertical: 24,
+    gap: 16,
   },
   copyKeyContainer: {
     gap: 16,
@@ -308,7 +307,6 @@ const styles = StyleSheet.create({
   keyBox: {
     padding: 16,
     borderRadius: 8,
-    borderWidth: 1.5,
   },
   keyText: {
     fontSize: 20,

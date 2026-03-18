@@ -4,6 +4,8 @@ export interface ColorScheme {
   surface: string; // main cards / panels
   surfaceVariant: string; // variant cards / panels
   surfaceVariant2: string;
+  surfaceVariant3: string;
+  surfaceVariant4: string;
   surfaceTabBar: string; // tab bar background
   panel: string; // subtle panel background
   border: string; // borders / dividers
@@ -60,6 +62,8 @@ export const lightColors: ColorScheme = {
   surface: '#FFFFFF', // main cards / panels
   surfaceVariant: '#F0F1FF', // variant cards / panels
   surfaceVariant2: '#FFFFFF', // variant cards / panels
+  surfaceVariant3: '#F0F1FF', // variant cards / panels
+  surfaceVariant4: '#F0F1FF', // variant cards / panels
   surfaceTabBar: '#F1F0F6', // tabs / sheets / panels
   panel: '#FFFFFF', // subtle panel background
   border: '#EFEFF6', // borders / dividers
@@ -115,9 +119,11 @@ export const darkColors: ColorScheme = {
   background: '#000219', // dark page background
   surface: '#1A1C31', // dark cards / panels
   surfaceVariant: '#26253E', // dark variant cards / panels
-  surfaceVariant2: '#30304D', // dark variant cards / panels
+  surfaceVariant2: '#30304D',
+  surfaceVariant3: '#16182A', // dark variant 
+  surfaceVariant4: '#292B44', // dark variant cards / panels
   surfaceTabBar: '#22213F', // dark tab bar background
-  panel: '#0E0D23', // dark subtle panel background
+  panel: '#000219', // dark subtle panel background
   border: '#26253F', // dark borders / dividers
 
   // primary / main brand colors (keep brand consistent but adjust for contrast)
