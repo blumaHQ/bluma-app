@@ -49,8 +49,8 @@
     "fertileWindow": "Janela fértil"
   },
   "symptomsLogged": {
-    "title": "Registos de saúde",
+    "title": "Registros de saúde",
     "subtitle": "Organizados por fase do ciclo",
-    "noLogs": "Nenhum registo de saúde registado durante este ciclo."
+    "noLogs": "Nenhum registro de saúde registrado durante este ciclo."
   }
 }

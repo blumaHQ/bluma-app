@@ -12,7 +12,7 @@ import { getCycleStatus, getPeriodStatus } from '../utils/cycleUtils';
 import { parseLocalDate } from '../utils/dateUtils';
 import { InfoIcon } from '../components/icons/general/info';
 import { CycleIcon } from '../components/icons/general/Cycle';
-import { getDB } from '../db';
+import { getDB, getSetting } from '../db';
 import { healthLogs } from '../db/schema';
 import { PeriodPredictionService, CyclePhase } from '../services/periodPredictions';
 import { CustomIcon } from '../components/icons/health';
@@ -42,10 +42,20 @@ export default function CycleDetails() {
   });
 
   useEffect(() => {
+    let cancelled = false;
     const load = async () => {
       try {
         const db = getDB();
         const queryEnd = isCurrentCycle ? dayjs().format('YYYY-MM-DD') : endDate;
+        const userCycleLengthSetting = await getSetting('userCycleLength');
+        const parsedUserCycleLength = userCycleLengthSetting
+          ? parseInt(userCycleLengthSetting, 10)
+          : NaN;
+        const stableCycleLength = isCurrentCycle
+          ? Number.isFinite(parsedUserCycleLength) && parsedUserCycleLength > 0
+            ? parsedUserCycleLength
+            : 28
+          : cycleLength;
         const logs = await db
           .select()
           .from(healthLogs)
@@ -61,7 +71,7 @@ export default function CycleDetails() {
         for (const log of logs) {
           if (log.type === 'notes' || log.type === 'temperature') continue;
           const cycleDay = dayjs(log.date).diff(dayjs(startDate), 'days') + 1;
-          const phase = PeriodPredictionService.getCyclePhase(cycleDay, cycleLength, periodLength);
+          const phase = PeriodPredictionService.getCyclePhase(cycleDay, stableCycleLength, periodLength);
           const key = `${log.type}:${log.item_id}`;
           if (!countMap[phase][key]) countMap[phase][key] = { type: log.type, count: 0 };
           countMap[phase][key].count++;
@@ -74,12 +84,17 @@ export default function CycleDetails() {
             .sort((a, b) => b.count - a.count)
             .slice(0, 2);
         }
-        setPhaseLogs(result);
+        if (!cancelled) {
+          setPhaseLogs(result);
+        }
       } catch (e) {
         console.error('Error loading phase logs:', e);
       }
     };
     load();
+    return () => {
+      cancelled = true;
+    };
   }, [startDate, endDate, cycleLength, periodLength, isCurrentCycle]);
 
   const getItemIcon = (type: string, item_id: string) => {
