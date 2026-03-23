@@ -47,6 +47,11 @@
     "nextPeriod": "Próximo periodo",
     "nextOvulation": "Próxima ovulación",
     "fertileWindow": "Ventana fértil"
+  },
+  "symptomsLogged": {
+    "title": "Registros de salud",
+    "subtitle": "Organizados por fase del ciclo",
+    "noLogs": "No se han registrado datos de salud durante este ciclo."
   }
 }
 

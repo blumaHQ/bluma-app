@@ -22,7 +22,7 @@ export const createTypography = (colors: ColorScheme) =>
       color: colors.textPrimary,
     },
     body: {
-      fontSize: 17,
+      fontSize: 16,
       lineHeight: 22,
       fontWeight: '400',
       letterSpacing: 0.25,

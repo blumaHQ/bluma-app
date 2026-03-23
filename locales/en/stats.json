@@ -47,6 +47,11 @@
     "nextPeriod": "Next period",
     "nextOvulation": "Next ovulation",
     "fertileWindow": "Fertile window"
+  },
+  "symptomsLogged": {
+    "title": "Health logs",
+    "subtitle": "Grouped by cycle phase",
+    "noLogs": "No health data logged during this cycle."
   }
 }
 
