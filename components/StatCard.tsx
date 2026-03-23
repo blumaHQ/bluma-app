@@ -70,32 +70,27 @@ export function StatCard({ title, value, icon, status, type }: StatCardProps) {
         {icon}
       </View>
       <View style={styles.contentContainer}>
-        <Text style={[typography.body, { color: colors.textPrimary}]}>
-          {title}
-        </Text>
-        <Text
-          style={[
-            typography.displaySm,
-            { marginTop: 2 },
-          ]}
-        >
-          {value}
-        </Text>
-      </View>
-      <View style={styles.rightContainer}>
-        {type && (
-          <View style={styles.infoIcon}>
-            <InfoIcon size={20} color={colors.textSecondary} />
-          </View>
-        )}
-        {status && (
-          <View style={styles.statusContainer}>
-            {getStatusIcon()}
-            <Text style={[typography.caption, { color: getStatusColor() }]}>
-              {getStatusText()}
-            </Text>
-          </View>
-        )}
+        <View style={styles.topRow}>
+          <Text style={[typography.body, { color: colors.textPrimary }]}>
+            {title}
+          </Text>
+          {type && (
+            <View style={styles.infoIcon}>
+              <InfoIcon size={20} color={colors.textSecondary} />
+            </View>
+          )}
+        </View>
+        <View style={styles.bottomRow}>
+          <Text style={typography.headingMd}>{value}</Text>
+          {status && (
+            <View style={styles.statusContainer}>
+              {getStatusIcon()}
+              <Text style={[typography.caption, { color: getStatusColor() }]}>
+                {getStatusText()}
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
     </Pressable>
   );
@@ -104,7 +99,7 @@ export function StatCard({ title, value, icon, status, type }: StatCardProps) {
 const styles = StyleSheet.create({
   card: {
     borderRadius: 12,
-    padding: 16,
+    padding: 12,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -113,8 +108,8 @@ const styles = StyleSheet.create({
     transform: [{ scale: 0.98 }],
   },
   iconContainer: {
-    width: 54,
-    height: 54,
+    width: 42,
+    height: 42,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
@@ -123,10 +118,16 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
   },
-  rightContainer: {
-    alignItems: 'flex-end',
-    alignSelf: 'flex-start',
-    gap: 8,
+  topRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  bottomRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 2,
   },
   statusContainer: {
     flexDirection: 'row',

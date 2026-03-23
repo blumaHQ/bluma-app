@@ -177,7 +177,7 @@ export default function CycleDetails() {
             onPress={() => handleInfoPress('cycle')}
           >
             <View style={styles.cardHeader}>
-              <Text style={[typography.body, { color: colors.textSecondary, fontWeight: '500' }]}>
+              <Text style={[typography.body, { color: colors.textPrimary }]}>
                 {t('stats:cycleHistory.cycleLength')}
               </Text>
               <View style={styles.infoIcon}>
@@ -186,7 +186,7 @@ export default function CycleDetails() {
             </View>
 
             <View style={styles.valueStatusRow}>
-              <Text style={[typography.headingLg, { lineHeight: 32}]}>
+              <Text style={typography.headingMd}>
                 {cycleLength} {cycleLength === 1 ? t('common:time.day') : t('common:time.days')}
               </Text>
               <View style={styles.statusContainer}>
@@ -195,7 +195,7 @@ export default function CycleDetails() {
                   size={20}
                   color={cycleStatus.status === 'normal' ? colors.success : colors.warning}
                 />
-                <Text style={[typography.body, { color: colors.textSecondary }]}>
+                <Text style={[typography.caption, { color: colors.textSecondary }]}>
                   {cycleStatus.status === 'normal'
                     ? t('common:status.normal')
                     : t('common:status.irregular')}
@@ -222,7 +222,7 @@ export default function CycleDetails() {
           onPress={() => handleInfoPress('period')}
         >
           <View style={styles.cardHeader}>
-            <Text style={[typography.body, { color: colors.textSecondary, fontWeight: '500' }]}>
+            <Text style={[typography.body, { color: colors.textPrimary }]}>
               {t('stats:cycleHistory.periodLength')}
             </Text>
             <View style={styles.infoIcon}>
@@ -231,7 +231,7 @@ export default function CycleDetails() {
           </View>
 
           <View style={styles.valueStatusRow}>
-            <Text style={[typography.headingLg, { lineHeight: 32}]}>
+            <Text style={typography.headingMd}>
               {periodLength} {periodLength === 1 ? t('common:time.day') : t('common:time.days')}
             </Text>
             <View style={styles.statusContainer}>
@@ -240,7 +240,7 @@ export default function CycleDetails() {
                 size={20}
                 color={periodStatus.status === 'normal' ? colors.success : colors.warning}
               />
-              <Text style={[typography.body, { color: colors.textSecondary }]}>
+              <Text style={[typography.caption, { color: colors.textSecondary }]}>
                 {periodStatus.status === 'normal'
                   ? t('common:status.normal')
                   : t('common:status.irregular')}
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 6,
+    marginBottom: 2,
   },
   infoIcon: {
     width: 24,
