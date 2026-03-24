@@ -74,6 +74,11 @@ export function CycleHistory({ cycles }: CycleHistoryProps) {
     return null;
   }
 
+  const availableFilters = FILTERS.filter((f) => {
+    if (f === 'all') return true;
+    if (f === 3) return cycles.length > 3;
+    return cycles.length >= 6;
+  });
   const filteredCycles = filter === 'all' ? cycles : cycles.slice(0, filter);
 
   // Helper to calculate how many days have passed since start date
@@ -97,14 +102,15 @@ export function CycleHistory({ cycles }: CycleHistoryProps) {
         <Text
           style={[
             typography.headingMd,
-            commonStyles.sectionTitleContainer
+            commonStyles.sectionTitleContainer,
+            { marginBottom: 0}
           ]}
         >
           {t('stats:cycleHistory.title')}
         </Text>
 
-        <View style={styles.filterRow}>
-          {FILTERS.map((f) => {
+        {availableFilters.length > 1 && <View style={styles.filterRow}>
+          {availableFilters.map((f) => {
             const isActive = filter === f;
             const label =
               f === 'all'
@@ -134,7 +140,7 @@ export function CycleHistory({ cycles }: CycleHistoryProps) {
               </Pressable>
             );
           })}
-        </View>
+        </View>}
       </View>
 
       <View style={[styles.cycleHistoryContainer, { backgroundColor: colors.surface}]}>
@@ -276,7 +282,7 @@ const styles = StyleSheet.create({
   filterRow: {
     flexDirection: 'row',
     gap: 8,
-    marginTop: 4,
+    marginTop: 14,
   },
   filterPill: {
     paddingHorizontal: 16,
