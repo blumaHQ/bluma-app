@@ -3,7 +3,7 @@
     "title": "Sintomas",
     "im-okay": "Estou bem",
     "headache": "Dor de cabeça",
-    "cramps": "Cólicas",
+    "cramps": "Dor de ventre",
     "bloating": "Inchaço",
     "backache": "Dor nas costas",
     "acne": "Acne",
@@ -19,7 +19,7 @@
     "joint-pain": "Dor articular",
     "dizziness": "Tonturas",
     "cravings": "Desejos",
-    "frequent-urination": "Micção frequente",
+    "frequent-urination": "Vontade frequente de urinar",
     "vaginal-dryness": "Secura vaginal"
   },
   "moods": {
@@ -36,7 +36,7 @@
     "sleepy": "Sonolenta",
     "stressed": "Stressada",
     "relaxed": "Relaxada",
-    "mood-swings": "Alterações de humor",
+    "mood-swings": "Mudanças de humor",
     "frisky": "Brincalhona",
     "apathetic": "Apática",
     "bored": "Aborrecida"

@@ -2,7 +2,7 @@
   "today": "Today",
   "todayButton": "Back to today",
   "editPeriod": {
-    "title": "Edit Period",
+    "title": "Edit period",
     "editPeriodDates": "Edit period dates",
     "successMessage": "Period dates saved",
     "errorMessage": "Error. Please try again."

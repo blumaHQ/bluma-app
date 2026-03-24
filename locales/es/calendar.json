@@ -2,7 +2,7 @@
   "today": "Hoy",
   "todayButton": "Volver a hoy",
   "editPeriod": {
-    "title": "Editar Periodo",
+    "title": "Editar periodo",
     "editPeriodDates": "Editar fechas del periodo",
     "successMessage": "Fechas del periodo guardadas",
     "errorMessage": "Error. Por favor, inténtalo de nuevo."

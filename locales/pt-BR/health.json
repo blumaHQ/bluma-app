@@ -3,7 +3,7 @@
     "title": "Sintomas",
     "im-okay": "Estou bem",
     "headache": "Dor de cabeça",
-    "cramps": "Cólicas",
+    "cramps": "Dor de ventre",
     "bloating": "Inchaço",
     "backache": "Dor nas costas",
     "acne": "Acne",
@@ -13,13 +13,13 @@
     "insomnia": "Insônia",
     "diarrhea": "Diarreia",
     "constipation": "Prisão de ventre",
-    "hot-flashes": "Fogachos",
+    "hot-flashes": "Ondas de calor",
     "night-sweats": "Suores noturnos",
     "brain-fog": "Neblina mental",
     "joint-pain": "Dor articular",
     "dizziness": "Tontura",
     "cravings": "Desejos",
-    "frequent-urination": "Micção frequente",
+    "frequent-urination": "Vontade frequente de urinar",
     "vaginal-dryness": "Secura vaginal"
   },
   "moods": {
@@ -36,7 +36,7 @@
     "sleepy": "Sonolenta",
     "stressed": "Estressada",
     "relaxed": "Relaxada",
-    "mood-swings": "Alterações de humor",
+    "mood-swings": "Mudanças de humor",
     "frisky": "Brincalhona",
     "apathetic": "Apática",
     "bored": "Entediada"
