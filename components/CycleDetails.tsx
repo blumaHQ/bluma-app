@@ -85,7 +85,6 @@ export function CycleDetails({
           </Text>
           <QuickHealthSelector
             selectedDate={selectedDate}
-            showEmptyStateText={!onClose}
           />
         </>
       )}
