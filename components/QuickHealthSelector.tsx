@@ -166,7 +166,7 @@ export const QuickHealthSelector = ({
           />
         </View>
         {showEmptyStateText && (
-          <Text style={[typography.caption, { color: colors.placeholder, flex: 1, alignSelf: 'center' }]}>
+          <Text style={[typography.caption, { color: colors.textSecondary, fontSize: 15, flex: 1, alignSelf: 'center' }]}>
             {selectedDate && selectedDate !== dayjs().format('YYYY-MM-DD')
               ? t('quickHealthSelector.noSymptomsThisDate')
               : t('quickHealthSelector.noSymptomsToday')}
