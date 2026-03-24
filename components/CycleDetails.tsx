@@ -51,7 +51,7 @@ export function CycleDetails({
 
   return (
     <>
-      <View style={styles.cycleSummary}>
+      <View>
         <View style={styles.headerRow}>
           <View style={styles.titleContainer}>
             <Text
@@ -80,11 +80,12 @@ export function CycleDetails({
 
       {isDateInPastOrToday() && (
         <>
-          <Text style={[typography.headingMd, { fontSize: 20, fontWeight: '500', marginBottom: 12, marginTop: 16 }]}>
+          <Text style={[typography.headingMd, { fontSize: 20, fontWeight: '500', marginBottom: 12, marginTop: 16, }]}>
             {tHealth('quickHealthSelector.title')}
           </Text>
           <QuickHealthSelector
             selectedDate={selectedDate}
+            showEmptyStateText={!onClose}
           />
         </>
       )}
@@ -93,8 +94,7 @@ export function CycleDetails({
 }
 
 const styles = StyleSheet.create({
-  cycleSummary: {
-  },
+
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

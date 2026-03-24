@@ -105,11 +105,13 @@ HealthLogItem.displayName = 'HealthLogItem';
 type QuickHealthSelectorProps = {
   selectedDate?: string;
   titleStyle?: TextStyle;
+  showEmptyStateText?: boolean;
 };
 
 export const QuickHealthSelector = ({
   selectedDate,
   titleStyle,
+  showEmptyStateText = true,
 }: QuickHealthSelectorProps) => {
   const { colors } = useTheme();
   const { typography } = useAppStyles();
@@ -163,11 +165,13 @@ export const QuickHealthSelector = ({
             label={t('quickHealthSelector.add')}
           />
         </View>
-        <Text style={[typography.caption, { color: colors.placeholder, flex: 1, alignSelf: 'center' }]}>
-          {selectedDate && selectedDate !== dayjs().format('YYYY-MM-DD')
-            ? t('quickHealthSelector.noSymptomsThisDate')
-            : t('quickHealthSelector.noSymptomsToday')}
-        </Text>
+        {showEmptyStateText && (
+          <Text style={[typography.caption, { color: colors.placeholder, flex: 1, alignSelf: 'center' }]}>
+            {selectedDate && selectedDate !== dayjs().format('YYYY-MM-DD')
+              ? t('quickHealthSelector.noSymptomsThisDate')
+              : t('quickHealthSelector.noSymptomsToday')}
+          </Text>
+        )}
       </TouchableOpacity>
     );
   }
