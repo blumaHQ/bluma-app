@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
@@ -60,14 +60,21 @@ const DayCircles = ({
   );
 };
 
+type CycleFilter = 'all' | 3 | 6;
+
+const FILTERS: CycleFilter[] = ['all', 3, 6];
+
 export function CycleHistory({ cycles }: CycleHistoryProps) {
   const { colors } = useTheme();
   const { typography, commonStyles } = useAppStyles();
   const { t } = useTranslation(['stats', 'common']);
+  const [filter, setFilter] = useState<CycleFilter>('all');
 
   if (cycles.length === 0) {
     return null;
   }
+
+  const filteredCycles = filter === 'all' ? cycles : cycles.slice(0, filter);
 
   // Helper to calculate how many days have passed since start date
   const getDaysSoFar = (startDate: string): number => {
@@ -90,24 +97,55 @@ export function CycleHistory({ cycles }: CycleHistoryProps) {
         <Text
           style={[
             typography.headingMd,
-            commonStyles.sectionTitleContainer,{marginBottom: 6}
+            commonStyles.sectionTitleContainer
           ]}
         >
           {t('stats:cycleHistory.title')}
         </Text>
-        <Text
-          style={[
-            typography.body,
-            { color: colors.textSecondary},
-          ]}
-        >
-          {cycles.length} {t('stats:cycleHistory.loggedCycles')}
-        </Text>
+
+        <View style={styles.filterRow}>
+          {FILTERS.map((f) => {
+            const isActive = filter === f;
+            const label =
+              f === 'all'
+                ? t('stats:cycleHistory.filterAll')
+                : f === 3
+                  ? t('stats:cycleHistory.filterLast3')
+                  : t('stats:cycleHistory.filterLast6');
+            return (
+              <Pressable
+                key={String(f)}
+                onPress={() => setFilter(f)}
+                style={[
+                  styles.filterPill,
+                  {
+                    backgroundColor: isActive ? colors.primary : colors.surfaceVariant,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    typography.caption,
+                    { color: isActive ? '#fff' : colors.textPrimary },
+                  ]}
+                >
+                  {label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </View>
       </View>
 
       <View style={[styles.cycleHistoryContainer, { backgroundColor: colors.surface}]}>
-        {cycles.map((cycle, index) => {
+        {filteredCycles.map((cycle, index) => {
           const isCurrentCycle = index === 0;
+          const cycleYear = parseLocalDate(cycle.startDate).getFullYear();
+          const previousCycleYear =
+            index > 0
+              ? parseLocalDate(filteredCycles[index - 1].startDate).getFullYear()
+              : null;
+          const showYearHeader = index === 0 || cycleYear !== previousCycleYear;
 
           // Determine display values
           let displayCycleLength: string;
@@ -164,48 +202,54 @@ export function CycleHistory({ cycles }: CycleHistoryProps) {
           };
 
           return (
-            <Pressable 
-              key={index}
-              onPress={handlePress}
-              style={({ pressed }) => [
-                styles.cycleContainer,
-                { borderBottomColor: colors.border},
-                index === cycles.length - 1 && {
-                  borderBottomWidth: 0,
-                  marginBottom: 0,
-                },
-                pressed && { opacity: 0.7 },
-              ]}
-            >
-              <View style={styles.cycleContent}>
-                <View style={styles.cycleInfoColumn}>
-                  <Text style={[typography.headingSm, {marginBottom: 4}]}>
-                    {isCurrentCycle 
-                      ? `${t('stats:cycleHistory.currentCycle')}: ${displayCycleLength}`
-                      : displayCycleLength
-                    }
-                  </Text>
-                  <Text style={[typography.labelSm, { color: colors.textSecondary, fontSize: 15}]}>
-                    {isCurrentCycle 
-                      ? `${formattedStartDate} - ${t('common:time.today')}`
-                      : `${formattedStartDate} - ${formattedEndDate}`
-                    }
-                  </Text>
+            <React.Fragment key={index}>
+              {showYearHeader && (
+                <Text style={[typography.headingMd, {fontSize: 20}, styles.yearHeading]}>
+                  {cycleYear}
+                </Text>
+              )}
+              <Pressable
+                onPress={handlePress}
+                style={({ pressed }) => [
+                  styles.cycleContainer,
+                  { borderBottomColor: colors.border},
+                  index === filteredCycles.length - 1 && {
+                    borderBottomWidth: 0,
+                    marginBottom: 0,
+                  },
+                  pressed && { opacity: 0.7 },
+                ]}
+              >
+                <View style={styles.cycleContent}>
+                  <View style={styles.cycleInfoColumn}>
+                    <Text style={[typography.bodyBold, {fontSize: 17, marginBottom: 4}]}>
+                      {isCurrentCycle
+                        ? `${t('stats:cycleHistory.currentCycle')}: ${displayCycleLength}`
+                        : displayCycleLength
+                      }
+                    </Text>
+                    <Text style={[typography.labelSm, { color: colors.textSecondary, fontSize: 15}]}>
+                      {isCurrentCycle
+                        ? `${formattedStartDate} - ${t('common:time.today')}`
+                        : `${formattedStartDate} - ${formattedEndDate}`
+                      }
+                    </Text>
+                  </View>
+
+                  <DayCircles
+                    totalDays={circleDays}
+                    periodDays={cycle.periodLength}
+                    isLast={index === filteredCycles.length - 1}
+                  />
                 </View>
 
-                <DayCircles
-                  totalDays={circleDays}
-                  periodDays={cycle.periodLength}
-                  isLast={index === cycles.length - 1}
+                <Ionicons
+                  name="chevron-forward"
+                  size={18}
+                  color={colors.textSecondary}
                 />
-              </View>
-
-              <Ionicons 
-                name="chevron-forward" 
-                size={18} 
-                color={colors.textSecondary}
-              />
-            </Pressable>
+              </Pressable>
+            </React.Fragment>
           );
         })}
       </View>
@@ -228,6 +272,19 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     borderBottomWidth: 1,
+  },
+  filterRow: {
+    flexDirection: 'row',
+    gap: 8,
+    marginTop: 4,
+  },
+  filterPill: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  yearHeading: {
+    marginBottom: 10,
   },
   cycleContainer: {
     flexDirection: 'row',
