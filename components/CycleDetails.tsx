@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     padding: 8,
-    marginTop: -5,
+    marginTop: -9,
   },
 });
 
