@@ -19,7 +19,10 @@
     "inProgress": "In progress",
     "loggedCycles": "logged cycles",
     "currentCycle": "Current cycle",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "filterAll": "All",
+    "filterLast3": "Last 3 cycles",
+    "filterLast6": "Last 6 cycles"
   },
   "cycleDetails": {
     "cycleNormalRange": "The length of this cycle was within the normal range (21-35 days)",
