@@ -52,8 +52,7 @@
     "fertileWindow": "Fertile window"
   },
   "symptomsLogged": {
-    "title": "Health logs",
-    "subtitle": "Grouped by cycle phase",
+    "title": "What you logged",
     "noLogs": "No health data logged during this cycle."
   }
 }

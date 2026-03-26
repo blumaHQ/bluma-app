@@ -170,7 +170,7 @@ export default function HealthTracking() {
         const symptomIds = new Set<string>();
         const moodIds = new Set<string>();
         const flowIds = new Set<string>();
-        const dischargeIds = new Set<string>();
+        const dischargeIds: string[] = [];
         let notesText = '';
         let tempValue = '';
 
@@ -182,7 +182,7 @@ export default function HealthTracking() {
           } else if (entry.type === 'flow') {
             flowIds.add(entry.item_id);
           } else if (entry.type === 'discharge') {
-            dischargeIds.add(entry.item_id);
+            dischargeIds.push(entry.item_id);
           } else if (entry.type === 'notes') {
             notesText = entry.name || '';
           } else if (entry.type === 'temperature') {
@@ -199,14 +199,22 @@ export default function HealthTracking() {
         setSelectedSymptoms(symptomIds);
         setSelectedMoods(moodIds);
         setSelectedFlows(nextFlows);
-        setSelectedDischarges(dischargeIds);
+        setSelectedDischarges(
+          dischargeIds.length > 0
+            ? new Set([dischargeIds[dischargeIds.length - 1]])
+            : new Set()
+        );
         setNotes(notesText);
         setTempCelsius(tempValue);
 
         setOriginalSymptoms(new Set(symptomIds));
         setOriginalMoods(new Set(moodIds));
         setOriginalFlows(new Set(nextFlows));
-        setOriginalDischarges(new Set(dischargeIds));
+        setOriginalDischarges(
+          dischargeIds.length > 0
+            ? new Set([dischargeIds[dischargeIds.length - 1]])
+            : new Set()
+        );
         setOriginalNotes(notesText);
         setOriginalTemp(tempValue);
         setHasChanges(false);
@@ -337,19 +345,7 @@ export default function HealthTracking() {
   }, []);
 
   const toggleDischarge = useCallback((id: string) => {
-    setSelectedDischarges(prev => {
-      const next = new Set(prev);
-      if (id === 'no-discharge') {
-        return next.has(id) ? new Set() : new Set([id]);
-      }
-      next.delete('no-discharge');
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
+    setSelectedDischarges(prev => (prev.has(id) ? new Set() : new Set([id])));
   }, []);
 
   // Navigate to notes editor

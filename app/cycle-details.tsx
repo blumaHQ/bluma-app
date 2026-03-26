@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useTranslation } from 'react-i18next';
@@ -12,10 +12,10 @@ import { getCycleStatus, getPeriodStatus } from '../utils/cycleUtils';
 import { parseLocalDate } from '../utils/dateUtils';
 import { InfoIcon } from '../components/icons/general/info';
 import { CycleIcon } from '../components/icons/general/Cycle';
-import { getDB, getSetting } from '../db';
+import { getDB } from '../db';
 import { healthLogs } from '../db/schema';
-import { PeriodPredictionService, CyclePhase } from '../services/periodPredictions';
 import { CustomIcon } from '../components/icons/health';
+import { NoteIcon } from '../components/icons/health/Note';
 import { SYMPTOMS, MOODS, FLOWS, DISCHARGES } from '../constants/healthTracking';
 
 export default function CycleDetails() {
@@ -33,13 +33,12 @@ export default function CycleDetails() {
   const cycleStatus = getCycleStatus(cycleLength);
   const periodStatus = getPeriodStatus(periodLength);
 
-  type PhaseItem = { item_id: string; type: string; count: number };
-  const [phaseLogs, setPhaseLogs] = useState<Record<CyclePhase, PhaseItem[]>>({
-    menstrual: [],
-    follicular: [],
-    ovulatory: [],
-    luteal: [],
-  });
+  type DayLog = {
+    date: string;
+    items: { type: string; item_id: string }[];
+    note: string | null;
+  };
+  const [logsByDate, setLogsByDate] = useState<DayLog[]>([]);
 
   useEffect(() => {
     let cancelled = false;
@@ -47,55 +46,39 @@ export default function CycleDetails() {
       try {
         const db = getDB();
         const queryEnd = isCurrentCycle ? dayjs().format('YYYY-MM-DD') : endDate;
-        const userCycleLengthSetting = await getSetting('userCycleLength');
-        const parsedUserCycleLength = userCycleLengthSetting
-          ? parseInt(userCycleLengthSetting, 10)
-          : NaN;
-        const stableCycleLength = isCurrentCycle
-          ? Number.isFinite(parsedUserCycleLength) && parsedUserCycleLength > 0
-            ? parsedUserCycleLength
-            : 28
-          : cycleLength;
         const logs = await db
           .select()
           .from(healthLogs)
           .where(and(gte(healthLogs.date, startDate), lte(healthLogs.date, queryEnd)));
 
-        const countMap: Record<CyclePhase, Record<string, { type: string; count: number }>> = {
-          menstrual: {},
-          follicular: {},
-          ovulatory: {},
-          luteal: {},
-        };
-
+        const map: Record<
+          string,
+          { items: { type: string; item_id: string }[]; note: string | null }
+        > = {};
         for (const log of logs) {
-          if (log.type === 'notes' || log.type === 'temperature') continue;
-          const cycleDay = dayjs(log.date).diff(dayjs(startDate), 'days') + 1;
-          const phase = PeriodPredictionService.getCyclePhase(cycleDay, stableCycleLength, periodLength);
-          const key = `${log.type}:${log.item_id}`;
-          if (!countMap[phase][key]) countMap[phase][key] = { type: log.type, count: 0 };
-          countMap[phase][key].count++;
+          if (log.type === 'temperature') continue;
+          if (!map[log.date]) map[log.date] = { items: [], note: null };
+          if (log.type === 'notes') {
+            map[log.date].note = log.name ?? null;
+          } else {
+            map[log.date].items.push({ type: log.type, item_id: log.item_id });
+          }
         }
 
-        const result = {} as Record<CyclePhase, PhaseItem[]>;
-        for (const phase of Object.keys(countMap) as CyclePhase[]) {
-          result[phase] = Object.entries(countMap[phase])
-            .map(([key, { type, count }]) => ({ item_id: key.split(':')[1], type, count }))
-            .sort((a, b) => b.count - a.count)
-            .slice(0, 2);
-        }
-        if (!cancelled) {
-          setPhaseLogs(result);
-        }
+        const result = Object.entries(map)
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([date, { items, note }]) => ({ date, items, note }));
+
+        if (!cancelled) setLogsByDate(result);
       } catch (e) {
-        console.error('Error loading phase logs:', e);
+        console.error('Error loading health logs:', e);
       }
     };
     load();
     return () => {
       cancelled = true;
     };
-  }, [startDate, endDate, cycleLength, periodLength, isCurrentCycle]);
+  }, [startDate, endDate, isCurrentCycle]);
 
   const getItemIcon = (type: string, item_id: string) => {
     let iconName: string | undefined;
@@ -114,8 +97,17 @@ export default function CycleDetails() {
     return item_id;
   };
 
-  const PHASE_ORDER: CyclePhase[] = ['menstrual', 'follicular', 'ovulatory', 'luteal'];
-  const phasesWithLogs = PHASE_ORDER.filter(p => phaseLogs[p].length > 0);
+  type CategoryType = 'flow' | 'symptom' | 'mood' | 'discharge';
+
+  const categoryMeta: Record<CategoryType, { label: string; iconItemId: string }> = useMemo(
+    () => ({
+      flow: { label: t('health:flows.title'), iconItemId: 'medium' },
+      symptom: { label: t('health:tracking.symptoms'), iconItemId: 'headache' },
+      mood: { label: t('health:tracking.moods'), iconItemId: 'happy' },
+      discharge: { label: t('health:discharge.title'), iconItemId: 'watery' },
+    }),
+    [t]
+  );
 
   const formattedStartDate = formatDateShort(parseLocalDate(startDate));
   const formattedEndDate = isCurrentCycle
@@ -272,50 +264,136 @@ export default function CycleDetails() {
       )}
       <View style={[styles.detailCard, { backgroundColor: colors.surface, padding: 0, overflow: 'hidden' }]}>
         <View style={[styles.sectionHeader, { borderBottomColor: colors.border }]}>
-          <Text style={[typography.headingMd, { marginBottom: 4 }]}>
+          <Text style={[typography.headingMd]}>
             {t('stats:symptomsLogged.title')}
-          </Text>
-          <Text style={[typography.body, { color: colors.textSecondary }]}>
-            {t('stats:symptomsLogged.subtitle')}
           </Text>
         </View>
 
         <View style={styles.sectionContent}>
-          {phasesWithLogs.length === 0 ? (
+          {logsByDate.length === 0 ? (
             <Text style={[typography.body, { color: colors.placeholder }]}>
               {t('stats:symptomsLogged.noLogs')}
             </Text>
           ) : (
-            phasesWithLogs.map((phase, phaseIndex) => {
-              const isLastPhase = phaseIndex === phasesWithLogs.length - 1;
+            logsByDate.map((dayLog, index) => {
+              const isLast = index === logsByDate.length - 1;
+
+              const itemsByType = dayLog.items.reduce<Record<string, string[]>>(
+                (acc, item) => {
+                  if (!acc[item.type]) acc[item.type] = [];
+                  acc[item.type].push(item.item_id);
+                  return acc;
+                },
+                {}
+              );
+
+              const flowIds = itemsByType.flow ?? [];
+              const symptomIds = itemsByType.symptom ?? [];
+              const moodIds = itemsByType.mood ?? [];
+              const dischargeIds = itemsByType.discharge ?? [];
+              const dischargeId =
+                dischargeIds.length > 0 ? dischargeIds[dischargeIds.length - 1] : null;
+
+              const rows: {
+                type: CategoryType;
+                label: string;
+                iconItemId: string;
+                ids: string[];
+              }[] = [];
+
+              if (flowIds.length > 0) {
+                rows.push({
+                  type: 'flow',
+                  label: categoryMeta.flow.label,
+                  iconItemId: categoryMeta.flow.iconItemId,
+                  ids: flowIds,
+                });
+              }
+
+              if (symptomIds.length > 0) {
+                rows.push({
+                  type: 'symptom',
+                  label: categoryMeta.symptom.label,
+                  iconItemId: categoryMeta.symptom.iconItemId,
+                  ids: symptomIds,
+                });
+              }
+
+              if (moodIds.length > 0) {
+                rows.push({
+                  type: 'mood',
+                  label: categoryMeta.mood.label,
+                  iconItemId: categoryMeta.mood.iconItemId,
+                  ids: moodIds,
+                });
+              }
+
+              if (dischargeId) {
+                rows.push({
+                  type: 'discharge',
+                  label: categoryMeta.discharge.label,
+                  iconItemId: categoryMeta.discharge.iconItemId,
+                  ids: [dischargeId],
+                });
+              }
+
+              if (rows.length === 0 && !dayLog.note) return null;
+
               return (
-              <View
-                key={phase}
-                style={[
-                  styles.phaseSection,
-                  {
-                    borderBottomWidth: isLastPhase ? 0 : 1,
-                    borderBottomColor: colors.border,
-                    paddingBottom: isLastPhase ? 0 : 16,
-                    marginBottom: isLastPhase ? 0 : 16,
-                  },
-                ]}
-              >
-                <Text style={[typography.bodyBold, { color: colors.textSecondary, fontSize: 17, fontWeight: '600', marginBottom: 12 }]}>
-                  {t(`home:cycleInsights.${phase}`)}
-                </Text>
-                {phaseLogs[phase].map(item => (
-                  <View key={`${item.type}:${item.item_id}`} style={styles.logRow}>
-                    <View style={styles.logIcon}>{getItemIcon(item.type, item.item_id)}</View>
-                    <Text style={[typography.body, { flex: 1 }]}>
-                      {getItemLabel(item.type, item.item_id)}
-                    </Text>
-                    <Text style={[typography.bodyBold, { color: colors.textSecondary, fontSize: 17, letterSpacing: 0.45 }]}>
-                      {item.count}
-                    </Text>
-                  </View>
-                ))}
-              </View>
+                <View
+                  key={dayLog.date}
+                  style={[
+                    styles.dateSection,
+                    {
+                      borderBottomWidth: isLast ? 0 : 1,
+                      borderBottomColor: colors.border,
+                      paddingBottom: isLast ? 0 : 8,
+                      marginBottom: isLast ? 0 : 16,
+                    },
+                  ]}
+                >
+                  <Text style={[typography.bodyXl, { marginBottom: 12, fontWeight: '600'}]}>
+                    {formatDateShort(parseLocalDate(dayLog.date))}
+                  </Text>
+                  {rows.map(row => (
+                    <View key={row.type} style={styles.categoryRow}>
+                      <View style={styles.categoryLabelWrap}>
+                        <View style={styles.categoryLabelIcon}>
+                          {getItemIcon(row.type, row.iconItemId)}
+                        </View>
+                        <Text style={[typography.bodyBold, styles.categoryLabelText]}>
+                          {row.label}:
+                        </Text>
+                      </View>
+                      <View style={styles.chipsContainer}>
+                        {row.ids.map((id, i) => (
+                          <View key={`${row.type}:${id}:${i}`} style={[styles.chip, { borderColor: colors.neutral250 }]}>
+                            <Text style={[typography.caption, styles.chipText]}>
+                              {getItemLabel(row.type, id)}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                  {dayLog.note && (
+                    <View style={[styles.categoryRow, styles.noteRow]}>
+                      <View style={styles.categoryLabelWrap}>
+                        <View style={styles.categoryLabelIcon}>
+                          <NoteIcon size={24} color={colors.textSecondary} />
+                        </View>
+                        <Text style={[typography.bodyBold, styles.categoryLabelText]}>
+                          {t('health:tracking.notes')}:
+                        </Text>
+                      </View>
+                      <View style={styles.noteContainer}>
+                        <Text style={[typography.body, { color: colors.textSecondary }]}>
+                          {dayLog.note}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </View>
               );
             })
           )}
@@ -384,19 +462,53 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  phaseSection: {
-    marginBottom: 16,
-  },
-  logRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
+  dateSection: {
     marginBottom: 8,
   },
-  logIcon: {
-    width: 28,
-    height: 28,
+  categoryRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 12,
+    gap: 6,
+  },
+  categoryLabelWrap: {
+    minWidth: 120,
+    maxWidth: '45%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexShrink: 1,
+    paddingTop: 2,
+  },
+  categoryLabelText: {
+    flexShrink: 1,
+  },
+  categoryLabelIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 12,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  chipsContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  chip: {
+    paddingHorizontal: 10,
+    paddingVertical: 3,
+    borderRadius: 999,
+    borderWidth: 1,
+  },
+  chipText: {
+    lineHeight: 18,
+  },
+  noteContainer: {
+    flex: 1,
+    marginTop: 3,
+  },
+  noteRow: {
     alignItems: 'center',
   },
 });

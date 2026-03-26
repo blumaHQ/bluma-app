@@ -53,7 +53,6 @@
   },
   "symptomsLogged": {
     "title": "Registros de salud",
-    "subtitle": "Organizados por fase del ciclo",
     "noLogs": "No se han registrado datos de salud durante este ciclo."
   }
 }
