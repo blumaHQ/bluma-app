@@ -55,6 +55,9 @@ export default function CyclePhaseDetails() {
     averageCycleLength
   );
 
+  const noteLabel = t('cyclePhase.noteLabel', { defaultValue: 'Note' });
+  const phaseNote = t(`cyclePhase.phaseNotes.${cyclePhaseKey}`, { defaultValue: '' });
+
   const scrollViewRef = useRef<ScrollView>(null);
   const cyclePhaseSectionRef = useRef<View>(null);
   const chanceToConceiveSectionRef = useRef<View>(null);
@@ -142,6 +145,13 @@ export default function CyclePhaseDetails() {
           <Text style={[typography.body]}>
             {t(`cyclePhase.phaseDescriptions.${cyclePhaseKey}`)}
           </Text>
+
+          {!!phaseNote && (
+            <Text style={[typography.body, { marginTop: 16 }]}>
+              <Text style={{ fontWeight: '600' }}>{noteLabel}: </Text>
+              {phaseNote}
+            </Text>
+          )}
         </View>
 
         <View ref={chanceToConceiveSectionRef} style={[commonStyles.sectionContainer]}>

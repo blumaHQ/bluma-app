@@ -23,7 +23,11 @@
       "menstrual": "O ciclo menstrual começa no primeiro dia da sua menstruação e termina no dia anterior ao início da próxima.\n\nA menstruação é quando o revestimento do útero se desprende e sai do corpo através do sangramento vaginal. A menstruação costuma durar de 3 a 7 dias.",
       "follicular": "A fase folicular é a primeira parte do ciclo menstrual: começa no primeiro dia da menstruação (por isso há sobreposição com a fase menstrual) e termina na ovulação (quando um dos ovários libera um óvulo).",
       "ovulatory": "A ovulação é a liberação de um óvulo do ovário. É a janela de pico de fertilidade e normalmente ocorre cerca de 12 a 16 dias antes da próxima menstruação. Em um ciclo médio de 28 dias, é por volta do dia 14.\n\nA chance de conceber é maior nesta fase. O óvulo pode viver cerca de 24 horas após ser liberado.",
-      "luteal": "Esta fase começa logo após a ovulação e dura até o primeiro dia da próxima menstruação. Normalmente dura cerca de 12–14 dias.\n\nDurante esse tempo o corpo se prepara para uma possível gravidez espessando o revestimento uterino. Se não houver fertilização, os níveis hormonais caem e a menstruação começa.\n\nSe a data prevista da sua menstruação já passou e o sangramento ainda não começou, a fase lútea está simplesmente se prolongando além da sua duração habitual."
+      "luteal": "Esta fase começa logo após a ovulação e dura até o primeiro dia da próxima menstruação. Normalmente dura cerca de 12–14 dias.\n\nDurante esse tempo o corpo se prepara para uma possível gravidez espessando o revestimento uterino. Se não houver fertilização, os níveis hormonais caem e a menstruação começa."
+    },
+    "noteLabel": "Nota",
+    "phaseNotes": {
+      "luteal": "Se a data prevista da sua menstruação já passou e o sangramento ainda não começou, a fase lútea está simplesmente se prolongando além da sua duração habitual."
     },
     "pregnancyChance": {
       "high": "Alta",

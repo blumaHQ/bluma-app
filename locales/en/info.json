@@ -23,7 +23,11 @@
       "menstrual": "The menstrual cycle starts on the first day of your period and ends the day before your next period begins.\n\nThe period is when the lining of the uterus sheds and leaves the body through vaginal bleeding. The period usually lasts from 3 to 7 days.",
       "follicular": "The follicular phase is the first part of the menstrual cycle, and starts on the first day of your period (so there is some overlap with the menstrual phase) and ends with ovulation (when one of your ovaries releases an egg).",
       "ovulatory": "Ovulation is the release of an egg from your ovary. This is the peak fertility window, and it typically occurs about 12 to 16 days before the next menstrual period begins. For an average 28-day cycle, this is around day 14.\n\nThe chance to conceive is highest during this phase. The egg can live for about 24 hours once released.",
-      "luteal": "This phase begins immediately after ovulation and lasts until the first day of the next period. It typically runs about 12–14 days.\n\nDuring this time, the body prepares for a potential pregnancy by thickening the uterine lining. If fertilization does not occur, hormone levels drop and menstruation begins.\n\nIf your expected period date has passed and bleeding hasn't started yet, your luteal phase is simply continuing beyond its usual length."
+      "luteal": "This phase begins immediately after ovulation and lasts until the first day of the next period. It typically runs about 12–14 days.\n\nDuring this time, the body prepares for a potential pregnancy by thickening the uterine lining. If fertilization does not occur, hormone levels drop and menstruation begins."
+    },
+    "noteLabel": "Note",
+    "phaseNotes": {
+      "luteal": "If your expected period date has passed and bleeding hasn't started yet, your luteal phase is simply continuing beyond its usual length."
     },
     "pregnancyChance": {
       "high": "High",
