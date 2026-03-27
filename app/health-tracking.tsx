@@ -199,14 +199,15 @@ export default function HealthTracking() {
         setSelectedSymptoms(symptomIds);
         setSelectedMoods(moodIds);
         setSelectedFlows(nextFlows);
-        setSelectedDischarges(dischargeIds);
+        const lastDischarge = [...dischargeIds].slice(-1);
+        setSelectedDischarges(new Set(lastDischarge));
         setNotes(notesText);
         setTempCelsius(tempValue);
 
         setOriginalSymptoms(new Set(symptomIds));
         setOriginalMoods(new Set(moodIds));
         setOriginalFlows(new Set(nextFlows));
-        setOriginalDischarges(new Set(dischargeIds));
+        setOriginalDischarges(new Set(lastDischarge));
         setOriginalNotes(notesText);
         setOriginalTemp(tempValue);
         setHasChanges(false);
@@ -337,19 +338,7 @@ export default function HealthTracking() {
   }, []);
 
   const toggleDischarge = useCallback((id: string) => {
-    setSelectedDischarges(prev => {
-      const next = new Set(prev);
-      if (id === 'no-discharge') {
-        return next.has(id) ? new Set() : new Set([id]);
-      }
-      next.delete('no-discharge');
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
-    });
+    setSelectedDischarges(prev => (prev.has(id) ? new Set() : new Set([id])));
   }, []);
 
   // Navigate to notes editor
