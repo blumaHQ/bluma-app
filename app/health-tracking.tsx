@@ -170,7 +170,7 @@ export default function HealthTracking() {
         const symptomIds = new Set<string>();
         const moodIds = new Set<string>();
         const flowIds = new Set<string>();
-        const dischargeIds: string[] = [];
+        const dischargeIds = new Set<string>();
         let notesText = '';
         let tempValue = '';
 
@@ -182,7 +182,7 @@ export default function HealthTracking() {
           } else if (entry.type === 'flow') {
             flowIds.add(entry.item_id);
           } else if (entry.type === 'discharge') {
-            dischargeIds.push(entry.item_id);
+            dischargeIds.add(entry.item_id);
           } else if (entry.type === 'notes') {
             notesText = entry.name || '';
           } else if (entry.type === 'temperature') {
@@ -199,22 +199,15 @@ export default function HealthTracking() {
         setSelectedSymptoms(symptomIds);
         setSelectedMoods(moodIds);
         setSelectedFlows(nextFlows);
-        setSelectedDischarges(
-          dischargeIds.length > 0
-            ? new Set([dischargeIds[dischargeIds.length - 1]])
-            : new Set()
-        );
+        const lastDischarge = [...dischargeIds].slice(-1);
+        setSelectedDischarges(new Set(lastDischarge));
         setNotes(notesText);
         setTempCelsius(tempValue);
 
         setOriginalSymptoms(new Set(symptomIds));
         setOriginalMoods(new Set(moodIds));
         setOriginalFlows(new Set(nextFlows));
-        setOriginalDischarges(
-          dischargeIds.length > 0
-            ? new Set([dischargeIds[dischargeIds.length - 1]])
-            : new Set()
-        );
+        setOriginalDischarges(new Set(lastDischarge));
         setOriginalNotes(notesText);
         setOriginalTemp(tempValue);
         setHasChanges(false);
