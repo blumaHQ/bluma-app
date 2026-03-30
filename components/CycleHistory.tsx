@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +17,7 @@ interface CycleHistoryProps {
 }
 
 // Helper to render the circles representing days
-const DayCircles = ({
+const DayCircles = React.memo(function DayCircles({
   totalDays,
   periodDays,
   isLast,
@@ -25,7 +25,7 @@ const DayCircles = ({
   totalDays: number;
   periodDays: number;
   isLast?: boolean;
-}) => {
+}) {
   const { colors } = useTheme();
   const circles = [];
 
@@ -54,7 +54,7 @@ const DayCircles = ({
       {circles}
     </View>
   );
-};
+});
 
 type CycleFilter = 'all' | 3 | 6;
 
@@ -66,10 +66,6 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
   const { t } = useTranslation(['stats', 'common']);
   const [filter, setFilter] = useState<CycleFilter>('all');
 
-  if (cycles.length === 0) {
-    return null;
-  }
-
   const isCompact = maxItems !== undefined;
 
   const availableFilters = FILTERS.filter((f) => {
@@ -77,9 +73,16 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
     if (f === 3) return cycles.length > 3;
     return cycles.length >= 6;
   });
-  const filteredCycles = isCompact
-    ? cycles.slice(0, maxItems)
-    : filter === 'all' ? cycles : cycles.slice(0, filter);
+  const filteredCycles = useMemo(() => {
+    if (isCompact) {
+      return cycles.slice(0, maxItems);
+    }
+    return filter === 'all' ? cycles : cycles.slice(0, filter);
+  }, [cycles, filter, isCompact, maxItems]);
+
+  if (cycles.length === 0) {
+    return null;
+  }
 
   // Helper to calculate how many days have passed since start date
   const getDaysSoFar = (startDate: string): number => {
@@ -228,7 +231,7 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
           };
 
           return (
-            <React.Fragment key={index}>
+            <React.Fragment key={cycle.startDate}>
               {!isCompact && showYearHeader && (
                 <Text style={[typography.headingMd, {fontSize: 20}, styles.yearHeading]}>
                   {cycleYear}
