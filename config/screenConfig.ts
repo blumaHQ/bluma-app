@@ -98,6 +98,13 @@ export const dynamicScreens: ScreenConfig[] = [
     backgroundColorKey: 'panel',
   },
   {
+    name: 'cycle-history',
+    headerShown: true,
+    titleKey: 'stats:cycleHistory.title',
+    headerShadowVisible: false,
+    backgroundColorKey: 'background',
+  },
+  {
     name: 'cycle-details',
     headerShown: true,
     titleKey: 'stats:screenTitles.cycleDetails',

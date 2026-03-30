@@ -23,7 +23,8 @@
     "unknown": "Unknown",
     "filterAll": "All",
     "filterLast3": "Last 3 cycles",
-    "filterLast6": "Last 6 cycles"
+    "filterLast6": "Last 6 cycles",
+    "seeAll": "See all"
   },
   "cycleDetails": {
     "cycleNormalRange": "The length of this cycle was within the normal range (21-35 days)",
@@ -53,7 +54,7 @@
     "fertileWindow": "Fertile window"
   },
   "symptomsLogged": {
-    "title": "What you logged",
+    "title": "Health logs",
     "noLogs": "No health data logged during this cycle."
   },
   "symptomPattern": {

@@ -23,7 +23,8 @@
     "unknown": "Desconhecido",
     "filterAll": "Todos",
     "filterLast3": "Últimos 3 ciclos",
-    "filterLast6": "Últimos 6 ciclos"
+    "filterLast6": "Últimos 6 ciclos",
+    "seeAll": "Ver tudo"
   },
   "cycleDetails": {
     "cycleNormalRange": "A duração deste ciclo estava dentro do intervalo normal (21-35 dias)",
