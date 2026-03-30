@@ -16,7 +16,7 @@ export default function SymptomPatternInfo() {
       showsVerticalScrollIndicator={false}
     >
       <Image
-        source={require('../../assets/images/period-predictions.png')}
+        source={require('../../assets/images/patterns.png')}
         style={{
           width: '100%',
           height: 200,

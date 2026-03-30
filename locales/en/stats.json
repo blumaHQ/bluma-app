@@ -3,7 +3,7 @@
   "cycleStatistics": "Cycle summary",
   "screenTitles": {
     "cycleDetails": "Cycle details",
-    "symptomPattern": "Symptoms pattern"
+    "symptomPattern": "Symptom patterns"
   },
   "emptyState": {
     "title": "No cycle data yet",
