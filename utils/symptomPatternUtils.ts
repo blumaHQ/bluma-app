@@ -1,4 +1,5 @@
-import { CyclePhase, PeriodPredictionService } from '../services/periodPredictions';
+import type { CyclePhase } from '../services/periodPredictions';
+import { PeriodPredictionService } from '../services/periodPredictions';
 import { SYMPTOMS, MOODS } from '../constants/healthTracking';
 
 export interface SymptomPattern {
@@ -34,7 +35,7 @@ export function computeSymptomPatterns(
   if (allPeriodDates.length === 0) return [];
 
   // periods[0] = most recent cycle, descending order
-  const periods = PeriodPredictionService.groupDateIntoPeriods(allPeriodDates);
+  const periods = PeriodPredictionService.groupDateIntoPeriods([...allPeriodDates]);
   const last6 = periods.slice(0, windowSize);
   const totalCycles = last6.length;
   if (totalCycles === 0) return [];
