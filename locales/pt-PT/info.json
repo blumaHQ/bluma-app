@@ -4,7 +4,14 @@
     "cycleLength": "Duração do ciclo",
     "periodLength": "Duração do período",
     "latePeriod": "Período atrasado",
-    "howPredictionsWork": "Como funcionam as previsões"
+    "howPredictionsWork": "Como funcionam as previsões",
+    "aboutSymptomPatterns": "Sobre os padrões de sintomas"
+  },
+  "symptomPattern": {
+    "howItWorks": {
+      "title": "Como funcionam os padrões de sintomas",
+      "description": "Um padrão de sintomas é quando o mesmo sintoma ou humor aparece durante a mesma fase do ciclo em múltiplos ciclos.\n\nA Bluma revê os teus últimos 6 ciclos de registos de sintomas. Para cada sintoma ou humor que registas, verifica em que fase do ciclo estavas (menstrual, folicular, ovulação ou lútea).\n\nSe o mesmo sintoma aparece na mesma fase em pelo menos 3 desses 6 ciclos, é mostrado como um padrão.\n\nQuanto mais ciclos registares, mais fiáveis estes padrões se tornam."
+    }
   },
   "cyclePhase": {
     "cycleDay": "Dia do ciclo",
