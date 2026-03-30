@@ -61,6 +61,7 @@
     "subtitle": "Estos tienden a aparecer a lo largo de los ciclos",
     "detailSubtitle": "Basado en tus registros pasados, estos síntomas tienden a aparecer en estas fases:",
     "noPatterns": "Registra síntomas al menos 3 ciclos para ver patrones.",
+    "logSymptomsButton": "Registrar síntomas",
     "cyclesCount": "{{logCount}} veces en {{count}} ciclos",
     "phases": {
       "menstrual": "Menstrual",

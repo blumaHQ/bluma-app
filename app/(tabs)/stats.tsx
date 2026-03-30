@@ -35,6 +35,7 @@ export default function Stats() {
   const [userCycleLength, setUserCycleLength] = useState<number>(28);
   const [hasNoPeriodData, setHasNoPeriodData] = useState<boolean>(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [hasPatterns, setHasPatterns] = useState(false);
 
   const loadStatistics = useCallback(async () => {
     try {
@@ -257,8 +258,9 @@ export default function Stats() {
           />
         </View>
       </View>
-      <SymptomPatternCard />
+      {hasPatterns && <SymptomPatternCard onLoad={setHasPatterns} />}
       <CycleHistory cycles={cycleHistory} />
+      {!hasPatterns && <SymptomPatternCard onLoad={setHasPatterns} />}
     </ScrollView>
   );
 }

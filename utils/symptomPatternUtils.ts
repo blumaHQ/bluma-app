@@ -87,7 +87,7 @@ export function computeSymptomPatterns(
       cycleStarts[cycleIndex],
       log.date
     );
-    const periodLengthForPhase = cycleIndex === 0 ? avgPeriodLength : last6[cycleIndex].length;
+    const periodLengthForPhase = last6[cycleIndex]?.length ?? avgPeriodLength;
     const phase = PeriodPredictionService.getCyclePhase(
       cycleDay,
       cycleLengths[cycleIndex],

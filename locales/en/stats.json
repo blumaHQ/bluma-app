@@ -61,6 +61,7 @@
     "subtitle": "These tend to show up across cycles",
     "detailSubtitle": "Based on your tracking history, these tend to show up during these phases:",
     "noPatterns": "Log symptoms for at least 3 cycles to see patterns.",
+    "logSymptomsButton": "Log symptoms",
     "cyclesCount": "{{logCount}} times in {{count}} cycles",
     "phases": {
       "menstrual": "Menstrual",

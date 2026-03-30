@@ -17,13 +17,18 @@ import { computeSymptomPatterns } from '../utils/symptomPatternUtils';
 const MAX_CARD_ITEMS = 4;
 const ICON_SIZE = 44;
 
-export function SymptomPatternCard() {
+interface SymptomPatternCardProps {
+  onLoad?: (hasPatterns: boolean) => void;
+}
+
+export function SymptomPatternCard({ onLoad }: SymptomPatternCardProps) {
   const { colors } = useTheme();
   const { typography } = useAppStyles();
   const { t } = useTranslation(['stats', 'health']);
   const [topItems, setTopItems] = useState<
     { itemId: string; type: 'symptom' | 'mood' }[]
   >([]);
+  const [loaded, setLoaded] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -75,7 +80,11 @@ export function SymptomPatternCard() {
             }
           }
 
-          if (!cancelled) setTopItems(top);
+          if (!cancelled) {
+            setTopItems(top);
+            setLoaded(true);
+            onLoad?.(top.length > 0);
+          }
         } catch (e) {
           console.error('Error loading symptom patterns:', e);
         }
@@ -84,10 +93,12 @@ export function SymptomPatternCard() {
       return () => {
         cancelled = true;
       };
-    }, [])
+    }, [onLoad])
   );
 
   const isEmpty = topItems.length === 0;
+
+  if (!loaded) return null;
 
   const getIconName = (item: { itemId: string; type: 'symptom' | 'mood' }) => {
     const list = item.type === 'symptom' ? SYMPTOMS : MOODS;
@@ -96,19 +107,14 @@ export function SymptomPatternCard() {
 
   if (isEmpty) {
     return (
-      <Pressable
-        onPress={() => router.push('/symptom-pattern')}
-        accessibilityRole="button"
-        style={({ pressed }) => [
-          styles.card,
-          { backgroundColor: colors.surface },
-          pressed && { opacity: 0.7 },
-        ]}
-      >
+      <View style={[styles.card, { backgroundColor: colors.surface }]}>
         <View style={styles.header}>
           <Text style={typography.headingMd}>{t('stats:symptomPattern.title')}</Text>
           <Pressable
-            onPress={() => router.push('/(info)/symptom-pattern-info')}
+            onPress={(e) => {
+              e.stopPropagation();
+              router.push('/(info)/symptom-pattern-info');
+            }}
             style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1, padding: 8 }]}
             hitSlop={10}
           >
@@ -118,13 +124,31 @@ export function SymptomPatternCard() {
         <Text style={[typography.body, { color: colors.textSecondary }]}>
           {t('stats:symptomPattern.noPatterns')}
         </Text>
-      </Pressable>
+        <Pressable
+          onPress={(e) => {
+            e.stopPropagation();
+            router.push('/health-tracking');
+          }}
+          accessibilityRole="button"
+          style={({ pressed }) => [
+            styles.logSymptomsButton,
+            pressed && { opacity: 0.7 },
+          ]}
+          hitSlop={8}
+        >
+          <Ionicons name="add-circle" size={22} color={colors.primary} />
+          <Text style={[typography.bodyBold, { color: colors.primary, marginLeft: 8 }]}>
+            {t('stats:symptomPattern.logSymptomsButton')}
+          </Text>
+        </Pressable>
+      </View>
     );
   }
 
   return (
     <Pressable
       onPress={() => router.push('/symptom-pattern')}
+      accessibilityRole="button"
       style={({ pressed }) => [
         styles.card,
         { backgroundColor: colors.surface },
@@ -185,5 +209,12 @@ const styles = StyleSheet.create({
   iconItem: {
     width: '23%',
     alignItems: 'center',
+  },
+  logSymptomsButton: {
+    marginTop: 16,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
   },
 });
