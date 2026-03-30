@@ -32,6 +32,8 @@ export function computeSymptomPatterns(
   minCount = 3,
   windowSize = 6,
 ): SymptomPattern[] {
+  if (!Number.isInteger(windowSize) || windowSize < 1) return [];
+  if (!Number.isInteger(minCount) || minCount < 1) return [];
   if (allPeriodDates.length === 0) return [];
 
   // periods[0] = most recent cycle, descending order
