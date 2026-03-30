@@ -54,6 +54,19 @@
   "symptomsLogged": {
     "title": "Registros de salud",
     "noLogs": "No se han registrado datos de salud durante este ciclo."
+  },
+  "symptomPattern": {
+    "title": "Patrones de síntomas",
+    "subtitle": "Estos tienden a aparecer a lo largo de los ciclos",
+    "detailSubtitle": "Basado en tus registros pasados, estos síntomas tienden a aparecer en estas fases:",
+    "noPatterns": "No hay suficientes datos. Registra síntomas al menos 3 ciclos para ver patrones.",
+    "cyclesCount": "{{logCount}} veces en {{count}} ciclos",
+    "phases": {
+      "menstrual": "Menstrual",
+      "follicular": "Follicular",
+      "ovulatory": "Ovulation",
+      "luteal": "Luteal"
+    }
   }
 }
 

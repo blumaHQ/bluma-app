@@ -4,7 +4,14 @@
     "cycleLength": "Duración del ciclo",
     "periodLength": "Duración del periodo",
     "latePeriod": "Periodo tardío",
-    "howPredictionsWork": "Cómo funcionan las predicciones"
+    "howPredictionsWork": "Cómo funcionan las predicciones",
+    "aboutSymptomPatterns": "Acerca de los patrones de síntomas"
+  },
+  "symptomPattern": {
+    "howItWorks": {
+      "title": "Cómo funcionan los patrones de síntomas",
+      "description": "Un patrón de síntomas es cuando el mismo síntoma aparece durante la misma fase del ciclo en múltiples ciclos.\n\nBluma revisa tus últimos 6 ciclos de registros de síntomas. Para cada síntoma o estado de ánimo que registras, verifica en qué fase del ciclo estabas (menstrual, folicular, ovulación o lútea).\n\nSi el mismo síntoma aparece en la misma fase en al menos 3 de esos 6 ciclos, se muestra como un patrón.\n\nCuantos más ciclos registres, más confiables se vuelven estos patrones."
+    }
   },
   "cyclePhase": {
     "cycleDay": "Día del ciclo",

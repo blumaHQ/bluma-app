@@ -4,7 +4,14 @@
     "cycleLength": "Cycle length",
     "periodLength": "Period length",
     "latePeriod": "Late period",
-    "howPredictionsWork": "How predictions work"
+    "howPredictionsWork": "How predictions work",
+    "aboutSymptomPatterns": "About symptom patterns"
+  },
+  "symptomPattern": {
+    "howItWorks": {
+      "title": "How symptom patterns work",
+      "description": "A symptom pattern is when the same symptom appears during the same cycle phase across multiple cycles.\n\nBluma reviews your last 6 cycles of symptom logs. For each symptom or mood you track, it checks which cycle phase you were in (menstrual, follicular, ovulation, or luteal).\n\nIf the same symptom appears in the same phase in at least 3 of those 6 cycles, it's shown as a pattern.\n\nThe more cycles you track, the more reliable these patterns become."
+    }
   },
   "cyclePhase": {
     "cycleDay": "Cycle day",

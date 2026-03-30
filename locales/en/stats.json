@@ -2,7 +2,8 @@
   "title": "Statistics",
   "cycleStatistics": "Cycle summary",
   "screenTitles": {
-    "cycleDetails": "Cycle details"
+    "cycleDetails": "Cycle details",
+    "symptomPattern": "Symptoms pattern"
   },
   "emptyState": {
     "title": "No cycle data yet",
@@ -54,6 +55,19 @@
   "symptomsLogged": {
     "title": "What you logged",
     "noLogs": "No health data logged during this cycle."
+  },
+  "symptomPattern": {
+    "title": "Symptom patterns",
+    "subtitle": "These tend to show up across cycles",
+    "detailSubtitle": "Based on your tracking history, these tend to show up during these phases:",
+    "noPatterns": "Not enough data yet. Log symptoms for at least 3 cycles to see patterns.",
+    "cyclesCount": "{{logCount}} times in {{count}} cycles",
+    "phases": {
+      "menstrual": "Menstrual",
+      "follicular": "Follicular",
+      "ovulatory": "Ovulation",
+      "luteal": "Luteal"
+    }
   }
 }
 

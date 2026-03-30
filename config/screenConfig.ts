@@ -105,6 +105,13 @@ export const dynamicScreens: ScreenConfig[] = [
     backgroundColorKey: 'background',
   },
   {
+    name: 'symptom-pattern',
+    headerShown: true,
+    titleKey: 'stats:screenTitles.symptomPattern',
+    headerShadowVisible: false,
+    backgroundColorKey: 'background',
+  },
+  {
     name: '(info)/cycle-phase-details',
     headerShown: true,
     titleKey: 'info:screenTitles.todaysInsights',
@@ -136,6 +143,13 @@ export const dynamicScreens: ScreenConfig[] = [
     name: '(info)/prediction-info',
     headerShown: true,
     titleKey: 'info:screenTitles.howPredictionsWork',
+    headerShadowVisible: false,
+    backgroundColorKey: 'panel',
+  },
+  {
+    name: '(info)/symptom-pattern-info',
+    headerShown: true,
+    titleKey: 'info:screenTitles.aboutSymptomPatterns',
     headerShadowVisible: false,
     backgroundColorKey: 'panel',
   },

@@ -8,6 +8,7 @@ import { periodDates } from '../../db/schema';
 import { PeriodPredictionService } from '../../services/periodPredictions';
 import { StatCard } from '../../components/StatCard';
 import { CycleHistory } from '../../components/CycleHistory';
+import { SymptomPatternCard } from '../../components/SymptomPatternCard';
 import { DropIcon } from '../../components/icons/general/Drop';
 import { CycleIcon } from '../../components/icons/general/Cycle';
 import { getCycleStatus, getPeriodStatus } from '../../utils/cycleUtils';
@@ -256,6 +257,7 @@ export default function Stats() {
           />
         </View>
       </View>
+      <SymptomPatternCard />
       <CycleHistory cycles={cycleHistory} />
     </ScrollView>
   );
