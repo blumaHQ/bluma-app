@@ -94,13 +94,13 @@ export default function SymptomPatternScreen() {
   const getItemLabel = (type: 'symptom' | 'mood', itemId: string) =>
     t(`health:${type === 'symptom' ? 'symptoms' : 'moods'}.${itemId}`);
 
-  const byPhase = PHASE_ORDER.reduce<Record<CyclePhase, SymptomPattern[]>>(
+  const byPhase = React.useMemo(() => PHASE_ORDER.reduce<Record<CyclePhase, SymptomPattern[]>>(
     (acc, phase) => {
       acc[phase] = patterns.filter(p => p.phase === phase);
       return acc;
     },
     {} as Record<CyclePhase, SymptomPattern[]>
-  );
+  ), [patterns]);
 
   const phasesWithPatterns = PHASE_ORDER.filter(phase => byPhase[phase].length > 0);
 
@@ -127,7 +127,7 @@ export default function SymptomPatternScreen() {
               {t(`stats:symptomPattern.phases.${phase}`)}
             </Text>
 
-            {byPhase[phase].map((pattern, index) => {
+            {byPhase[phase].map(pattern => {
               return (
                 <View
                   key={`${pattern.itemId}:${pattern.phase}`}

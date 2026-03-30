@@ -96,7 +96,15 @@ export function SymptomPatternCard() {
 
   if (isEmpty) {
     return (
-      <View style={[styles.card, { backgroundColor: colors.surface }]}>
+      <Pressable
+        onPress={() => router.push('/symptom-pattern')}
+        accessibilityRole="button"
+        style={({ pressed }) => [
+          styles.card,
+          { backgroundColor: colors.surface },
+          pressed && { opacity: 0.7 },
+        ]}
+      >
         <View style={styles.header}>
           <Text style={typography.headingMd}>{t('stats:symptomPattern.title')}</Text>
           <Pressable
@@ -110,7 +118,7 @@ export function SymptomPatternCard() {
         <Text style={[typography.body, { color: colors.textSecondary }]}>
           {t('stats:symptomPattern.noPatterns')}
         </Text>
-      </View>
+      </Pressable>
     );
   }
 

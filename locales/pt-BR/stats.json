@@ -2,7 +2,8 @@
   "title": "Estatísticas",
   "cycleStatistics": "Resumo do ciclo",
   "screenTitles": {
-    "cycleDetails": "Detalhes do ciclo"
+    "cycleDetails": "Detalhes do ciclo",
+    "symptomPattern": "Padrões de sintomas"
   },
   "emptyState": {
     "title": "Ainda sem dados do ciclo",
@@ -60,7 +61,7 @@
     "title": "Padrões de sintomas",
     "subtitle": "Estes tendem a aparecer ao longo dos ciclos",
     "detailSubtitle": "Com base nos teus registos passados, estes sintomas tendem a aparecer nestas fases:",
-    "noPatterns": "Não há suficientes dados. Registre sintomas para pelo menos 3 ciclos para ver padrões.",
+    "noPatterns": "Registre sintomas para pelo menos 3 ciclos para ver padrões.",
     "cyclesCount": "{{logCount}} vezes em {{count}} ciclos",
     "phases": {
       "menstrual": "Menstrual",
