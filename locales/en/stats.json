@@ -61,7 +61,7 @@
     "title": "Symptom patterns",
     "subtitle": "These tend to show up across cycles",
     "detailSubtitle": "Based on your tracking history, these tend to show up during these phases:",
-    "noPatterns": "Log symptoms for at least 3 cycles to see patterns.",
+    "noPatterns": "Symptoms that repeat across cycles will appear here.",
     "logSymptomsButton": "Log symptoms",
     "cyclesCount": "{{logCount}} times in {{count}} cycles",
     "phases": {

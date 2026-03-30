@@ -61,7 +61,7 @@
     "title": "Patrones de síntomas",
     "subtitle": "Estos tienden a aparecer a lo largo de los ciclos",
     "detailSubtitle": "Basado en tus registros pasados, estos síntomas tienden a aparecer en estas fases:",
-    "noPatterns": "Registra síntomas al menos 3 ciclos para ver patrones.",
+    "noPatterns": "Los síntomas que se repiten entre ciclos aparecerán aquí.",
     "logSymptomsButton": "Registrar síntomas",
     "cyclesCount": "{{logCount}} veces en {{count}} ciclos",
     "phases": {
