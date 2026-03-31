@@ -38,7 +38,7 @@ export function useCycleHistory() {
       const sortedDates = saved.map(s => s.date);
       const periods = PeriodPredictionService.groupDateIntoPeriods(sortedDates);
 
-      if (saved.length === 0 || periods.length < 2) {
+      if (saved.length === 0) {
         setAverageCycleLength(0);
         setAveragePeriodLength(0);
         setCycles([]);

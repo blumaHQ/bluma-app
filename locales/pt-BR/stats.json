@@ -7,7 +7,7 @@
   },
   "emptyState": {
     "title": "Ainda sem dados do ciclo",
-    "subtitle": "Registre pelo menos 2 menstruações para ver suas estatísticas e histórico pessoais.",
+    "subtitle": "Registre sua primeira menstruação para ver suas estatísticas e histórico pessoais.",
     "logPeriodButton": "Registrar menstruação"
   },
   "cycleHistory": {
@@ -43,6 +43,7 @@
   "averages": {
     "title": "Médias",
     "cycleLength": "Duração média do ciclo",
+    "cycleLengthEmpty": "Registre pelo menos mais um ciclo para ver a média",
     "periodLength": "Duração média da menstruação",
     "days": "{{count}} dia",
     "days_other": "{{count}} dias"

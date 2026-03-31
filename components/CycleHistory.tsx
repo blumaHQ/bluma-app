@@ -68,6 +68,7 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
   const [filter, setFilter] = useState<CycleFilter>('all');
 
   const isCompact = maxItems !== undefined;
+  const showSeeAll = isCompact && cycles.length > maxItems!;
 
   const availableFilters = FILTERS.filter((f) => {
     if (f === 'all') return true;
@@ -108,7 +109,7 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
               {t('stats:cycleHistory.title')}
             </Text>
 
-            {isCompact ? (
+            {showSeeAll ? (
               <Pressable
                 onPress={() => router.push('/cycle-history')}
                 style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}

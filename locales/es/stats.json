@@ -7,7 +7,7 @@
   },
   "emptyState": {
     "title": "Aún no hay datos del ciclo",
-    "subtitle": "Registra al menos 2 periodos para ver tus estadísticas personales del ciclo y su historial.",
+    "subtitle": "Registra tu primer periodo para ver tus estadísticas personales del ciclo y su historial.",
     "logPeriodButton": "Registrar periodo"
   },
   "cycleHistory": {
@@ -43,6 +43,7 @@
   "averages": {
     "title": "Promedios",
     "cycleLength": "Promedio del ciclo",
+    "cycleLengthEmpty": "Registra al menos un ciclo más para ver el promedio",
     "periodLength": "Promedio del periodo",
     "days": "{{count}} día",
     "days_other": "{{count}} días"

@@ -13,9 +13,10 @@ interface StatCardProps {
   icon: React.ReactNode;
   status?: 'normal' | 'irregular';
   type?: 'cycle' | 'period';
+  emptyMessage?: string;
 }
 
-export function StatCard({ title, value, icon, status, type }: StatCardProps) {
+export function StatCard({ title, value, icon, status, type, emptyMessage }: StatCardProps) {
   const { colors } = useTheme();
   const { typography } = useAppStyles();
   const router = useRouter();
@@ -81,14 +82,22 @@ export function StatCard({ title, value, icon, status, type }: StatCardProps) {
           )}
         </View>
         <View style={styles.bottomRow}>
-          <Text style={typography.headingMd}>{value}</Text>
-          {status && (
-            <View style={styles.statusContainer}>
-              {getStatusIcon()}
-              <Text style={[typography.caption, { color: getStatusColor() }]}>
-                {getStatusText()}
-              </Text>
-            </View>
+          {emptyMessage ? (
+            <Text style={[typography.body, { color: colors.textSecondary, fontStyle: 'italic' }]}>
+              {emptyMessage}
+            </Text>
+          ) : (
+            <>
+              <Text style={typography.headingMd}>{value}</Text>
+              {status && (
+                <View style={styles.statusContainer}>
+                  {getStatusIcon()}
+                  <Text style={[typography.caption, { color: getStatusColor() }]}>
+                    {getStatusText()}
+                  </Text>
+                </View>
+              )}
+            </>
           )}
         </View>
       </View>

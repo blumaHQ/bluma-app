@@ -7,7 +7,7 @@
   },
   "emptyState": {
     "title": "No cycle data yet",
-    "subtitle": "Log at least 2 periods to see your personal cycle statistics and history.",
+    "subtitle": "Log at least one period to see your cycle statistics and history.",
     "logPeriodButton": "Log period"
   },
   "cycleHistory": {
@@ -43,6 +43,7 @@
   "averages": {
     "title": "Averages",
     "cycleLength": "Average cycle length",
+    "cycleLengthEmpty": "Log one more cycle to calculate your actual average",
     "periodLength": "Average period length",
     "days": "{{count}} day",
     "days_other": "{{count}} days"
