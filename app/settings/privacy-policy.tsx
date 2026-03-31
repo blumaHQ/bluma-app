@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
             {t('privacyPolicyScreen.dataUse.title')}
           </Text>
         </View>
-        <Text style={[typography.body]}>
+        <Text style={[typography.body, { marginBottom: 12 }]}>
           {t('privacyPolicyScreen.dataUse.descriptionPrefix')}{' '}
           <Text style={typography.bodyBold}>{t('privacyPolicyScreen.dataUse.descriptionBold')}</Text>
           {t('privacyPolicyScreen.dataUse.descriptionSuffix')}
@@ -58,7 +58,7 @@ export default function PrivacyPolicy() {
             </Text>
           </View>
         ))}
-        <Text style={[typography.body]}>
+        <Text style={[typography.body, { marginVertical: 12 }]}>
           {t('privacyPolicyScreen.dataUse.usage')}
         </Text>
         <Text style={[typography.body]}>

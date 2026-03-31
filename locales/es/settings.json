@@ -136,14 +136,13 @@
     "title": "Acerca de Bluma",
     "versionLabel": "Versión",
     "whatIs": {
-      "description": "Bluma te ayuda a rastrear tu ciclo menstrual sin comprometer tu privacidad. Todos los datos se almacenan localmente en tu dispositivo y se encriptan."
+      "description": "Bluma te ayuda a rastrear tu ciclo menstrual sin comprometer tu privacidad. Todos los datos son almacenados en tu dispositivo y encriptados."
     },
     "features": {
       "title": "Características",
-      "periodTracking": "Registro y seguimiento del periodo",
-      "predictions": "Predicciones de ovulación y ventana fértil",
+      "predictions": "Predicciones de periodo, ventana fértil y ovulación",
       "symptomsTracking": "Seguimiento de síntomas y estado de ánimo",
-      "statistics": "Estadísticas, patrones e historial de ciclos",
+      "statistics": "Estadísticas e historial de ciclos",
       "insights": "Información sobre fases del ciclo",
       "reminders": "Recordatorios de periodo y fertilidad",
       "lock": "Bloqueo biométrico de aplicación",

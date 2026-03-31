@@ -137,14 +137,13 @@
     "title": "About Bluma",
     "versionLabel": "Version",
     "whatIs": {
-      "description": "Bluma helps you track your menstrual cycle without compromising your privacy. All data is stored locally on your device and encrypted."
+      "description": "Bluma helps you track your menstrual cycle without compromising your privacy. All data is stored on your device and encrypted."
     },
     "features": {
       "title": "Features",
-      "periodTracking": "Period log and tracking",
-      "predictions": "Ovulation day and fertile window predictions",
+      "predictions": "Period, fertile window & ovulation predictions",
       "symptomsTracking": "Symptom and mood tracking",
-      "statistics": "Cycle statistics, patterns & history",
+      "statistics": "Cycle statistics and history",
       "insights": "Cycle phase insights",
       "reminders": "Period and fertility reminders",
       "lock": "Biometric app lock",
@@ -177,7 +176,7 @@
     },
     "developer": {
       "title": "About the Developer",
-      "description": "Bluma was created by Maribel, a Product Designer and IndieDeveloper passionate about privacy-first software. Bluma was built to provide a trustworthy alternative to period trackers that collect and monetize personal health data."
+      "description": "Bluma was created by Maribel, a Product Designer and Indie Developer passionate about privacy-first software. Bluma was built to provide a trustworthy alternative to period trackers that collect and monetize personal health data."
     },
     "footer": {
       "prefix": "For support or feedback, please contact us at: ",

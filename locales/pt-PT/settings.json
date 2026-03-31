@@ -137,12 +137,11 @@
     "title": "Acerca da Bluma",
     "versionLabel": "Versão",
     "whatIs": {
-      "description": "A Bluma ajuda-te a monitorizar o teu ciclo menstrual sem comprometer a tua privacidade. Todos os dados são armazenados localmente no teu dispositivo e encriptados."
+      "description": "A Bluma ajuda-te a monitorizar o teu ciclo menstrual sem comprometer a tua privacidade. Todos os dados são armazenados no teu dispositivo e encriptados."
     },
     "features": {
       "title": "Funcionalidades",
-      "periodTracking": "Registo e acompanhamento de períodos",
-      "predictions": "Previsões de ovulação e janela fértil",
+      "predictions": "Previsões de período, janela fértil e ovulação",
       "symptomsTracking": "Registo de sintomas e humor",
       "statistics": "Estatísticas e histórico do ciclo",
       "insights": "Informações sobre as fases do ciclo",
