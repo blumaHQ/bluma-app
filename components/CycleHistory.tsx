@@ -7,7 +7,7 @@ import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
 import { formatDateShort } from '../utils/localeUtils';
 import { formatDateString } from '../types/calendarTypes';
-import { parseLocalDate } from '../utils/dateUtils';
+import { cycleEndDateIso, parseLocalDate } from '../utils/dateUtils';
 import { PeriodPredictionService } from '../services/periodPredictions';
 import type { CycleData } from '../hooks/useCycleHistory';
 
@@ -85,14 +85,6 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
   if (cycles.length === 0) {
     return null;
   }
-
-  // Helper to calculate end date from start date and cycle length
-  const calculateEndDate = (startDate: string, cycleLength: number): string => {
-    const start = parseLocalDate(startDate);
-    const end = new Date(start);
-    end.setDate(start.getDate() + cycleLength - 1); // -1 because start date is included
-    return formatDateShort(end);
-  };
 
   return (
     <View>
@@ -176,49 +168,29 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
           let circleDays: number;
 
           if (isCurrentCycle) {
-            // For current cycle, show days so far
             const daysSoFar = PeriodPredictionService.getCurrentCycleDay(cycle.startDate);
             displayCycleLength = t('stats:cycleHistory.days', { count: daysSoFar });
             circleDays = daysSoFar;
           } else {
-            // For past cycles, use stored cycle length
-            const numericLength =
-              typeof cycle.cycleLength === 'number'
-                ? cycle.cycleLength
-                : parseInt(cycle.cycleLength, 10);
-
-            if (!isNaN(numericLength)) {
-              displayCycleLength = t('stats:cycleHistory.days', { count: numericLength });
-              circleDays = numericLength;
-            } else {
-              // Fallback for "In progress" or other strings
-              displayCycleLength = String(cycle.cycleLength);
-              circleDays = 28; // Default fallback
-            }
+            circleDays = cycle.cycleLength ?? 28;
+            displayCycleLength = t('stats:cycleHistory.days', { count: circleDays });
           }
 
-          // Format dates for display
           const formattedStartDate = formatDateShort(parseLocalDate(cycle.startDate));
-          const formattedEndDate = cycle.endDate
-            ? formatDateShort(parseLocalDate(cycle.endDate))
-            : calculateEndDate(cycle.startDate, circleDays);
+          const endIsoForRow = cycle.endDate ?? cycleEndDateIso(cycle.startDate, circleDays);
+          const formattedEndDate = formatDateShort(parseLocalDate(endIsoForRow));
 
           const handlePress = () => {
-            const endDateISO = isCurrentCycle 
+            const endDateISO = isCurrentCycle
               ? formatDateString(new Date())
-              : cycle.endDate || (() => {
-                  const start = parseLocalDate(cycle.startDate);
-                  const end = new Date(start);
-                  end.setDate(start.getDate() + circleDays - 1);
-                  return formatDateString(end);
-                })();
+              : (cycle.endDate ?? cycleEndDateIso(cycle.startDate, circleDays));
 
             router.push({
               pathname: '/cycle-details',
               params: {
                 startDate: cycle.startDate,
                 endDate: endDateISO,
-                cycleLength: typeof cycle.cycleLength === 'number' ? cycle.cycleLength : circleDays,
+                cycleLength: cycle.cycleLength ?? circleDays,
                 periodLength: cycle.periodLength,
                 isCurrentCycle: isCurrentCycle.toString(),
               },

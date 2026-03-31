@@ -1,14 +1,16 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
 import { getDB, getSetting } from '../db';
 import { periodDates } from '../db/schema';
 import { PeriodPredictionService } from '../services/periodPredictions';
+import { cycleEndDateIso } from '../utils/dateUtils';
 
 export interface CycleData {
   startDate: string;
-  cycleLength: string | number;
+  /** Undefined for the current in-progress cycle. */
+  cycleLength: number | undefined;
   periodLength: number;
+  /** Set for completed cycles; omitted while the current cycle is in progress. */
   endDate?: string;
 }
 
@@ -17,7 +19,6 @@ interface HistoryEntryWithDate extends CycleData {
 }
 
 export function useCycleHistory() {
-  const { t } = useTranslation('stats');
   const [averageCycleLength, setAverageCycleLength] = useState(0);
   const [averagePeriodLength, setAveragePeriodLength] = useState(0);
   const [cycles, setCycles] = useState<CycleData[]>([]);
@@ -67,9 +68,9 @@ export function useCycleHistory() {
           (a, b) => new Date(a).getTime() - new Date(b).getTime()
         )[0];
 
-        const cycleLengthValue: string | number =
+        const cycleLengthValue: number | undefined =
           i === chronologicalPeriods.length - 1
-            ? t('cycleHistory.inProgress')
+            ? undefined
             : Math.round(
                 Math.abs(
                   (new Date(periodStartDates[i + 1]).getTime() -
@@ -78,7 +79,16 @@ export function useCycleHistory() {
                 )
               );
 
-        return { startDate, originalDate: startDate, cycleLength: cycleLengthValue, periodLength: period.length };
+        const entry: HistoryEntryWithDate = {
+          startDate,
+          originalDate: startDate,
+          cycleLength: cycleLengthValue,
+          periodLength: period.length,
+        };
+        if (cycleLengthValue !== undefined && cycleLengthValue > 0) {
+          entry.endDate = cycleEndDateIso(startDate, cycleLengthValue);
+        }
+        return entry;
       });
 
       history.sort((a, b) => new Date(b.originalDate).getTime() - new Date(a.originalDate).getTime());
@@ -86,7 +96,7 @@ export function useCycleHistory() {
     } catch (error) {
       console.error('Error loading statistics:', error);
     }
-  }, [userCycleLength, t]);
+  }, [userCycleLength]);
 
   useFocusEffect(
     useCallback(() => {

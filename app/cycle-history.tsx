@@ -10,8 +10,7 @@ import { useTheme } from '../styles/theme';
 
 export default function CycleHistoryScreen() {
   const { colors } = useTheme();
-  const { commonStyles } = useAppStyles();
-  const { typography, scrollContentContainerWithSafeArea } = useAppStyles();
+  const { commonStyles, typography, scrollContentContainerWithSafeArea } = useAppStyles();
   const { t } = useTranslation('stats');
   const { cycles, hasNoPeriodData, isInitialLoad } = useCycleHistory();
 
