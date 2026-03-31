@@ -137,14 +137,14 @@
     "title": "About Bluma",
     "versionLabel": "Version",
     "whatIs": {
-      "description": "Bluma is a privacy-first period tracking app designed to help you understand and manage your menstrual cycle."
+      "description": "Bluma helps you track your menstrual cycle without compromising your privacy. All data is stored locally on your device and encrypted."
     },
     "features": {
       "title": "Features",
       "periodTracking": "Period log and tracking",
       "predictions": "Ovulation day and fertile window predictions",
       "symptomsTracking": "Symptom and mood tracking",
-      "statistics": "Cycle statistics & history",
+      "statistics": "Cycle statistics, patterns & history",
       "insights": "Cycle phase insights",
       "reminders": "Period and fertility reminders",
       "lock": "Biometric app lock",
@@ -161,13 +161,9 @@
     },
     "openSource": {
       "title": "Open Source",
-      "description": "Bluma is open-source and licensed under the",
+      "description": "Bluma is open source and licensed under the",
       "warranty": "Bluma is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
       "viewSource": "View the source on GitHub"
-    },
-    "developer": {
-      "title": "About the Developer",
-      "description": "Bluma was created by Maribel, a Product Designer and Developer passionate about privacy-respecting software. Bluma was built to provide a trustworthy alternative to period trackers that collect and monetize personal health data."
     },
     "technical": {
       "title": "Technical Details",
@@ -178,6 +174,10 @@
       "architecture": "Architecture: Offline-first, no backend server",
       "language": "Programming language: TypeScript",
       "platform": "Platform: Android"
+    },
+    "developer": {
+      "title": "About the Developer",
+      "description": "Bluma was created by Maribel, a Product Designer and IndieDeveloper passionate about privacy-first software. Bluma was built to provide a trustworthy alternative to period trackers that collect and monetize personal health data."
     },
     "footer": {
       "prefix": "For support or feedback, please contact us at: ",
@@ -198,11 +198,11 @@
       "descriptionSuffix": ", and this includes:",
       "periodDates": "Period start and end dates",
       "cycleLength": "Cycle length and period duration",
-      "symptoms": "Symptoms and mood tracking data",
-      "notes": "Notes and personal observations",
-      "settings": "App preferences and settings",
-      "usage": "This data is used solely to provide you with period predictions, cycle insights, and personalized tracking features. We do not share, sell, or transmit your personal health data to any third parties.",
-      "deletion": "If you wish to delete all your app data, you can do so by going to the settings menu and selecting \"Delete all data\". This will permanently erase all tracking data, health logs, and app settings. You can also delete all data by uninstalling the app."
+      "symptoms": "Health data: symptoms, mood, vaginal discharge, menstrual flow and basal body temperature",
+      "notes": "Personal notes",
+      "settings": "App settings",
+      "usage": "This data is used solely to provide you with cycle predictions and insights. We do not share, sell, or transmit your personal health data to any third parties.",
+      "deletion": "If you wish to delete all your app data, you can do so by going to the settings menu and selecting \"Delete all data\". This will permanently erase all period data, cycle history, health logs, and app settings. You can also delete all data by uninstalling the app."
     },
     "permissions": {
       "title": "2. Permissions",
@@ -212,7 +212,7 @@
       "remindersSuffix": ": To send you period and fertility reminders.",
       "biometric": "",
       "biometricBold": "Biometric authentication",
-      "biometricSuffix": ": To secure your app with fingerprint or face recognition.",
+      "biometricSuffix": ": To secure your app with your device's biometric authentication (fingerprint or face recognition).",
       "revoke": "If you don't want to use any of these permissions, you can revoke them at any time through your device settings."
     },
     "transparency": {

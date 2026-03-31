@@ -137,7 +137,7 @@
     "title": "Acerca da Bluma",
     "versionLabel": "Versão",
     "whatIs": {
-      "description": "A Bluma é uma aplicação de registo de período com foco na privacidade, concebida para te ajudar a compreender e gerir o teu ciclo menstrual."
+      "description": "A Bluma ajuda-te a monitorizar o teu ciclo menstrual sem comprometer a tua privacidade. Todos os dados são armazenados localmente no teu dispositivo e encriptados."
     },
     "features": {
       "title": "Funcionalidades",
@@ -198,11 +198,11 @@
       "descriptionSuffix": ", e isto inclui:",
       "periodDates": "Datas de início e fim do período",
       "cycleLength": "Duração do ciclo e do período",
-      "symptoms": "Dados de sintomas e humor",
-      "notes": "Notas e observações pessoais",
-      "settings": "Preferências e definições da aplicação",
-      "usage": "Estes dados são utilizados apenas para te fornecer previsões de período, informações sobre o ciclo e funcionalidades de acompanhamento personalizadas. Não partilhamos, vendemos nem transmitimos os teus dados de saúde pessoais a terceiros.",
-      "deletion": "Se quiseres eliminar todos os dados da aplicação, podes fazê-lo nas definições, selecionando \"Eliminar todos os dados\". Isto irá apagar permanentemente todos os dados de registo, registos de saúde e definições da aplicação. Também podes eliminar todos os dados desinstalando a aplicação."
+      "symptoms": "Dados de saúde: sintomas, humor, fluxo vaginal, fluxo menstrual e temperatura basal",
+      "notes": "Notas pessoais",
+      "settings": "Definições da aplicação",
+      "usage": "Estes dados são utilizados apenas para te fornecer previsões de período e análises de teus ciclos. Não partilhamos, vendemos nem transmitimos os teus dados de saúde pessoais a terceiros.",
+      "deletion": "Se quiseres eliminar todos os dados da aplicação, podes fazê-lo nas definições, selecionando \"Eliminar todos os dados\". Isto irá apagar permanentemente todos os dados de período, histórico de ciclos, registos de saúde e definições da aplicação. Também podes eliminar todos os dados desinstalando a aplicação."
     },
     "permissions": {
       "title": "2. Permissões",
@@ -212,7 +212,7 @@
       "remindersSuffix": ": Para te enviar lembretes de período e fertilidade.",
       "biometric": "",
       "biometricBold": "Autenticação biométrica",
-      "biometricSuffix": ": Para proteger a aplicação com impressão digital ou reconhecimento facial.",
+      "biometricSuffix": ": Para proteger a aplicação com a autenticação biométrica do teu dispositivo (impressão digital ou reconhecimento facial).",
       "revoke": "Se não quiseres usar nenhuma destas permissões, podes revogá-las a qualquer momento nas definições do teu dispositivo."
     },
     "transparency": {

@@ -137,14 +137,14 @@
     "title": "Sobre a Bluma",
     "versionLabel": "Versão",
     "whatIs": {
-      "description": "A Bluma é um app de registro de menstruação com foco em privacidade, feito para ajudar você a entender e gerenciar seu ciclo menstrual."
+      "description": "A Bluma ajuda você a rastrear seu ciclo menstrual sem comprometer sua privacidade. Todos os dados são armazenados localmente no seu dispositivo e criptografados."
     },
     "features": {
       "title": "Recursos",
       "periodTracking": "Registro e acompanhamento de menstruações",
       "predictions": "Previsões de ovulação e janela fértil",
       "symptomsTracking": "Registro de sintomas e humor",
-      "statistics": "Estatísticas e histórico do ciclo",
+      "statistics": "Estatísticas, padrões e histórico do ciclo",
       "insights": "Informações sobre as fases do ciclo",
       "reminders": "Lembretes de menstruação e fertilidade",
       "lock": "Bloqueio biométrico do app",
@@ -167,7 +167,7 @@
     },
     "developer": {
       "title": "Sobre a desenvolvedora",
-      "description": "A Bluma foi criada pela Maribel, designer de produto e desenvolvedora apaixonada por software que respeita a privacidade. A Bluma foi feita para oferecer uma alternativa confiável aos apps de registro de menstruação que coletam e monetizam dados de saúde pessoais."
+      "description": "A Bluma foi criada pela Maribel, designer de produto e desenvolvedora indie apaixonada por software que respeita a privacidade. A Bluma foi feita para oferecer uma alternativa confiável aos apps de registro de menstruação que coletam e monetizam dados de saúde pessoais."
     },
     "technical": {
       "title": "Detalhes técnicos",
@@ -198,11 +198,11 @@
       "descriptionSuffix": ", e isso inclui:",
       "periodDates": "Datas de início e fim da menstruação",
       "cycleLength": "Duração do ciclo e da menstruação",
-      "symptoms": "Dados de sintomas e humor",
-      "notes": "Notas e observações pessoais",
-      "settings": "Preferências e configurações do app",
-      "usage": "Esses dados são usados apenas para fornecer previsões de menstruação, informações sobre o ciclo e recursos de acompanhamento personalizados. Não compartilhamos, vendemos nem transmitimos seus dados de saúde pessoais a terceiros.",
-      "deletion": "Se quiser excluir todos os dados do app, você pode fazer isso nas configurações, selecionando \"Excluir todos os dados\". Isso vai apagar permanentemente todos os dados de registro, registros de saúde e configurações do app. Você também pode excluir todos os dados desinstalando o app."
+      "symptoms": "Dados de saúde: sintomas, humor, fluxo vaginal, fluxo menstrual e temperatura basal",
+      "notes": "Notas pessoais",
+      "settings": "Configurações do app",
+      "usage": "Esses dados são usados apenas para fornecer previsões de menstruação e análises de seus ciclos. Não compartilhamos, vendemos nem transmitimos seus dados de saúde pessoais a terceiros.",
+      "deletion": "Se quiser excluir todos os dados do app, você pode fazer isso nas configurações, selecionando \"Excluir todos os dados\". Isso vai apagar permanentemente todos os dados de menstruação, histórico de ciclos, registros de saúde e configurações do app. Você também pode excluir todos os dados desinstalando o app."
     },
     "permissions": {
       "title": "2. Permissões",
@@ -212,7 +212,7 @@
       "remindersSuffix": ": Para enviar lembretes de menstruação e fertilidade.",
       "biometric": "",
       "biometricBold": "Autenticação biométrica",
-      "biometricSuffix": ": Para proteger o app com impressão digital ou reconhecimento facial.",
+      "biometricSuffix": ": Para proteger o app com a autenticação biométrica do seu dispositivo (impressão digital ou reconhecimento facial).",
       "revoke": "Se não quiser usar nenhuma dessas permissões, você pode revogá-las a qualquer momento nas configurações do seu dispositivo."
     },
     "transparency": {

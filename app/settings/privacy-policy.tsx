@@ -126,7 +126,7 @@ export default function PrivacyPolicy() {
         </Text>
       </View>
 
-      <View style={[commonStyles.sectionContainer, {backgroundColor: colors.background }]}>
+      <View style={[commonStyles.sectionContainer, {backgroundColor: colors.surfaceVariant}]}>
         <Text
           style={[
             typography.body,

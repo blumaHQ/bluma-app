@@ -136,14 +136,14 @@
     "title": "Acerca de Bluma",
     "versionLabel": "Versión",
     "whatIs": {
-      "description": "Bluma es una aplicación de seguimiento de periodo con enfoque en la privacidad, diseñada para ayudarte a entender y gestionar tu ciclo menstrual."
+      "description": "Bluma te ayuda a rastrear tu ciclo menstrual sin comprometer tu privacidad. Todos los datos se almacenan localmente en tu dispositivo y se encriptan."
     },
     "features": {
       "title": "Características",
       "periodTracking": "Registro y seguimiento del periodo",
       "predictions": "Predicciones de ovulación y ventana fértil",
       "symptomsTracking": "Seguimiento de síntomas y estado de ánimo",
-      "statistics": "Estadísticas e historial de ciclos",
+      "statistics": "Estadísticas, patrones e historial de ciclos",
       "insights": "Información sobre fases del ciclo",
       "reminders": "Recordatorios de periodo y fertilidad",
       "lock": "Bloqueo biométrico de aplicación",
@@ -197,11 +197,11 @@
       "descriptionSuffix": ", y esto incluye:",
       "periodDates": "Fechas de inicio y fin del periodo",
       "cycleLength": "Duración del ciclo y periodo",
-      "symptoms": "Datos de seguimiento de síntomas y estado de ánimo",
-      "notes": "Notas y observaciones personales",
-      "settings": "Preferencias y configuración de la aplicación",
-      "usage": "Estos datos se usan únicamente para proporcionarte predicciones de periodo, información sobre tu ciclo y funciones de seguimiento personalizadas. No compartimos, vendemos ni transmitimos tus datos de salud personal a terceros.",
-      "deletion": "Si deseas eliminar todos los datos de tu aplicación, puedes hacerlo yendo al menú de configuración y seleccionando \"Eliminar todos los datos\". Esto borrará permanentemente todos los datos de seguimiento, registros de salud y ajustes de la aplicación. También puedes eliminar todos los datos desinstalando la aplicación."
+      "symptoms": "Datos de salud: síntomas, estado de ánimo, flujo vaginal, flujo menstrual y temperatura basal",
+      "notes": "Notas personales",
+      "settings": "Configuración de la aplicación",
+      "usage": "Estos datos se usan únicamente para proporcionarte predicciones de periodo y analises de tus ciclos. No compartimos, vendemos ni transmitimos tus datos de salud personal a terceros.",
+      "deletion": "Si deseas eliminar todos los datos de tu aplicación, puedes hacerlo yendo al menú de configuración y seleccionando \"Eliminar todos los datos\". Esto borrará permanentemente todos los datos de periodo, historial de ciclos, registros de salud y ajustes de la aplicación. También puedes eliminar todos los datos desinstalando la aplicación."
     },
     "permissions": {
       "title": "2. Permisos",
@@ -211,7 +211,7 @@
       "remindersSuffix": ": Para enviarte recordatorios de periodo y fertilidad.",
       "biometric": "",
       "biometricBold": "Autenticación biométrica",
-      "biometricSuffix": ": Para bloquear tu aplicación con huella digital o reconocimiento facial.",
+      "biometricSuffix": ": Para bloquear tu aplicación con la autenticación biométrica de tu dispositivo (huella digital o reconocimiento facial).",
       "revoke": "Si no deseas usar ninguno de estos permisos, puedes revocarlos en cualquier momento a través de la configuración de tu dispositivo."
     },
     "transparency": {

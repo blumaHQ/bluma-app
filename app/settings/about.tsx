@@ -130,18 +130,6 @@ export default function About() {
 
       <View style={[styles.contentSection]}>
         <View style={styles.sectionHeader}>
-          <SectionIcon name="person-outline" />
-          <Text style={[typography.headingMd, { marginLeft: 12 }]}>
-            {t('aboutScreen.developer.title')}
-          </Text>
-        </View>
-        <Text style={[typography.body]}>
-          {t('aboutScreen.developer.description')}
-        </Text>
-      </View>
-
-      <View style={[styles.contentSection]}>
-        <View style={styles.sectionHeader}>
           <SectionIcon name="code-outline" />
           <Text style={[typography.headingMd, { marginLeft: 12 }]}>
             {t('aboutScreen.technical.title')}
@@ -175,7 +163,19 @@ export default function About() {
         })}
       </View>
 
-      <View style={[commonStyles.sectionContainer, { backgroundColor: colors.background }]}>
+      <View style={[styles.contentSection]}>
+        <View style={styles.sectionHeader}>
+          <SectionIcon name="person-outline" />
+          <Text style={[typography.headingMd, { marginLeft: 12 }]}>
+            {t('aboutScreen.developer.title')}
+          </Text>
+        </View>
+        <Text style={[typography.body]}>
+          {t('aboutScreen.developer.description')}
+        </Text>
+      </View>
+
+      <View style={[commonStyles.sectionContainer, { backgroundColor: colors.surfaceVariant }]}>
         <Text
           style={[
             typography.body,
