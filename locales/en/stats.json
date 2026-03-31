@@ -31,11 +31,6 @@
     "cycleIrregularRange": "This cycle length is outside the normal range (21-35 days)",
     "periodNormalRange": "The length of this period was within the normal range (2-7 days)",
     "periodIrregularRange": "This period length is outside the normal range (2-7 days)",
-    "periodOverdue": "Your period is {{count}} day late.",
-    "periodOverdue_other": "Your period is {{count}} days late.",
-    "periodOverdueBefore": "Your period is ",
-    "periodOverdueAfter": " late.",
-    "learnAboutLatePeriod": "Learn why your period might be late",
     "cycleLasted": "Cycle lasted from {{startDate}} to {{endDate}}",
     "cycleLastedBefore": "Cycle lasted from ",
     "cycleLastedMiddle": " to "

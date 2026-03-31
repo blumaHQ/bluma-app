@@ -31,11 +31,6 @@
     "cycleIrregularRange": "A duração deste ciclo está fora da faixa normal (21-35 dias)",
     "periodNormalRange": "A duração desta menstruação estava dentro da faixa normal (2-7 dias)",
     "periodIrregularRange": "A duração desta menstruação está fora da faixa normal (2-7 dias)",
-    "periodOverdue": "Sua menstruação está {{count}} dia atrasada.",
-    "periodOverdue_other": "Sua menstruação está {{count}} dias atrasada.",
-    "periodOverdueBefore": "Sua menstruação está ",
-    "periodOverdueAfter": " atrasada.",
-    "learnAboutLatePeriod": "Saiba por que sua menstruação pode estar atrasada",
     "cycleLasted": "O ciclo durou de {{startDate}} a {{endDate}}",
     "cycleLastedBefore": "O ciclo durou de ",
     "cycleLastedMiddle": " a "
