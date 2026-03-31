@@ -7,7 +7,7 @@
   },
   "emptyState": {
     "title": "Ainda sem dados do ciclo",
-    "subtitle": "Registre pelo menos 2 menstruações para ver suas estatísticas e histórico pessoais.",
+    "subtitle": "Registre sua primeira menstruação para ver suas estatísticas e histórico pessoais.",
     "logPeriodButton": "Registrar menstruação"
   },
   "cycleHistory": {
@@ -23,18 +23,14 @@
     "unknown": "Desconhecido",
     "filterAll": "Todos",
     "filterLast3": "Últimos 3 ciclos",
-    "filterLast6": "Últimos 6 ciclos"
+    "filterLast6": "Últimos 6 ciclos",
+    "seeAll": "Ver tudo"
   },
   "cycleDetails": {
     "cycleNormalRange": "A duração deste ciclo estava dentro da faixa normal (21-35 dias)",
     "cycleIrregularRange": "A duração deste ciclo está fora da faixa normal (21-35 dias)",
     "periodNormalRange": "A duração desta menstruação estava dentro da faixa normal (2-7 dias)",
     "periodIrregularRange": "A duração desta menstruação está fora da faixa normal (2-7 dias)",
-    "periodOverdue": "Sua menstruação está {{count}} dia atrasada.",
-    "periodOverdue_other": "Sua menstruação está {{count}} dias atrasada.",
-    "periodOverdueBefore": "Sua menstruação está ",
-    "periodOverdueAfter": " atrasada.",
-    "learnAboutLatePeriod": "Saiba por que sua menstruação pode estar atrasada",
     "cycleLasted": "O ciclo durou de {{startDate}} a {{endDate}}",
     "cycleLastedBefore": "O ciclo durou de ",
     "cycleLastedMiddle": " a "
@@ -42,6 +38,7 @@
   "averages": {
     "title": "Médias",
     "cycleLength": "Duração média do ciclo",
+    "cycleLengthEmpty": "Registre pelo menos mais um ciclo para ver a média",
     "periodLength": "Duração média da menstruação",
     "days": "{{count}} dia",
     "days_other": "{{count}} dias"
@@ -61,7 +58,7 @@
     "title": "Padrões de sintomas",
     "subtitle": "Estes tendem a aparecer ao longo dos ciclos",
     "detailSubtitle": "Com base nos teus registos passados, estes sintomas tendem a aparecer nestas fases:",
-    "noPatterns": "Registre sintomas para pelo menos 3 ciclos para ver padrões.",
+    "noPatterns": "Os sintomas que se repetem entre ciclos aparecerão aqui.",
     "cyclesCount": "{{logCount}} vezes em {{count}} ciclos",
     "phases": {
       "menstrual": "Menstrual",

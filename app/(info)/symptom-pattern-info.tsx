@@ -27,9 +27,6 @@ export default function SymptomPatternInfo() {
       />
 
       <View style={styles.contentSection}>
-        <Text style={typography.headingMd}>
-          {t('symptomPattern.howItWorks.title')}
-        </Text>
         <Text style={typography.body}>
           {t('symptomPattern.howItWorks.description')}
         </Text>

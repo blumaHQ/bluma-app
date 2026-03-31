@@ -136,30 +136,6 @@ export default function CycleDetails() {
           <Text style={[typography.body, { color: colors.textSecondary}]}>
             {formattedStartDate} - {formattedEndDate}
           </Text>
-          {cycleLength > 35 && (
-            <View style={[styles.warningContainer, { backgroundColor: colors.warningLight }]}>
-              <Ionicons name="alert-circle-outline" size={20} color={colors.warning} />
-              <View style={{ flex: 1 }}>
-                <Text style={[typography.body, { color: colors.textPrimary, marginBottom: 8 }]}>
-                  {t('stats:cycleDetails.periodOverdueBefore')}
-                  <Text style={[typography.body, { color: colors.textPrimary, fontWeight: '600' }]}>
-                    {cycleLength - 35} {cycleLength - 35 === 1 ? t('common:time.day') : t('common:time.days')}
-                  </Text>
-                  {t('stats:cycleDetails.periodOverdueAfter')}
-                </Text>
-                <Pressable
-                  onPress={() => router.push('/(info)/late-period-info')}
-                  style={({ pressed }) => [
-                    { opacity: pressed ? 0.6 : 1 }
-                  ]}
-                >
-                  <Text style={[typography.body, { color: colors.primary, fontWeight: '600' }]}>
-                    {t('stats:cycleDetails.learnAboutLatePeriod')}
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          )}
         </View>
       ) : (
         <>
@@ -449,14 +425,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-  },
-  warningContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 8,
-    marginTop: 12,
-    padding: 12,
-    borderRadius: 8,
   },
   cycleHeaderRow: {
     flexDirection: 'row',

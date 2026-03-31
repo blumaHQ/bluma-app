@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,21 +7,18 @@ import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
 import { formatDateShort } from '../utils/localeUtils';
 import { formatDateString } from '../types/calendarTypes';
-import { parseLocalDate } from '../utils/dateUtils';
-
-interface CycleData {
-  startDate: string; // ISO date string (YYYY-MM-DD)
-  cycleLength: string | number;
-  periodLength: number;
-  endDate?: string; // ISO date string (YYYY-MM-DD)
-}
+import { cycleEndDateIso, parseLocalDate } from '../utils/dateUtils';
+import { PeriodPredictionService } from '../services/periodPredictions';
+import type { CycleData } from '../hooks/useCycleHistory';
 
 interface CycleHistoryProps {
   cycles: CycleData[];
+  maxItems?: number;
+  showTitle?: boolean;
 }
 
 // Helper to render the circles representing days
-const DayCircles = ({
+const DayCircles = React.memo(function DayCircles({
   totalDays,
   periodDays,
   isLast,
@@ -29,7 +26,7 @@ const DayCircles = ({
   totalDays: number;
   periodDays: number;
   isLast?: boolean;
-}) => {
+}) {
   const { colors } = useTheme();
   const circles = [];
 
@@ -58,89 +55,102 @@ const DayCircles = ({
       {circles}
     </View>
   );
-};
+});
 
 type CycleFilter = 'all' | 3 | 6;
 
 const FILTERS: CycleFilter[] = ['all', 3, 6];
 
-export function CycleHistory({ cycles }: CycleHistoryProps) {
+export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistoryProps) {
   const { colors } = useTheme();
   const { typography, commonStyles } = useAppStyles();
   const { t } = useTranslation(['stats', 'common']);
   const [filter, setFilter] = useState<CycleFilter>('all');
 
-  if (cycles.length === 0) {
-    return null;
-  }
+  const isCompact = maxItems !== undefined;
+  const showSeeAll = isCompact && cycles.length > maxItems!;
 
   const availableFilters = FILTERS.filter((f) => {
     if (f === 'all') return true;
     if (f === 3) return cycles.length > 3;
     return cycles.length >= 6;
   });
-  const filteredCycles = filter === 'all' ? cycles : cycles.slice(0, filter);
+  const filteredCycles = useMemo(() => {
+    if (isCompact) {
+      return cycles.slice(0, maxItems);
+    }
+    return filter === 'all' ? cycles : cycles.slice(0, filter);
+  }, [cycles, filter, isCompact, maxItems]);
 
-  // Helper to calculate how many days have passed since start date
-  const getDaysSoFar = (startDate: string): number => {
-    const start = parseLocalDate(startDate);
-    const today = new Date();
-    return Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-  };
-
-  // Helper to calculate end date from start date and cycle length
-  const calculateEndDate = (startDate: string, cycleLength: number): string => {
-    const start = parseLocalDate(startDate);
-    const end = new Date(start);
-    end.setDate(start.getDate() + cycleLength - 1); // -1 because start date is included
-    return formatDateShort(end);
-  };
+  if (cycles.length === 0) {
+    return null;
+  }
 
   return (
     <View>
       <View style={[styles.headerContainer, { backgroundColor: colors.surface, borderBottomColor: colors.border}]}>
-        <Text
-          style={[
-            typography.headingMd,
-            commonStyles.sectionTitleContainer,
-            { marginBottom: 0}
-          ]}
-        >
-          {t('stats:cycleHistory.title')}
-        </Text>
+        {showTitle && (
+          <View style={styles.headerTopRow}>
+            <Text
+              style={[
+                typography.headingMd,
+                commonStyles.sectionTitleContainer,
+                { marginBottom: 0}
+              ]}
+            >
+              {t('stats:cycleHistory.title')}
+            </Text>
 
-        {availableFilters.length > 1 && <View style={styles.filterRow}>
-          {availableFilters.map((f) => {
-            const isActive = filter === f;
-            const label =
-              f === 'all'
-                ? t('stats:cycleHistory.filterAll')
-                : f === 3
-                  ? t('stats:cycleHistory.filterLast3')
-                  : t('stats:cycleHistory.filterLast6');
-            return (
+            {showSeeAll ? (
               <Pressable
-                key={String(f)}
-                onPress={() => setFilter(f)}
-                style={[
-                  styles.filterPill,
-                  {
-                    backgroundColor: isActive ? colors.primary : colors.surfaceVariant,
-                  },
-                ]}
+                onPress={() => router.push('/cycle-history')}
+                style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}
+                hitSlop={10}
               >
-                <Text
-                  style={[
-                    typography.caption,
-                    { color: isActive ? '#fff' : colors.textPrimary },
-                  ]}
-                >
-                  {label}
+                <Text style={[typography.bodyBold, { color: colors.primary }]}>
+                  {t('stats:cycleHistory.seeAll')}
                 </Text>
               </Pressable>
-            );
-          })}
-        </View>}
+            ) : (
+              <View />
+            )}
+          </View>
+        )}
+
+        {!isCompact && availableFilters.length > 1 && (
+          <View style={styles.filterRow}>
+            {availableFilters.map((f) => {
+              const isActive = filter === f;
+              const label =
+                f === 'all'
+                  ? t('stats:cycleHistory.filterAll')
+                  : f === 3
+                    ? t('stats:cycleHistory.filterLast3')
+                    : t('stats:cycleHistory.filterLast6');
+              return (
+                <Pressable
+                  key={String(f)}
+                  onPress={() => setFilter(f)}
+                  style={[
+                    styles.filterPill,
+                    {
+                      backgroundColor: isActive ? colors.primary : colors.surfaceVariant,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      typography.caption,
+                      { color: isActive ? '#fff' : colors.textPrimary },
+                    ]}
+                  >
+                    {label}
+                  </Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        )}
       </View>
 
       <View style={[styles.cycleHistoryContainer, { backgroundColor: colors.surface}]}>
@@ -158,49 +168,29 @@ export function CycleHistory({ cycles }: CycleHistoryProps) {
           let circleDays: number;
 
           if (isCurrentCycle) {
-            // For current cycle, show days so far
-            const daysSoFar = getDaysSoFar(cycle.startDate);
+            const daysSoFar = PeriodPredictionService.getCurrentCycleDay(cycle.startDate);
             displayCycleLength = t('stats:cycleHistory.days', { count: daysSoFar });
             circleDays = daysSoFar;
           } else {
-            // For past cycles, use stored cycle length
-            const numericLength =
-              typeof cycle.cycleLength === 'number'
-                ? cycle.cycleLength
-                : parseInt(cycle.cycleLength, 10);
-
-            if (!isNaN(numericLength)) {
-              displayCycleLength = t('stats:cycleHistory.days', { count: numericLength });
-              circleDays = numericLength;
-            } else {
-              // Fallback for "In progress" or other strings
-              displayCycleLength = String(cycle.cycleLength);
-              circleDays = 28; // Default fallback
-            }
+            circleDays = cycle.cycleLength ?? 28;
+            displayCycleLength = t('stats:cycleHistory.days', { count: circleDays });
           }
 
-          // Format dates for display
           const formattedStartDate = formatDateShort(parseLocalDate(cycle.startDate));
-          const formattedEndDate = cycle.endDate
-            ? formatDateShort(parseLocalDate(cycle.endDate))
-            : calculateEndDate(cycle.startDate, circleDays);
+          const endIsoForRow = cycle.endDate ?? cycleEndDateIso(cycle.startDate, circleDays);
+          const formattedEndDate = formatDateShort(parseLocalDate(endIsoForRow));
 
           const handlePress = () => {
-            const endDateISO = isCurrentCycle 
+            const endDateISO = isCurrentCycle
               ? formatDateString(new Date())
-              : cycle.endDate || (() => {
-                  const start = parseLocalDate(cycle.startDate);
-                  const end = new Date(start);
-                  end.setDate(start.getDate() + circleDays - 1);
-                  return formatDateString(end);
-                })();
+              : (cycle.endDate ?? cycleEndDateIso(cycle.startDate, circleDays));
 
             router.push({
               pathname: '/cycle-details',
               params: {
                 startDate: cycle.startDate,
                 endDate: endDateISO,
-                cycleLength: typeof cycle.cycleLength === 'number' ? cycle.cycleLength : circleDays,
+                cycleLength: cycle.cycleLength ?? circleDays,
                 periodLength: cycle.periodLength,
                 isCurrentCycle: isCurrentCycle.toString(),
               },
@@ -208,8 +198,8 @@ export function CycleHistory({ cycles }: CycleHistoryProps) {
           };
 
           return (
-            <React.Fragment key={index}>
-              {showYearHeader && (
+            <React.Fragment key={cycle.startDate}>
+              {!isCompact && showYearHeader && (
                 <Text style={[typography.headingMd, {fontSize: 20}, styles.yearHeading]}>
                   {cycleYear}
                 </Text>
@@ -279,10 +269,14 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
     borderBottomWidth: 1,
   },
+  headerTopRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   filterRow: {
     flexDirection: 'row',
     gap: 8,
-    marginTop: 14,
   },
   filterPill: {
     paddingHorizontal: 16,

@@ -29,19 +29,8 @@ export function useCycleCalculations({
           allPeriodDates,
           userCycleLength
         );
-
-        // Walk forward by cycleLength to find which predicted cycle contains this date
-        let cycleStartDate = firstPeriodDate;
-        const nextCycleStart = parseLocalDate(firstPeriodDate);
-        nextCycleStart.setDate(nextCycleStart.getDate() + cycleLength);
-
-        while (selectedDateObj >= nextCycleStart) {
-          cycleStartDate = formatDateString(new Date(nextCycleStart));
-          nextCycleStart.setDate(nextCycleStart.getDate() + cycleLength);
-        }
-
         const cycleInfo = PeriodPredictionService.getCycleInfo(
-          cycleStartDate,
+          firstPeriodDate,
           date,
           cycleLength
         );

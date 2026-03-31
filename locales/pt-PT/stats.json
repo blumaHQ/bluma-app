@@ -7,7 +7,7 @@
   },
   "emptyState": {
     "title": "Ainda sem dados do ciclo",
-    "subtitle": "Regista pelo menos 2 períodos para veres as tuas estatísticas e histórico pessoais.",
+    "subtitle": "Regista o teu primeiro período para veres as tuas estatísticas e histórico pessoais.",
     "logPeriodButton": "Registar período"
   },
   "cycleHistory": {
@@ -23,18 +23,14 @@
     "unknown": "Desconhecido",
     "filterAll": "Todos",
     "filterLast3": "Últimos 3 ciclos",
-    "filterLast6": "Últimos 6 ciclos"
+    "filterLast6": "Últimos 6 ciclos",
+    "seeAll": "Ver tudo"
   },
   "cycleDetails": {
     "cycleNormalRange": "A duração deste ciclo estava dentro do intervalo normal (21-35 dias)",
     "cycleIrregularRange": "A duração deste ciclo está fora do intervalo normal (21-35 dias)",
     "periodNormalRange": "A duração deste período estava dentro do intervalo normal (2-7 dias)",
     "periodIrregularRange": "A duração deste período está fora do intervalo normal (2-7 dias)",
-    "periodOverdue": "O teu período está {{count}} dia atrasado.",
-    "periodOverdue_other": "O teu período está {{count}} dias atrasado.",
-    "periodOverdueBefore": "O teu período está ",
-    "periodOverdueAfter": " atrasado.",
-    "learnAboutLatePeriod": "Descobre por que o teu período pode estar atrasado",
     "cycleLasted": "O ciclo durou de {{startDate}} a {{endDate}}",
     "cycleLastedBefore": "O ciclo durou de ",
     "cycleLastedMiddle": " a "
@@ -42,6 +38,7 @@
   "averages": {
     "title": "Médias",
     "cycleLength": "Duração média do ciclo",
+    "cycleLengthEmpty": "Regista pelo menos mais um ciclo para ver a média",
     "periodLength": "Duração média do período",
     "days": "{{count}} dia",
     "days_other": "{{count}} dias"
@@ -60,7 +57,7 @@
     "title": "Padrões de sintomas",
     "subtitle": "Estes tendem a aparecer ao longo dos ciclos",
     "detailSubtitle": "Com base nos teus registos passados, estes sintomas tendem a aparecer nestas fases:",
-    "noPatterns": "Regista sintomas durante pelo menos 3 ciclos para ver padrões.",
+    "noPatterns": "Os sintomas que se repetem entre ciclos aparecerão aqui.",
     "logSymptomsButton": "Registar sintomas",
     "cyclesCount": "{{logCount}} vezes em {{count}} ciclos",
     "phases": {

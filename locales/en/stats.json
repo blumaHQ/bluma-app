@@ -7,7 +7,7 @@
   },
   "emptyState": {
     "title": "No cycle data yet",
-    "subtitle": "Log at least 2 periods to see your personal cycle statistics and history.",
+    "subtitle": "Log at least one period to see your cycle statistics and history.",
     "logPeriodButton": "Log period"
   },
   "cycleHistory": {
@@ -23,18 +23,14 @@
     "unknown": "Unknown",
     "filterAll": "All",
     "filterLast3": "Last 3 cycles",
-    "filterLast6": "Last 6 cycles"
+    "filterLast6": "Last 6 cycles",
+    "seeAll": "See all"
   },
   "cycleDetails": {
     "cycleNormalRange": "The length of this cycle was within the normal range (21-35 days)",
     "cycleIrregularRange": "This cycle length is outside the normal range (21-35 days)",
     "periodNormalRange": "The length of this period was within the normal range (2-7 days)",
     "periodIrregularRange": "This period length is outside the normal range (2-7 days)",
-    "periodOverdue": "Your period is {{count}} day late.",
-    "periodOverdue_other": "Your period is {{count}} days late.",
-    "periodOverdueBefore": "Your period is ",
-    "periodOverdueAfter": " late.",
-    "learnAboutLatePeriod": "Learn why your period might be late",
     "cycleLasted": "Cycle lasted from {{startDate}} to {{endDate}}",
     "cycleLastedBefore": "Cycle lasted from ",
     "cycleLastedMiddle": " to "
@@ -42,6 +38,7 @@
   "averages": {
     "title": "Averages",
     "cycleLength": "Average cycle length",
+    "cycleLengthEmpty": "Log one more cycle to calculate your actual average",
     "periodLength": "Average period length",
     "days": "{{count}} day",
     "days_other": "{{count}} days"
@@ -53,14 +50,14 @@
     "fertileWindow": "Fertile window"
   },
   "symptomsLogged": {
-    "title": "What you logged",
+    "title": "Health logs",
     "noLogs": "No health data logged during this cycle."
   },
   "symptomPattern": {
     "title": "Symptom patterns",
     "subtitle": "These tend to show up across cycles",
     "detailSubtitle": "Based on your tracking history, these tend to show up during these phases:",
-    "noPatterns": "Log symptoms for at least 3 cycles to see patterns.",
+    "noPatterns": "Symptoms that repeat across cycles will appear here.",
     "logSymptomsButton": "Log symptoms",
     "cyclesCount": "{{logCount}} times in {{count}} cycles",
     "phases": {

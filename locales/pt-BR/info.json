@@ -9,7 +9,6 @@
   },
   "symptomPattern": {
     "howItWorks": {
-      "title": "Como funcionam os padrões de sintomas",
       "description": "Um padrão de sintomas é quando o mesmo sintoma ou humor aparece durante a mesma fase do ciclo em múltiplos ciclos.\n\nA Bluma revisa seus últimos 6 ciclos de registros de sintomas. Para cada sintoma ou humor que você registra, verifica em qual fase do ciclo você estava (menstrual, folicular, ovulação ou lútea).\n\nSe o mesmo sintoma aparece na mesma fase em pelo menos 3 desses 6 ciclos, ele é mostrado como um padrão.\n\nQuanto mais ciclos você registrar, mais confiáveis esses padrões se tornam."
     }
   },
