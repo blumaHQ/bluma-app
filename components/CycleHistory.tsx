@@ -8,6 +8,7 @@ import { useAppStyles } from '../hooks/useStyles';
 import { formatDateShort } from '../utils/localeUtils';
 import { formatDateString } from '../types/calendarTypes';
 import { parseLocalDate } from '../utils/dateUtils';
+import { PeriodPredictionService } from '../services/periodPredictions';
 import type { CycleData } from '../hooks/useCycleHistory';
 
 interface CycleHistoryProps {
@@ -83,13 +84,6 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
   if (cycles.length === 0) {
     return null;
   }
-
-  // Helper to calculate how many days have passed since start date
-  const getDaysSoFar = (startDate: string): number => {
-    const start = parseLocalDate(startDate);
-    const today = new Date();
-    return Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-  };
 
   // Helper to calculate end date from start date and cycle length
   const calculateEndDate = (startDate: string, cycleLength: number): string => {
@@ -182,7 +176,7 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
 
           if (isCurrentCycle) {
             // For current cycle, show days so far
-            const daysSoFar = getDaysSoFar(cycle.startDate);
+            const daysSoFar = PeriodPredictionService.getCurrentCycleDay(cycle.startDate);
             displayCycleLength = t('stats:cycleHistory.days', { count: daysSoFar });
             circleDays = daysSoFar;
           } else {

@@ -11,7 +11,7 @@ import { useTheme } from '../styles/theme';
 export default function CycleHistoryScreen() {
   const { colors } = useTheme();
   const { commonStyles } = useAppStyles();
-  const { typography } = useAppStyles();
+  const { typography, scrollContentContainerWithSafeArea } = useAppStyles();
   const { t } = useTranslation('stats');
   const { cycles, hasNoPeriodData, isInitialLoad } = useCycleHistory();
 
@@ -42,7 +42,10 @@ export default function CycleHistoryScreen() {
 
   if (hasNoPeriodData) {
     return (
-      <ScrollView style={[commonStyles.container, { backgroundColor: colors.background }]}>
+      <ScrollView 
+      style={[commonStyles.container, { backgroundColor: colors.background }]}
+      contentContainerStyle={{ flexGrow: 1 }}
+      >
         {renderEmptyState()}
       </ScrollView>
     );
@@ -50,8 +53,10 @@ export default function CycleHistoryScreen() {
 
   return (
     <ScrollView
-      style={commonStyles.scrollView}
-      contentContainerStyle={commonStyles.scrollContentContainer}
+      style={[
+        commonStyles.scrollView,
+      ]}
+      contentContainerStyle={scrollContentContainerWithSafeArea}
       showsVerticalScrollIndicator={false}
     >
       <CycleHistory cycles={cycles} showTitle={false} />
