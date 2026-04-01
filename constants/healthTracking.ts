@@ -1,4 +1,6 @@
-export type HealthItemType = 'symptom' | 'mood' | 'flow' | 'discharge' | 'sex' | 'notes' | 'temperature';
+import type { HealthItemType } from './healthLogTypes';
+
+export type { HealthItemType };
 
 export type SelectableHealthItemType = Exclude<HealthItemType, 'notes' | 'temperature'>;
 

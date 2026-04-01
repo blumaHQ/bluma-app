@@ -1,15 +1,8 @@
 import { sql } from 'drizzle-orm';
 import { check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { healthLogTypes } from '../constants/healthLogTypes';
 
-export const healthLogTypes = [
-  'symptom',
-  'mood',
-  'flow',
-  'discharge',
-  'sex',
-  'notes',
-  'temperature',
-] as const;
+export { healthLogTypes };
 
 export const periodDates = sqliteTable('period_dates', {
   id: integer('id').primaryKey(),
