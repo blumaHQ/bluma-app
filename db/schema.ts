@@ -10,7 +10,7 @@ export const periodDates = sqliteTable('period_dates', {
 export const healthLogs = sqliteTable('health_logs', {
   id: integer('id').primaryKey(),
   date: text('date').notNull(),
-  type: text('type').notNull(), // 'symptom', 'mood', 'flow', 'discharge', 'notes'
+  type: text('type').notNull(), // 'symptom', 'mood', 'flow', 'discharge', 'sex', 'notes'
   item_id: text('item_id').notNull(),
   name: text('name'), // Only used for 'notes' type to store actual note text
   createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),

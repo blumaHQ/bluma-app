@@ -90,23 +90,24 @@ const styles = StyleSheet.create({
   itemsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    gap: 4.5,
   },
   itemButton: {
-    width: '23%',
+    width: '24%',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 8,
+    paddingHorizontal: 6,
   },
   itemIcon: {
-    width: 60,
-    height: 60,
+    width: 64,
+    height: 64,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 3,
   },
   selectedItemIcon: {
     borderWidth: 2,
-    borderRadius: 30,
+    borderRadius: 40,
   },
   checkmarkContainer: {
     position: 'absolute',

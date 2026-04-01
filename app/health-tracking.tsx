@@ -28,6 +28,7 @@ import {
   MOODS,
   FLOWS,
   DISCHARGES,
+  SEX,
   SELECTION_COLORS,
 } from '../constants/healthTracking';
 import { HealthItemGrid } from '../components/HealthItemGrid';
@@ -46,7 +47,7 @@ export default function HealthTracking() {
   const { notes, setNotes } = useNotes();
   const { tempCelsius, setTempCelsius, tempUnit, setTempUnit } = useTemperature();
   const { isLocked } = useAuth();
-  const ICON_SIZE = 50;
+  const ICON_SIZE = 54;
 
   const [selectedDate, setSelectedDate] = useState<string>(
     typeof params.date === 'string' ? params.date : dayjs().format('YYYY-MM-DD')
@@ -60,6 +61,7 @@ export default function HealthTracking() {
   const [selectedDischarges, setSelectedDischarges] = useState<Set<string>>(
     new Set()
   );
+  const [selectedSex, setSelectedSex] = useState<Set<string>>(new Set());
 
   const [originalSymptoms, setOriginalSymptoms] = useState<Set<string>>(
     new Set()
@@ -69,6 +71,7 @@ export default function HealthTracking() {
   const [originalDischarges, setOriginalDischarges] = useState<Set<string>>(
     new Set()
   );
+  const [originalSex, setOriginalSex] = useState<Set<string>>(new Set());
   const [originalNotes, setOriginalNotes] = useState<string>('');
   const [originalTemp, setOriginalTemp] = useState<string>('');
   const [hasChanges, setHasChanges] = useState<boolean>(false);
@@ -80,6 +83,7 @@ export default function HealthTracking() {
   const symptomsSectionRef = useRef<View>(null);
   const moodsSectionRef = useRef<View>(null);
   const dischargeSectionRef = useRef<View>(null);
+  const sexSectionRef = useRef<View>(null);
   const tempSectionRef = useRef<View>(null);
   const notesSectionRef = useRef<View>(null);
 
@@ -171,6 +175,7 @@ export default function HealthTracking() {
         const moodIds = new Set<string>();
         const flowIds = new Set<string>();
         const dischargeIds = new Set<string>();
+        const sexIds = new Set<string>();
         let notesText = '';
         let tempValue = '';
 
@@ -183,6 +188,8 @@ export default function HealthTracking() {
             flowIds.add(entry.item_id);
           } else if (entry.type === 'discharge') {
             dischargeIds.add(entry.item_id);
+          } else if (entry.type === 'sex') {
+            sexIds.add(entry.item_id);
           } else if (entry.type === 'notes') {
             notesText = entry.name || '';
           } else if (entry.type === 'temperature') {
@@ -201,6 +208,7 @@ export default function HealthTracking() {
         setSelectedFlows(nextFlows);
         const lastDischarge = [...dischargeIds].slice(-1);
         setSelectedDischarges(new Set(lastDischarge));
+        setSelectedSex(sexIds);
         setNotes(notesText);
         setTempCelsius(tempValue);
 
@@ -208,6 +216,7 @@ export default function HealthTracking() {
         setOriginalMoods(new Set(moodIds));
         setOriginalFlows(new Set(nextFlows));
         setOriginalDischarges(new Set(lastDischarge));
+        setOriginalSex(new Set(sexIds));
         setOriginalNotes(notesText);
         setOriginalTemp(tempValue);
         setHasChanges(false);
@@ -231,6 +240,7 @@ export default function HealthTracking() {
       symptoms: symptomsSectionRef,
       moods: moodsSectionRef,
       discharge: dischargeSectionRef,
+      sex: sexSectionRef,
       temperature: tempSectionRef,
       notes: notesSectionRef,
     };
@@ -266,6 +276,7 @@ export default function HealthTracking() {
       selectedDischarges,
       originalDischarges
     );
+    const sexChanged = !areSetsEqual(selectedSex, originalSex);
     const notesChanged = notes !== originalNotes;
     const tempChanged = tempCelsius !== originalTemp;
 
@@ -274,6 +285,7 @@ export default function HealthTracking() {
         moodsChanged ||
         flowsChanged ||
         dischargesChanged ||
+        sexChanged ||
         notesChanged ||
         tempChanged
     );
@@ -282,12 +294,14 @@ export default function HealthTracking() {
     selectedMoods,
     selectedFlows,
     selectedDischarges,
+    selectedSex,
     notes,
     tempCelsius,
     originalSymptoms,
     originalMoods,
     originalFlows,
     originalDischarges,
+    originalSex,
     originalNotes,
     originalTemp,
   ]);
@@ -299,10 +313,12 @@ export default function HealthTracking() {
       setSelectedMoods(new Set());
       setSelectedFlows(new Set());
       setSelectedDischarges(new Set());
+      setSelectedSex(new Set());
       setOriginalSymptoms(new Set());
       setOriginalMoods(new Set());
       setOriginalFlows(new Set());
       setOriginalDischarges(new Set());
+      setOriginalSex(new Set());
       setOriginalNotes('');
       setOriginalTemp('');
       setHasChanges(false);
@@ -339,6 +355,18 @@ export default function HealthTracking() {
 
   const toggleDischarge = useCallback((id: string) => {
     setSelectedDischarges(prev => (prev.has(id) ? new Set() : new Set([id])));
+  }, []);
+
+  const toggleSex = useCallback((id: string) => {
+    setSelectedSex(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
   }, []);
 
   // Navigate to notes editor
@@ -384,6 +412,14 @@ export default function HealthTracking() {
         allRecords.push({
           date: selectedDate,
           type: 'discharge',
+          item_id: id,
+        });
+      }
+
+      for (const id of selectedSex) {
+        allRecords.push({
+          date: selectedDate,
+          type: 'sex',
           item_id: id,
         });
       }
@@ -519,6 +555,23 @@ export default function HealthTracking() {
             onToggle={toggleDischarge}
             translationKey="health:discharge"
             selectionColor={SELECTION_COLORS.discharge}
+            iconSize={ICON_SIZE}
+          />
+        </View>
+
+        <View ref={sexSectionRef} style={[commonStyles.sectionContainer]}>
+          <View style={commonStyles.sectionTitleContainer}>
+            <Text style={[typography.headingMd]}>
+              {t('health:tracking.sex')}
+            </Text>
+          </View>
+
+          <HealthItemGrid
+            items={SEX}
+            selectedIds={selectedSex}
+            onToggle={toggleSex}
+            translationKey="health:sex"
+            selectionColor={SELECTION_COLORS.sex}
             iconSize={ICON_SIZE}
           />
         </View>

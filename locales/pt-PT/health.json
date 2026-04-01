@@ -59,6 +59,16 @@
     "unusual": "Incomum",
     "grey-discharge": "Corrimento cinzento"
   },
+  "sex": {
+    "title": "Sexo",
+    "no-sex": "Não tive sexo",
+    "protected-sex": "Sexo protegido",
+    "unprotected-sex": "Sexo sem proteção",
+    "pain-during-sex": "Dor durante o sexo",
+    "high-sex-drive": "Alta libido",
+    "neutral-sex-drive": "Libido neutra",
+    "low-sex-drive": "Baixa libido"
+  },
   "tracking": {
     "title": "Regista a tua saúde",
     "screenTitle": "Registo de sintomas",
@@ -69,6 +79,7 @@
     "symptoms": "Sintomas",
     "moods": "Humores",
     "discharge": "Corrimento vaginal",
+    "sex": "Sexo",
     "basalTemperature": "Temperatura basal",
     "basalTemperaturePlaceholder": "Regista a tua temperatura",
     "temperatureRangeC": "Introduz um valor entre 35-40 °C",

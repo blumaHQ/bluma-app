@@ -59,6 +59,16 @@
     "unusual": "Unusual",
     "grey-discharge": "Grey discharge"
   },
+  "sex": {
+    "title": "Sex",
+    "no-sex": "Didn't have sex",
+    "protected-sex": "Protected sex",
+    "unprotected-sex": "Unprotected sex",
+    "pain-during-sex": "Pain during sex",
+    "high-sex-drive": "High sex drive",
+    "neutral-sex-drive": "Neutral sex drive",
+    "low-sex-drive": "Low sex drive"
+  },
   "tracking": {
     "title": "Track your health",
     "screenTitle": "Symptom tracking",
@@ -69,6 +79,7 @@
     "symptoms": "Symptoms",
     "moods": "Moods",
     "discharge": "Vaginal discharge",
+    "sex": "Sex",
     "basalTemperature": "Basal temperature",
     "basalTemperaturePlaceholder": "Log your temperature",
     "temperatureRangeC": "Enter a value between 35-40 °C",
