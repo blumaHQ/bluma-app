@@ -5,6 +5,10 @@ import { useTheme } from '../../styles/theme';
 import { useAppStyles } from '../../hooks/useStyles';
 import * as Localization from 'expo-localization';
 
+const PRIVACY_POLICY_REVISED = '2026-03-31'; // bump when policy content changes
+const [policyYear, policyMonth, policyDay] = PRIVACY_POLICY_REVISED.split('-').map(Number);
+const privacyPolicyLastUpdatedAt = new Date(policyYear, policyMonth - 1, policyDay);
+
 export default function PrivacyPolicy() {
   const { colors } = useTheme();
   const { typography, commonStyles, scrollContentContainerWithSafeArea } = useAppStyles();
@@ -24,7 +28,8 @@ export default function PrivacyPolicy() {
           {t('privacyPolicyScreen.title')}
         </Text>
         <Text style={[typography.body, { color: colors.textSecondary }]}>
-          {t('privacyPolicyScreen.lastUpdated')} {new Date().toLocaleDateString(Localization.getLocales()[0].languageTag)}
+          {t('privacyPolicyScreen.lastUpdated')}{' '}
+          {privacyPolicyLastUpdatedAt.toLocaleDateString(Localization.getLocales()[0].languageTag)}
         </Text>
         <Text style={[typography.body]}>
           {t('privacyPolicyScreen.introduction.description')}

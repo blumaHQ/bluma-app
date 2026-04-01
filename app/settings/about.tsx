@@ -48,7 +48,7 @@ export default function About() {
             {t('aboutScreen.features.title')}
           </Text>
         </View>
-        {['predictions', 'symptomsTracking', 'statistics', 'insights', 'reminders', 'lock', 'theme'].map((feature, index) => (
+        {['predictions', 'symptomsTracking', 'statistics', 'backups', 'insights', 'reminders', 'lock', 'theme'].map((feature, index) => (
           <View
             key={feature}
             style={{

@@ -145,6 +145,7 @@
       "symptomsTracking": "Symptom and mood tracking",
       "statistics": "Cycle statistics and history",
       "insights": "Cycle phase insights",
+      "backups": "Encrypted backups",
       "reminders": "Period and fertility reminders",
       "lock": "Biometric app lock",
       "theme": "Dark and light theme support"
