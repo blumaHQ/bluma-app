@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     alignItems: 'center',
     width: 80,
+    paddingHorizontal: 6,
   },
   fabContainer: {
     alignSelf: 'flex-start',

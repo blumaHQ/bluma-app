@@ -19,7 +19,7 @@
     "joint-pain": "Dolor de articulaciones",
     "dizziness": "Mareos",
     "cravings": "Antojos",
-    "frequent-urination": "Necesidad frecuente de orinar",
+    "frequent-urination": "Orinar con frecuencia",
     "vaginal-dryness": "Sequedad vaginal"
   },
   "moods": {
@@ -65,9 +65,9 @@
     "protected-sex": "Sexo con protección",
     "unprotected-sex": "Sexo sin protección",
     "pain-during-sex": "Dolor durante el sexo",
-    "high-sex-drive": "Alta libido",
-    "neutral-sex-drive": "Libido neutra",
-    "low-sex-drive": "Baja libido"
+    "high-sex-drive": "Deseo sexual alto",
+    "neutral-sex-drive": "Deseo sexual neutro",
+    "low-sex-drive": "Deseo sexual bajo"
   },
   "tracking": {
     "title": "Registra tu salud",
