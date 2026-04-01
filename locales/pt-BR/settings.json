@@ -189,17 +189,17 @@
     "title": "Política de privacidade",
     "lastUpdated": "Última atualização:",
     "introduction": {
-      "description": "Esta Política de Privacidade descreve como o app Bluma usa e protege seus dados pessoais que você gera e armazena no app."
+      "description": "Esta política de privacidade descreve como o app Bluma usa e protege seus dados pessoais que você gera e armazena no app."
     },
     "dataUse": {
       "title": "1. Uso de dados",
-      "descriptionPrefix": "A Bluma respeita sua privacidade. Não há coleta de dados de uso ou informações pessoais. A Bluma armazena dados relacionados à sua saúde menstrual",
-      "descriptionBold": "localmente no seu dispositivo",
+      "descriptionPrefix": "A Bluma não coleta informações pessoais ou dados de uso. A Bluma armazena dados relacionados ao seu ciclo e saúde menstrual",
+      "descriptionBold": "somente no seu dispositivo",
       "descriptionSuffix": ", e isso inclui:",
       "periodDates": "Datas de início e fim da menstruação",
       "cycleLength": "Duração do ciclo e da menstruação",
       "symptoms": "Dados de saúde: sintomas, humor, fluxo menstrual, fluxo vaginal, atividade sexual e temperatura basal",
-      "notes": "Notas pessoais",
+      "notes": "Notas",
       "settings": "Configurações do app",
       "usage": "Esses dados são usados apenas para fornecer previsões de menstruação e análises de seus ciclos. Não compartilhamos, vendemos nem transmitimos seus dados de saúde pessoais a terceiros.",
       "deletion": "Se quiser excluir todos os dados do app, você pode fazer isso nas configurações, selecionando \"Excluir todos os dados\". Isso vai apagar permanentemente todos os dados de menstruação, histórico de ciclos, registros de saúde e configurações do app. Você também pode excluir todos os dados desinstalando o app."
