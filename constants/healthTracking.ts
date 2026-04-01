@@ -1,5 +1,7 @@
 export type HealthItemType = 'symptom' | 'mood' | 'flow' | 'discharge' | 'sex' | 'notes' | 'temperature';
 
+export type SelectableHealthItemType = Exclude<HealthItemType, 'notes' | 'temperature'>;
+
 export interface HealthItem {
   id: string;
   icon: string;
@@ -81,5 +83,5 @@ export const SELECTION_COLORS = {
   flow: '#FF6B9D',
   discharge: '#9B6BE2',
   sex: '#E85D75',
-} as const;
+} as const satisfies Record<SelectableHealthItemType, string>;
 

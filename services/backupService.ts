@@ -7,7 +7,7 @@ import * as SecureStore from 'expo-secure-store';
 import { gcm } from '@noble/ciphers/aes.js';
 import { scrypt } from '@noble/hashes/scrypt.js';
 import { getDB } from '../db';
-import { periodDates, healthLogs, settings } from '../db/schema';
+import { periodDates, healthLogs, settings, healthLogTypes } from '../db/schema';
 import { NOTIFICATION_SETTINGS_KEYS } from '../constants/notificationKeys';
 import { NotificationService } from './notificationService';
 
@@ -273,7 +273,12 @@ export async function restoreBackup(fileUri: string, backupKey: string): Promise
     await tx.delete(periodDates);
     await tx.delete(settings);
     if (data.periodDates?.length) await tx.insert(periodDates).values(data.periodDates);
-    if (data.healthLogs?.length) await tx.insert(healthLogs).values(data.healthLogs);
+    const validTypes = new Set<string>(healthLogTypes);
+    const validHealthLogs = (data.healthLogs?.filter(log => validTypes.has(log.type)) ?? []).map(log => ({
+      ...log,
+      type: log.type as typeof healthLogTypes[number],
+    }));
+    if (validHealthLogs.length) await tx.insert(healthLogs).values(validHealthLogs);
     if (data.settings?.length) await tx.insert(settings).values(data.settings);
   });
 

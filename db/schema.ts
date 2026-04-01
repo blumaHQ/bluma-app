@@ -1,7 +1,7 @@
 import { sql } from 'drizzle-orm';
 import { check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-const healthLogTypes = [
+export const healthLogTypes = [
   'symptom',
   'mood',
   'flow',
