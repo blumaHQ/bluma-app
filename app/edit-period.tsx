@@ -220,7 +220,6 @@ export default function PeriodCalendarScreen() {
           onDayPress={onDayPress}
           disableFuture={true}
           futureScrollRange={1}
-          pastScrollRange={12}
           renderDay={renderDay}
           onMonthChange={handleMonthChange}
         />
