@@ -22,7 +22,7 @@ type FABProps = {
 export const FAB = ({
   onPress,
   icon = 'add',
-  iconSize = 32,
+  iconSize = 34,
   label,
   labelStyle,
   containerStyle,

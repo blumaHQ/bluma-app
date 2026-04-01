@@ -48,6 +48,13 @@ import { SpottingIcon } from './discharge/Spotting';
 import { StickyIcon } from './discharge/Sticky';
 import { UnusualIcon } from './discharge/Unusual';
 import { WateryIcon } from './discharge/Watery';
+import { ProtectedSexIcon } from './sex/ProtectedSex';
+import { UnprotectedSexIcon } from './sex/UnprotectedSex';
+import { HighSexDriveIcon } from './sex/HighSexDrive';
+import { NeutralSexDriveIcon } from './sex/NeutralSexDrive';
+import { LowSexDriveIcon } from './sex/LowSexDrive';
+import { PainDuringSexIcon } from './sex/PainDuringSex';
+import { NoSexIcon } from './sex/NoSex';
 
 interface IconProps {
   size?: number;
@@ -103,7 +110,14 @@ export type IconName =
   | 'spotting'
   | 'sticky'
   | 'unusual'
-  | 'watery';
+  | 'watery'
+  | 'protected-sex'
+  | 'unprotected-sex'
+  | 'high-sex-drive'
+  | 'neutral-sex-drive'
+  | 'low-sex-drive'
+  | 'pain-during-sex'
+  | 'no-sex';
 
 const iconMap: Record<IconName, React.FC<IconProps>> = {
   'joint-pain': JointPainIcon,
@@ -155,6 +169,13 @@ const iconMap: Record<IconName, React.FC<IconProps>> = {
   sticky: StickyIcon,
   unusual: UnusualIcon,
   watery: WateryIcon,
+  'protected-sex': ProtectedSexIcon,
+  'unprotected-sex': UnprotectedSexIcon,
+  'high-sex-drive': HighSexDriveIcon,
+  'neutral-sex-drive': NeutralSexDriveIcon,
+  'low-sex-drive': LowSexDriveIcon,
+  'pain-during-sex': PainDuringSexIcon,
+  'no-sex': NoSexIcon,
 };
 
 interface CustomIconProps extends IconProps {

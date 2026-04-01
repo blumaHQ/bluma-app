@@ -20,7 +20,7 @@ import dayjs from 'dayjs';
 import { CustomIcon } from './icons/health';
 import { NoteIcon } from './icons/health/Note';
 import { TemperatureIcon } from './icons/health/Temperature';
-import { SYMPTOMS, MOODS, FLOWS, DISCHARGES } from '../constants/healthTracking';
+import { SYMPTOMS, MOODS, FLOWS, DISCHARGES, SEX } from '../constants/healthTracking';
 import { FAB } from './FAB';
 
 const getIconComponent = (log: any) => {
@@ -34,6 +34,7 @@ const getIconComponent = (log: any) => {
   else if (type === 'mood') iconName = MOODS.find(m => m.id === item_id)?.icon;
   else if (type === 'flow') iconName = FLOWS.find(f => f.id === item_id)?.icon;
   else if (type === 'discharge') iconName = DISCHARGES.find(d => d.id === item_id)?.icon;
+  else if (type === 'sex') iconName = SEX.find(s => s.id === item_id)?.icon;
 
   return <CustomIcon name={(iconName ?? 'im-okay') as any} size={54} />;
 };
@@ -55,6 +56,7 @@ const getDisplayText = (log: any, tempUnit: 'C' | 'F', t: (key: string) => strin
   if (type === 'mood') return t(`moods.${item_id}`);
   if (type === 'flow') return t(`flows.${item_id}`);
   if (type === 'discharge') return t(`discharge.${item_id}`);
+  if (type === 'sex') return t(`sex.${item_id}`);
 
   return item_id;
 };
@@ -82,6 +84,7 @@ const HealthLogItem = memo(({ log, selectedDate, tempUnit, textColor, t }: Healt
         else if (log.type === 'symptom') params.scrollTo = 'symptoms';
         else if (log.type === 'mood') params.scrollTo = 'moods';
         else if (log.type === 'discharge') params.scrollTo = 'discharge';
+        else if (log.type === 'sex') params.scrollTo = 'sex';
         else if (log.type === 'flow') params.scrollTo = 'flow';
         else if (log.type === 'temperature') params.scrollTo = 'temperature';
 
@@ -228,6 +231,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     alignItems: 'center',
     width: 80,
+    paddingHorizontal: 6,
   },
   fabContainer: {
     alignSelf: 'flex-start',

@@ -40,7 +40,7 @@ export const CustomCalendar = forwardRef<CustomCalendarRef, CustomCalendarProps>
     markedDates,
     onDayPress,
     current,
-    pastScrollRange = 12,
+    pastScrollRange = 24,
     futureScrollRange = 12,
     disableFuture = false,
     onMonthChange,

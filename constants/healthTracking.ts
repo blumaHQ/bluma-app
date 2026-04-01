@@ -1,4 +1,8 @@
-export type HealthItemType = 'symptom' | 'mood' | 'flow' | 'discharge';
+import type { HealthItemType } from './healthLogTypes';
+
+export type { HealthItemType };
+
+export type SelectableHealthItemType = Exclude<HealthItemType, 'notes' | 'temperature'>;
 
 export interface HealthItem {
   id: string;
@@ -65,10 +69,21 @@ export const DISCHARGES: readonly HealthItem[] = [
   { id: 'grey-discharge', icon: 'grey-discharge' },
 ] as const;
 
+export const SEX: readonly HealthItem[] = [
+  { id: 'no-sex', icon: 'no-sex' },
+  { id: 'protected-sex', icon: 'protected-sex' },
+  { id: 'unprotected-sex', icon: 'unprotected-sex' },
+  { id: 'pain-during-sex', icon: 'pain-during-sex' },
+  { id: 'high-sex-drive', icon: 'high-sex-drive' },
+  { id: 'neutral-sex-drive', icon: 'neutral-sex-drive' },
+  { id: 'low-sex-drive', icon: 'low-sex-drive' },
+] as const;
+
 export const SELECTION_COLORS = {
   symptom: '#6580E2',
   mood: '#F2C100',
   flow: '#FF6B9D',
   discharge: '#9B6BE2',
-} as const;
+  sex: '#E85D75',
+} as const satisfies Record<SelectableHealthItemType, string>;
 

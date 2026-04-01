@@ -19,7 +19,7 @@
     "joint-pain": "Dolor de articulaciones",
     "dizziness": "Mareos",
     "cravings": "Antojos",
-    "frequent-urination": "Necesidad frecuente de orinar",
+    "frequent-urination": "Orinar con frecuencia",
     "vaginal-dryness": "Sequedad vaginal"
   },
   "moods": {
@@ -59,6 +59,16 @@
     "unusual": "Inusual",
     "grey-discharge": "Gris"
   },
+  "sex": {
+    "title": "Sexo",
+    "no-sex": "No tuve sexo",
+    "protected-sex": "Sexo con protección",
+    "unprotected-sex": "Sexo sin protección",
+    "pain-during-sex": "Dolor durante el sexo",
+    "high-sex-drive": "Deseo sexual alto",
+    "neutral-sex-drive": "Deseo sexual neutro",
+    "low-sex-drive": "Deseo sexual bajo"
+  },
   "tracking": {
     "title": "Registra tu salud",
     "screenTitle": "Seguimiento de síntomas",
@@ -69,6 +79,7 @@
     "symptoms": "Síntomas",
     "moods": "Estados de ánimo",
     "discharge": "Flujo vaginal",
+    "sex": "Sexo",
     "basalTemperature": "Temperatura basal",
     "basalTemperaturePlaceholder": "Registra tu temperatura",
     "temperatureRangeC": "Introduce un valor entre 35-40 °C",

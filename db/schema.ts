@@ -1,5 +1,8 @@
 import { sql } from 'drizzle-orm';
-import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { check, integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { healthLogTypes } from '../constants/healthLogTypes';
+
+export { healthLogTypes };
 
 export const periodDates = sqliteTable('period_dates', {
   id: integer('id').primaryKey(),
@@ -10,11 +13,16 @@ export const periodDates = sqliteTable('period_dates', {
 export const healthLogs = sqliteTable('health_logs', {
   id: integer('id').primaryKey(),
   date: text('date').notNull(),
-  type: text('type').notNull(), // 'symptom', 'mood', 'flow', 'discharge', 'notes'
+  type: text('type', { enum: healthLogTypes }).notNull(),
   item_id: text('item_id').notNull(),
-  name: text('name'), // Only used for 'notes' type to store actual note text
+  name: text('name'),
   createdAt: text('created_at').default(sql`CURRENT_TIMESTAMP`),
-});
+}, table => [
+  check(
+    'health_logs_type_check',
+    sql`${table.type} in ('symptom','mood','flow','discharge','sex','notes','temperature')`
+  ),
+]);
 
 export const settings = sqliteTable('settings', {
   id: integer('id').primaryKey(),

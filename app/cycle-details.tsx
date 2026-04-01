@@ -16,7 +16,7 @@ import { getDB } from '../db';
 import { healthLogs } from '../db/schema';
 import { CustomIcon } from '../components/icons/health';
 import { NoteIcon } from '../components/icons/health/Note';
-import { SYMPTOMS, MOODS, FLOWS, DISCHARGES } from '../constants/healthTracking';
+import { SYMPTOMS, MOODS, FLOWS, DISCHARGES, SEX } from '../constants/healthTracking';
 
 export default function CycleDetails() {
   const { colors } = useTheme();
@@ -86,6 +86,7 @@ export default function CycleDetails() {
     else if (type === 'mood') iconName = MOODS.find(m => m.id === item_id)?.icon;
     else if (type === 'flow') iconName = FLOWS.find(f => f.id === item_id)?.icon;
     else if (type === 'discharge') iconName = DISCHARGES.find(d => d.id === item_id)?.icon;
+    else if (type === 'sex') iconName = SEX.find(s => s.id === item_id)?.icon;
     return <CustomIcon name={(iconName ?? 'im-okay') as any} size={28} />;
   };
 
@@ -94,17 +95,19 @@ export default function CycleDetails() {
     if (type === 'mood') return t(`health:moods.${item_id}`);
     if (type === 'flow') return t(`health:flows.${item_id}`);
     if (type === 'discharge') return t(`health:discharge.${item_id}`);
+    if (type === 'sex') return t(`health:sex.${item_id}`);
     return item_id;
   };
 
-  type CategoryType = 'flow' | 'symptom' | 'mood' | 'discharge';
+  type CategoryType = 'flow' | 'symptom' | 'mood' | 'discharge' | 'sex';
 
   const categoryMeta: Record<CategoryType, { label: string; iconItemId: string }> = useMemo(
     () => ({
       flow: { label: t('health:flows.title'), iconItemId: 'medium' },
       symptom: { label: t('health:tracking.symptoms'), iconItemId: 'headache' },
       mood: { label: t('health:tracking.moods'), iconItemId: 'happy' },
-      discharge: { label: t('health:discharge.title'), iconItemId: 'watery' },
+      discharge: { label: t('health:discharge.title'), iconItemId: 'unusual' },
+      sex: { label: t('health:sex.title'), iconItemId: 'high-sex-drive' },
     }),
     [t]
   );
@@ -269,6 +272,7 @@ export default function CycleDetails() {
               const dischargeIds = itemsByType.discharge ?? [];
               const dischargeId =
                 dischargeIds.length > 0 ? dischargeIds[dischargeIds.length - 1] : null;
+              const sexIds = itemsByType.sex ?? [];
 
               const rows: {
                 type: CategoryType;
@@ -310,6 +314,15 @@ export default function CycleDetails() {
                   label: categoryMeta.discharge.label,
                   iconItemId: categoryMeta.discharge.iconItemId,
                   ids: [dischargeId],
+                });
+              }
+
+              if (sexIds.length > 0) {
+                rows.push({
+                  type: 'sex',
+                  label: categoryMeta.sex.label,
+                  iconItemId: categoryMeta.sex.iconItemId,
+                  ids: sexIds,
                 });
               }
 
