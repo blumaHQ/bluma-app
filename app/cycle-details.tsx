@@ -106,8 +106,8 @@ export default function CycleDetails() {
       flow: { label: t('health:flows.title'), iconItemId: 'medium' },
       symptom: { label: t('health:tracking.symptoms'), iconItemId: 'headache' },
       mood: { label: t('health:tracking.moods'), iconItemId: 'happy' },
-      discharge: { label: t('health:discharge.title'), iconItemId: 'watery' },
-      sex: { label: t('health:sex.title'), iconItemId: 'no-sex' },
+      discharge: { label: t('health:discharge.title'), iconItemId: 'unusual' },
+      sex: { label: t('health:sex.title'), iconItemId: 'high-sex-drive' },
     }),
     [t]
   );

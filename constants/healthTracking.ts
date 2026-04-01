@@ -1,4 +1,4 @@
-export type HealthItemType = 'symptom' | 'mood' | 'flow' | 'discharge' | 'sex';
+export type HealthItemType = 'symptom' | 'mood' | 'flow' | 'discharge' | 'sex' | 'notes' | 'temperature';
 
 export interface HealthItem {
   id: string;

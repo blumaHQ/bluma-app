@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   itemButton: {
     width: '24%',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 4,
     paddingHorizontal: 6,
   },
   itemIcon: {
