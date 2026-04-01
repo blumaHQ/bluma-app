@@ -203,12 +203,13 @@ const styles = StyleSheet.create({
   iconsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    width: '100%',
+    gap: 4.5,
   },
   iconItem: {
-    width: '23%',
+    width: '24%',
     alignItems: 'center',
+    marginBottom: 4,
+    paddingHorizontal: 6,
   },
   logSymptomsButton: {
     marginTop: 16,
