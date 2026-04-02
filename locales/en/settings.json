@@ -192,7 +192,7 @@
       "description": "This privacy policy sets out how the app Bluma uses and protects your personal data that you generate and store within the app."
     },
     "dataUse": {
-      "title": "1. Data Use",
+      "title": "Data Use",
       "descriptionPrefix": "Bluma does not collect personal information or usage data. Bluma stores your menstrual cycle and related health data",
       "descriptionBold": "only on your device",
       "descriptionSuffix": ", and this includes:",
@@ -201,11 +201,14 @@
       "symptoms": "Health data: symptoms, mood, menstrual flow, vaginal discharge, sexual activity and basal body temperature",
       "notes": "Notes",
       "settings": "App settings",
-      "usage": "This data is used solely to provide you with cycle predictions and insights. We do not share, sell, or transmit your personal health data to any third parties.",
-      "deletion": "If you wish to delete all your app data, you can do so by going to the settings menu and selecting \"Delete all data\". This will permanently erase all period data, cycle history, health logs, and app settings. You can also delete all data by uninstalling the app."
+      "usage": "This data is used solely to provide you with cycle predictions and insights. We do not share, sell, or transmit your personal health data to any third parties."
+    },
+    "dataDeletion": {
+      "title": "Data Deletion",
+      "description": "If you wish to delete all your app data, you can do so by going to the settings menu and selecting \"Delete all data\". \n\nThis will permanently erase all period data, cycle history, health logs, and app settings. You can also delete all data by uninstalling the app."
     },
     "permissions": {
-      "title": "2. Permissions",
+      "title": "Permissions",
       "description": "Bluma may request the following permissions:",
       "reminders": "",
       "remindersBold": "Reminders",
@@ -216,13 +219,17 @@
       "revoke": "If you don't want to use any of these permissions, you can revoke them at any time through your device settings."
     },
     "transparency": {
-      "title": "3. Transparency",
+      "title": "Transparency",
       "description": "We believe in complete transparency about how your data is handled:",
       "localStorage": "All your data is stored locally and encrypted",
       "noTransmission": "No data is transmitted to external servers",
       "noAnalytics": "We do not use analytics or tracking services",
       "noAds": "No third-party advertising or data collection",
       "control": "You have full control over your data and can delete it at any time through the settings menu."
+    },
+    "dataRetention": {
+      "title": "Data Retention",
+      "description": "Your data is stored on your device indefinitely until you choose to delete it. We have no access to or knowledge of your data, so we cannot delete it from our end."
     },
     "footer": {
       "prefix": "If you have any questions about this privacy policy or how we handle your data, please contact us at ",

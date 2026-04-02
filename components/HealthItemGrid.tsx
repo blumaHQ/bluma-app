@@ -90,12 +90,12 @@ const styles = StyleSheet.create({
   itemsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 4.5,
+
   },
   itemButton: {
-    width: '24%',
+    width: '25%',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: 5,
     paddingHorizontal: 6,
   },
   itemIcon: {

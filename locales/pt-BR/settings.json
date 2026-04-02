@@ -192,7 +192,7 @@
       "description": "Esta política de privacidade descreve como o app Bluma usa e protege seus dados pessoais que você gera e armazena no app."
     },
     "dataUse": {
-      "title": "1. Uso de dados",
+      "title": "Uso de dados",
       "descriptionPrefix": "A Bluma não coleta informações pessoais ou dados de uso. A Bluma armazena dados relacionados ao seu ciclo e saúde menstrual",
       "descriptionBold": "somente no seu dispositivo",
       "descriptionSuffix": ", e isso inclui:",
@@ -201,11 +201,14 @@
       "symptoms": "Dados de saúde: sintomas, humor, fluxo menstrual, fluxo vaginal, atividade sexual e temperatura basal",
       "notes": "Notas",
       "settings": "Configurações do app",
-      "usage": "Esses dados são usados apenas para fornecer previsões de menstruação e análises de seus ciclos. Não compartilhamos, vendemos nem transmitimos seus dados de saúde pessoais a terceiros.",
-      "deletion": "Se quiser excluir todos os dados do app, você pode fazer isso nas configurações, selecionando \"Excluir todos os dados\". Isso vai apagar permanentemente todos os dados de menstruação, histórico de ciclos, registros de saúde e configurações do app. Você também pode excluir todos os dados desinstalando o app."
+      "usage": "Esses dados são usados apenas para fornecer previsões de menstruação e análises de seus ciclos. Não compartilhamos, vendemos nem transmitimos seus dados de saúde pessoais a terceiros."
+    },
+    "dataDeletion": {
+      "title": "Exclusão de dados",
+      "description": "Se quiser excluir todos os dados do app, você pode fazer isso nas configurações, selecionando \"Excluir todos os dados\". Isso vai apagar permanentemente todos os dados de menstruação, histórico de ciclos, registros de saúde e configurações do app. Você também pode excluir todos os dados desinstalando o app."
     },
     "permissions": {
-      "title": "2. Permissões",
+      "title": "Permissões",
       "description": "A Bluma pode solicitar as seguintes permissões:",
       "reminders": "",
       "remindersBold": "Lembretes",
@@ -216,13 +219,17 @@
       "revoke": "Se não quiser usar nenhuma dessas permissões, você pode revogá-las a qualquer momento nas configurações do seu dispositivo."
     },
     "transparency": {
-      "title": "3. Transparência",
+      "title": "Transparência",
       "description": "Acreditamos em total transparência sobre como seus dados são tratados:",
       "localStorage": "Todos os seus dados são armazenados localmente e criptografados",
       "noTransmission": "Nenhum dado é transmitido para servidores externos",
       "noAnalytics": "Não usamos serviços de análise ou rastreamento",
       "noAds": "Sem publicidade ou coleta de dados de terceiros",
       "control": "Você tem controle total sobre seus dados e pode excluí-los a qualquer momento nas configurações."
+    },
+    "dataRetention": {
+      "title": "Retenção de dados",
+      "description": "Seus dados ficam armazenados no seu dispositivo por tempo indeterminado até você decidir excluí-los. Não temos acesso nem conhecimento dos seus dados, então não podemos excluí-los do nosso lado."
     },
     "footer": {
       "prefix": "Se tiver dúvidas sobre esta política de privacidade ou sobre como tratamos seus dados, entre em contato em ",

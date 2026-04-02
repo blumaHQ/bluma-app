@@ -5,7 +5,7 @@ import { useTheme } from '../../styles/theme';
 import { useAppStyles } from '../../hooks/useStyles';
 import * as Localization from 'expo-localization';
 
-const PRIVACY_POLICY_REVISED = '2026-03-31'; // bump when policy content changes
+const PRIVACY_POLICY_REVISED = '2026-04-02'; // bump when policy content changes
 const [policyYear, policyMonth, policyDay] = PRIVACY_POLICY_REVISED.split('-').map(Number);
 const privacyPolicyLastUpdatedAt = new Date(policyYear, policyMonth - 1, policyDay);
 
@@ -66,8 +66,16 @@ export default function PrivacyPolicy() {
         <Text style={[typography.body, { marginVertical: 12 }]}>
           {t('privacyPolicyScreen.dataUse.usage')}
         </Text>
+      </View>
+
+      <View style={[styles.contentSection]}>
+        <View style={styles.sectionHeader}>
+          <Text style={[typography.headingMd]}>
+            {t('privacyPolicyScreen.dataDeletion.title')}
+          </Text>
+        </View>
         <Text style={[typography.body]}>
-          {t('privacyPolicyScreen.dataUse.deletion')}
+          {t('privacyPolicyScreen.dataDeletion.description')}
         </Text>
       </View>
 
@@ -128,6 +136,17 @@ export default function PrivacyPolicy() {
         ))}
         <Text style={[typography.body]}>
           {t('privacyPolicyScreen.transparency.control')}
+        </Text>
+      </View>
+
+      <View style={[styles.contentSection]}>
+        <View style={styles.sectionHeader}>
+          <Text style={[typography.headingMd]}>
+            {t('privacyPolicyScreen.dataRetention.title')}
+          </Text>
+        </View>
+        <Text style={[typography.body]}>
+          {t('privacyPolicyScreen.dataRetention.description')}
         </Text>
       </View>
 

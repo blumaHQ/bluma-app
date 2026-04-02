@@ -191,7 +191,7 @@
       "description": "Esta política de privacidad establece cómo la aplicación Bluma usa y protege tus datos personales que generas y almacenas dentro de la aplicación."
     },
     "dataUse": {
-      "title": "1. Uso de Datos",
+      "title": "Uso de Datos",
       "descriptionPrefix": "Bluma no recopila información personal o datos de uso. Bluma almacena datos relacionados con tu ciclo y salud menstrual",
       "descriptionBold": "sólo en tu dispositivo",
       "descriptionSuffix": ", y esto incluye:",
@@ -200,11 +200,14 @@
       "symptoms": "Datos de salud: síntomas, estado de ánimo, flujo menstrual, flujo vaginal, actividad sexual y temperatura basal",
       "notes": "Notas",
       "settings": "Configuración de la aplicación",
-      "usage": "Estos datos se usan únicamente para proporcionarte predicciones de periodo y analises de tus ciclos. No compartimos, vendemos ni transmitimos tus datos de salud personal a terceros.",
-      "deletion": "Si deseas eliminar todos los datos de tu aplicación, puedes hacerlo yendo al menú de configuración y seleccionando \"Eliminar todos los datos\". Esto borrará permanentemente todos los datos de periodo, historial de ciclos, registros de salud y ajustes de la aplicación. También puedes eliminar todos los datos desinstalando la aplicación."
+      "usage": "Estos datos se usan únicamente para proporcionarte predicciones de periodo y analises de tus ciclos. No compartimos, vendemos ni transmitimos tus datos de salud personal a terceros."
+    },
+    "dataDeletion": {
+      "title": "Eliminación de datos",
+      "description": "Si deseas eliminar todos los datos de tu aplicación, puedes hacerlo yendo al menú de configuración y seleccionando \"Eliminar todos los datos\". Esto borrará permanentemente todos los datos de periodo, historial de ciclos, registros de salud y ajustes de la aplicación. También puedes eliminar todos los datos desinstalando la aplicación."
     },
     "permissions": {
-      "title": "2. Permisos",
+      "title": "Permisos",
       "description": "Bluma puede solicitar los siguientes permisos:",
       "reminders": "",
       "remindersBold": "Recordatorios",
@@ -215,13 +218,17 @@
       "revoke": "Si no deseas usar ninguno de estos permisos, puedes revocarlos en cualquier momento a través de la configuración de tu dispositivo."
     },
     "transparency": {
-      "title": "3. Transparencia",
+      "title": "Transparencia",
       "description": "Creemos en la completa transparencia sobre cómo se manejan tus datos:",
       "localStorage": "Todos los datos se almacenan localmente y se encriptan",
       "noTransmission": "No se transmiten datos a servidores externos",
       "noAnalytics": "No usamos servicios de análisis o seguimiento",
       "noAds": "Sin publicidad o recopilación de datos de terceros",
       "control": "Tienes control total sobre tus datos y puedes eliminarlos en cualquier momento a través del menú de configuración."
+    },
+    "dataRetention": {
+      "title": "Retención de datos",
+      "description": "Tus datos se almacenan en tu dispositivo de forma indefinida hasta que decidas eliminarlos. No tenemos acceso ni conocimiento de tus datos, por lo que no podemos eliminarlos desde nuestro lado."
     },
     "footer": {
       "prefix": "Si tienes alguna pregunta sobre esta política de privacidad o cómo manejamos tus datos, por favor contáctanos en ",

@@ -203,10 +203,9 @@ const styles = StyleSheet.create({
   iconsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 4.5,
   },
   iconItem: {
-    width: '24%',
+    width: '25%',
     alignItems: 'center',
     marginBottom: 4,
     paddingHorizontal: 6,
