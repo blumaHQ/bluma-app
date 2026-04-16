@@ -27,10 +27,10 @@
     "seeAll": "Ver todo"
   },
   "cycleDetails": {
-    "cycleNormalRange": "La duración de este ciclo estuvo dentro del rango normal (21-35 días)",
-    "cycleIrregularRange": "La duración de este ciclo está fuera del rango normal (21-35 días)",
-    "periodNormalRange": "La duración de este periodo estuvo dentro del rango normal (2-7 días)",
-    "periodIrregularRange": "La duración de este periodo está fuera del rango normal (2-7 días)",
+    "cycleRangeNormal": "El rango habitual es de 21–35 días",
+    "cycleRangeIrregular": "El rango normal es de 21–35 días",
+    "periodRangeNormal": "El rango habitual es de 2–7 días",
+    "periodRangeIrregular": "El rango normal es de 2–7 días",
     "cycleLasted": "El ciclo duró desde el {{startDate}} hasta el {{endDate}}",
     "cycleLastedBefore": "El ciclo duró desde el ",
     "cycleLastedMiddle": " hasta el "

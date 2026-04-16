@@ -27,10 +27,10 @@
     "seeAll": "See all"
   },
   "cycleDetails": {
-    "cycleNormalRange": "The length of this cycle was within the normal range (21-35 days)",
-    "cycleIrregularRange": "This cycle length is outside the normal range (21-35 days)",
-    "periodNormalRange": "The length of this period was within the normal range (2-7 days)",
-    "periodIrregularRange": "This period length is outside the normal range (2-7 days)",
+    "cycleRangeNormal": "Typical range is 21–35 days",
+    "cycleRangeIrregular": "Normal range is 21–35 days",
+    "periodRangeNormal": "Typical range is 2–7 days",
+    "periodRangeIrregular": "Normal range is 2–7 days",
     "cycleLasted": "Cycle lasted from {{startDate}} to {{endDate}}",
     "cycleLastedBefore": "Cycle lasted from ",
     "cycleLastedMiddle": " to "
