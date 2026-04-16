@@ -17,7 +17,7 @@ export default {
   expo: {
     name: getAppName(),
     slug: "bluma",
-    version: "1.7.0",
+    version: "1.7.1",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: "bluma",
@@ -27,7 +27,7 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 10,
+      versionCode: 11,
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#FFFFFF",
