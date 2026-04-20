@@ -210,8 +210,15 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
       >
         {filteredCycles.map((cycle, index) => {
           const isOngoingCycle = cycle.cycleLength === undefined && cycle.endDate === undefined;
-          const isCurrentCycle = isOngoingCycle && (filter === 'all' || filter === 3 || filter === 6);
           const cycleYear = parseLocalDate(cycle.startDate).getFullYear();
+          const currentYear = new Date().getFullYear();
+          const isCurrentCycle = isOngoingCycle;
+          const showCurrentCycleLabel = isOngoingCycle && (
+            filter === 'all' || 
+            filter === 3 || 
+            filter === 6 || 
+            (typeof filter === 'number' && filter === currentYear)
+          );
           const previousCycleYear =
             index > 0
               ? parseLocalDate(filteredCycles[index - 1].startDate).getFullYear()
@@ -274,7 +281,7 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
                 <View style={styles.cycleContent}>
                   <View style={styles.cycleInfoColumn}>
                     <Text style={[typography.bodyBold, {fontSize: 17, marginBottom: 4}]}>
-                      {isCurrentCycle
+                      {showCurrentCycleLabel
                         ? `${t('stats:cycleHistory.currentCycle')}: ${displayCycleLength}`
                         : displayCycleLength
                       }
