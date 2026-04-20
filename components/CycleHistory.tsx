@@ -82,7 +82,7 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
   const availableFilters = useMemo(() => {
     const filters: CycleFilter[] = ['all'];
     if (cycles.length > 3) filters.push(3);
-    if (cycles.length >= 6) filters.push(6);
+    if (cycles.length > 6) filters.push(6);
     return [...filters, ...availableYears];
   }, [cycles.length, availableYears]);
 
