@@ -27,10 +27,10 @@
     "seeAll": "Ver tudo"
   },
   "cycleDetails": {
-    "cycleNormalRange": "A duração deste ciclo estava dentro da faixa normal (21-35 dias)",
-    "cycleIrregularRange": "A duração deste ciclo está fora da faixa normal (21-35 dias)",
-    "periodNormalRange": "A duração desta menstruação estava dentro da faixa normal (2-7 dias)",
-    "periodIrregularRange": "A duração desta menstruação está fora da faixa normal (2-7 dias)",
+    "cycleRangeNormal": "A faixa habitual é de 21–35 dias",
+    "cycleRangeIrregular": "A faixa normal é de 21–35 dias",
+    "periodRangeNormal": "A faixa habitual é de 2–7 dias",
+    "periodRangeIrregular": "A faixa normal é de 2–7 dias",
     "cycleLasted": "O ciclo durou de {{startDate}} a {{endDate}}",
     "cycleLastedBefore": "O ciclo durou de ",
     "cycleLastedMiddle": " a "

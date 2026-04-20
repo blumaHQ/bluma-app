@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React, { useMemo, useState, useRef } from 'react';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -57,29 +57,45 @@ const DayCircles = React.memo(function DayCircles({
   );
 });
 
-type CycleFilter = 'all' | 3 | 6;
-
-const FILTERS: CycleFilter[] = ['all', 3, 6];
+type CycleFilter = 'all' | 3 | 6 | number;
 
 export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistoryProps) {
   const { colors } = useTheme();
   const { typography, commonStyles } = useAppStyles();
   const { t } = useTranslation(['stats', 'common']);
   const [filter, setFilter] = useState<CycleFilter>('all');
+  const scrollViewRef = useRef<ScrollView>(null);
+  const filterRefs = useRef<Map<string, View>>(new Map());
 
   const isCompact = maxItems !== undefined;
   const showSeeAll = isCompact && cycles.length > maxItems!;
 
-  const availableFilters = FILTERS.filter((f) => {
-    if (f === 'all') return true;
-    if (f === 3) return cycles.length > 3;
-    return cycles.length >= 6;
-  });
+  const availableYears = useMemo(() => {
+    const years = new Set<number>();
+    cycles.forEach((cycle) => {
+      const year = parseLocalDate(cycle.startDate).getFullYear();
+      years.add(year);
+    });
+    return Array.from(years).sort((a, b) => b - a);
+  }, [cycles]);
+
+  const availableFilters = useMemo(() => {
+    const filters: CycleFilter[] = ['all'];
+    if (cycles.length > 3) filters.push(3);
+    if (cycles.length > 6) filters.push(6);
+    return [...filters, ...availableYears];
+  }, [cycles.length, availableYears]);
+
   const filteredCycles = useMemo(() => {
     if (isCompact) {
       return cycles.slice(0, maxItems);
     }
-    return filter === 'all' ? cycles : cycles.slice(0, filter);
+    if (filter === 'all') return cycles;
+    if (filter === 3 || filter === 6) return cycles.slice(0, filter);
+    return cycles.filter((cycle) => {
+      const year = parseLocalDate(cycle.startDate).getFullYear();
+      return year === filter;
+    });
   }, [cycles, filter, isCompact, maxItems]);
 
   if (cycles.length === 0) {
@@ -88,14 +104,14 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
 
   return (
     <View>
-      <View style={[styles.headerContainer, { backgroundColor: colors.surface, borderBottomColor: colors.border}]}>
-        {showTitle && (
+      {showTitle && (
+        <View style={[styles.headerContainer, { backgroundColor: colors.surface, borderBottomColor: colors.border }]}>
           <View style={styles.headerTopRow}>
             <Text
               style={[
                 typography.headingMd,
                 commonStyles.sectionTitleContainer,
-                { marginBottom: 0}
+                { marginBottom: 0 },
               ]}
             >
               {t('stats:cycleHistory.title')}
@@ -115,26 +131,58 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
               <View />
             )}
           </View>
-        )}
+        </View>
+      )}
 
-        {!isCompact && availableFilters.length > 1 && (
-          <View style={styles.filterRow}>
-            {availableFilters.map((f) => {
-              const isActive = filter === f;
-              const label =
-                f === 'all'
-                  ? t('stats:cycleHistory.filterAll')
-                  : f === 3
-                    ? t('stats:cycleHistory.filterLast3')
-                    : t('stats:cycleHistory.filterLast6');
-              return (
+      {!isCompact && availableFilters.length > 1 && (
+        <ScrollView
+          ref={scrollViewRef}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.filterRow}
+        >
+          {availableFilters.map((f) => {
+            const isActive = filter === f;
+            let label: string;
+            if (f === 'all') {
+              label = t('stats:cycleHistory.filterAll');
+            } else if (f === 3) {
+              label = t('stats:cycleHistory.filterLast3');
+            } else if (f === 6) {
+              label = t('stats:cycleHistory.filterLast6');
+            } else {
+              label = String(f);
+            }
+            return (
+              <View
+                key={String(f)}
+                ref={(ref) => {
+                  if (ref) {
+                    filterRefs.current.set(String(f), ref);
+                  } else {
+                    filterRefs.current.delete(String(f));
+                  }
+                }}
+                collapsable={false}
+              >
                 <Pressable
-                  key={String(f)}
-                  onPress={() => setFilter(f)}
+                  onPress={() => {
+                    setFilter(f);
+                    const filterView = filterRefs.current.get(String(f));
+                    if (filterView && scrollViewRef.current) {
+                      filterView.measureLayout(
+                        scrollViewRef.current as any,
+                        (x) => {
+                          scrollViewRef.current?.scrollTo({ x: x - 16, animated: true });
+                        },
+                        () => {}
+                      );
+                    }
+                  }}
                   style={[
                     styles.filterPill,
                     {
-                      backgroundColor: isActive ? colors.primary : colors.surfaceVariant,
+                      backgroundColor: isActive ? colors.primary : colors.surface,
                     },
                   ]}
                 >
@@ -147,16 +195,30 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
                     {label}
                   </Text>
                 </Pressable>
-              );
-            })}
-          </View>
-        )}
-      </View>
+              </View>
+            );
+          })}
+        </ScrollView>
+      )}
 
-      <View style={[styles.cycleHistoryContainer, { backgroundColor: colors.surface}]}>
+      <View
+        style={[
+          styles.cycleHistoryContainer,
+          { backgroundColor: colors.surface },
+          !showTitle && styles.cycleHistoryContainerStandalone,
+        ]}
+      >
         {filteredCycles.map((cycle, index) => {
-          const isCurrentCycle = index === 0;
+          const isOngoingCycle = cycle.cycleLength === undefined && cycle.endDate === undefined;
           const cycleYear = parseLocalDate(cycle.startDate).getFullYear();
+          const currentYear = new Date().getFullYear();
+          const isCurrentCycle = isOngoingCycle;
+          const showCurrentCycleLabel = isOngoingCycle && (
+            filter === 'all' || 
+            filter === 3 || 
+            filter === 6 || 
+            (typeof filter === 'number' && filter === currentYear)
+          );
           const previousCycleYear =
             index > 0
               ? parseLocalDate(filteredCycles[index - 1].startDate).getFullYear()
@@ -219,7 +281,7 @@ export function CycleHistory({ cycles, maxItems, showTitle = true }: CycleHistor
                 <View style={styles.cycleContent}>
                   <View style={styles.cycleInfoColumn}>
                     <Text style={[typography.bodyBold, {fontSize: 17, marginBottom: 4}]}>
-                      {isCurrentCycle
+                      {showCurrentCycleLabel
                         ? `${t('stats:cycleHistory.currentCycle')}: ${displayCycleLength}`
                         : displayCycleLength
                       }
@@ -262,6 +324,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     overflow: 'hidden',
   },
+  cycleHistoryContainerStandalone: {
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+  },
   headerContainer: {
     paddingVertical: 16,
     paddingHorizontal: 16,
@@ -277,9 +343,11 @@ const styles = StyleSheet.create({
   filterRow: {
     flexDirection: 'row',
     gap: 8,
+    paddingRight: 16,
+    marginBottom: 24,
   },
   filterPill: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
   },

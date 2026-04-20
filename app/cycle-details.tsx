@@ -14,10 +14,6 @@ import { InfoIcon } from '../components/icons/general/info';
 import { CycleIcon } from '../components/icons/general/Cycle';
 import { getDB } from '../db';
 import { healthLogs } from '../db/schema';
-import { CustomIcon } from '../components/icons/health';
-import { NoteIcon } from '../components/icons/health/Note';
-import { SYMPTOMS, MOODS, FLOWS, DISCHARGES, SEX } from '../constants/healthTracking';
-
 export default function CycleDetails() {
   const { colors } = useTheme();
   const { typography, commonStyles } = useAppStyles();
@@ -79,16 +75,6 @@ export default function CycleDetails() {
       cancelled = true;
     };
   }, [startDate, endDate, isCurrentCycle]);
-
-  const getItemIcon = (type: string, item_id: string) => {
-    let iconName: string | undefined;
-    if (type === 'symptom') iconName = SYMPTOMS.find(s => s.id === item_id)?.icon;
-    else if (type === 'mood') iconName = MOODS.find(m => m.id === item_id)?.icon;
-    else if (type === 'flow') iconName = FLOWS.find(f => f.id === item_id)?.icon;
-    else if (type === 'discharge') iconName = DISCHARGES.find(d => d.id === item_id)?.icon;
-    else if (type === 'sex') iconName = SEX.find(s => s.id === item_id)?.icon;
-    return <CustomIcon name={(iconName ?? 'im-okay') as any} size={28} />;
-  };
 
   const getItemLabel = (type: string, item_id: string) => {
     if (type === 'symptom') return t(`health:symptoms.${item_id}`);
@@ -163,37 +149,40 @@ export default function CycleDetails() {
             onPress={() => handleInfoPress('cycle')}
           >
             <View style={styles.cardHeader}>
-              <Text style={[typography.body, { color: colors.textPrimary }]}>
+              <Text style={[typography.bodyBold, { color: colors.textPrimary }]}>
                 {t('stats:cycleHistory.cycleLength')}
               </Text>
               <View style={styles.infoIcon}>
-                <InfoIcon size={20} color={colors.textSecondary} />
+                <InfoIcon size={24} color={colors.textSecondary} />
               </View>
             </View>
 
-            <View style={styles.valueStatusRow}>
-              <Text style={typography.headingMd}>
-                {cycleLength} {cycleLength === 1 ? t('common:time.day') : t('common:time.days')}
-              </Text>
-              <View style={styles.statusContainer}>
-                <Ionicons
-                  name={cycleStatus.status === 'normal' ? 'checkmark-circle' : 'alert-circle'}
-                  size={20}
-                  color={cycleStatus.status === 'normal' ? colors.success : colors.warning}
-                />
-                <Text style={[typography.caption, { color: colors.textSecondary }]}>
-                  {cycleStatus.status === 'normal'
-                    ? t('common:status.normal')
-                    : t('common:status.irregular')}
-                </Text>
-              </View>
-            </View>
-
-            <Text style={[typography.body, { color: colors.textSecondary, marginTop: 8 }]}>
-              {cycleStatus.status === 'normal'
-                ? t('stats:cycleDetails.cycleNormalRange')
-                : t('stats:cycleDetails.cycleIrregularRange')}
+            <Text style={[typography.headingMd, { marginBottom: 8 }]}>
+              {cycleLength} {cycleLength === 1 ? t('common:time.day') : t('common:time.days')}
             </Text>
+
+            <View style={styles.statusRangeRow}>
+              <Ionicons
+                name={cycleStatus.status === 'normal' ? 'checkmark-circle' : 'alert-circle'}
+                size={20}
+                color={cycleStatus.status === 'normal' ? colors.success : colors.warning}
+              />
+              <Text
+                style={[
+                  typography.bodyBold,
+                  { color: cycleStatus.status === 'normal' ? colors.success : colors.warning },
+                ]}
+              >
+                {cycleStatus.status === 'normal'
+                  ? t('common:status.normal')
+                  : t('common:status.irregular')}
+              </Text>
+              <Text style={[typography.body, { color: colors.textSecondary }]}>
+                {'• '}{cycleStatus.status === 'normal'
+                  ? t('stats:cycleDetails.cycleRangeNormal')
+                  : t('stats:cycleDetails.cycleRangeIrregular')}
+              </Text>
+            </View>
           </Pressable>
         </>
       )}
@@ -208,37 +197,40 @@ export default function CycleDetails() {
           onPress={() => handleInfoPress('period')}
         >
           <View style={styles.cardHeader}>
-            <Text style={[typography.body, { color: colors.textPrimary }]}>
+            <Text style={[typography.bodyBold, { color: colors.textPrimary }]}>
               {t('stats:cycleHistory.periodLength')}
             </Text>
             <View style={styles.infoIcon}>
-              <InfoIcon size={20} color={colors.textSecondary} />
+              <InfoIcon size={24} color={colors.textSecondary} />
             </View>
           </View>
 
-          <View style={styles.valueStatusRow}>
-            <Text style={typography.headingMd}>
-              {periodLength} {periodLength === 1 ? t('common:time.day') : t('common:time.days')}
-            </Text>
-            <View style={styles.statusContainer}>
-              <Ionicons
-                name={periodStatus.status === 'normal' ? 'checkmark-circle' : 'alert-circle'}
-                size={20}
-                color={periodStatus.status === 'normal' ? colors.success : colors.warning}
-              />
-              <Text style={[typography.caption, { color: colors.textSecondary }]}>
-                {periodStatus.status === 'normal'
-                  ? t('common:status.normal')
-                  : t('common:status.irregular')}
-              </Text>
-            </View>
-          </View>
-
-          <Text style={[typography.body, { color: colors.textSecondary, marginTop: 8 }]}>
-            {periodStatus.status === 'normal'
-              ? t('stats:cycleDetails.periodNormalRange')
-              : t('stats:cycleDetails.periodIrregularRange')}
+          <Text style={[typography.headingMd, { marginBottom: 8 }]}>
+            {periodLength} {periodLength === 1 ? t('common:time.day') : t('common:time.days')}
           </Text>
+
+          <View style={styles.statusRangeRow}>
+            <Ionicons
+              name={periodStatus.status === 'normal' ? 'checkmark-circle' : 'alert-circle'}
+              size={20}
+              color={periodStatus.status === 'normal' ? colors.success : colors.warning}
+            />
+            <Text
+              style={[
+                typography.bodyBold,
+                { color: periodStatus.status === 'normal' ? colors.success : colors.warning },
+              ]}
+            >
+              {periodStatus.status === 'normal'
+                ? t('common:status.normal')
+                : t('common:status.irregular')}
+            </Text>
+            <Text style={[typography.body, { color: colors.textSecondary }]}>
+              {'• '}{periodStatus.status === 'normal'
+                ? t('stats:cycleDetails.periodRangeNormal')
+                : t('stats:cycleDetails.periodRangeIrregular')}
+            </Text>
+          </View>
         </Pressable>
       )}
       <View style={[styles.detailCard, { backgroundColor: colors.surface, padding: 0, overflow: 'hidden' }]}>
@@ -346,14 +338,15 @@ export default function CycleDetails() {
                   </Text>
                   {rows.map(row => (
                     <View key={row.type} style={styles.categoryRow}>
-                      <View style={styles.categoryLabelWrap}>
-                        <View style={styles.categoryLabelIcon}>
-                          {getItemIcon(row.type, row.iconItemId)}
-                        </View>
-                        <Text style={[typography.bodyBold, styles.categoryLabelText]}>
-                          {row.label}:
-                        </Text>
-                      </View>
+                      <Text
+                        style={[
+                          typography.bodyBold,
+                          styles.categoryLabelText,
+                          { color: colors.textSecondary },
+                        ]}
+                      >
+                        {row.label}:
+                      </Text>
                       <View style={styles.chipsContainer}>
                         {row.ids.map((id, i) => (
                           <View key={`${row.type}:${id}:${i}`} style={[styles.chip, { borderColor: colors.neutral250 }]}>
@@ -367,14 +360,15 @@ export default function CycleDetails() {
                   ))}
                   {dayLog.note && (
                     <View style={[styles.categoryRow, styles.noteRow]}>
-                      <View style={styles.categoryLabelWrap}>
-                        <View style={styles.categoryLabelIcon}>
-                          <NoteIcon size={24} color={colors.textSecondary} />
-                        </View>
-                        <Text style={[typography.bodyBold, styles.categoryLabelText]}>
-                          {t('health:tracking.notes')}:
-                        </Text>
-                      </View>
+                      <Text
+                        style={[
+                          typography.bodyBold,
+                          styles.categoryLabelText,
+                          { color: colors.textSecondary },
+                        ]}
+                      >
+                        {t('health:tracking.notes')}:
+                      </Text>
                       <View style={styles.noteContainer}>
                         <Text style={[typography.body, { color: colors.textSecondary }]}>
                           {dayLog.note}
@@ -428,16 +422,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  valueStatusRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  statusContainer: {
+  statusRangeRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
+    flexWrap: 'wrap',
   },
   cycleHeaderRow: {
     flexDirection: 'row',
@@ -452,23 +441,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     gap: 6,
   },
-  categoryLabelWrap: {
-    minWidth: 120,
-    maxWidth: '45%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexShrink: 1,
-    paddingTop: 2,
-  },
   categoryLabelText: {
-    flexShrink: 1,
-  },
-  categoryLabelIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    minWidth: 100,
+    maxWidth: '40%',
+    flexShrink: 0,
   },
   chipsContainer: {
     flex: 1,
