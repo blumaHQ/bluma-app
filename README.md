@@ -2,7 +2,7 @@
 
 An offline period tracking app designed to be a delight to use whilst preserving the users’ privacy by using local-only data storage.
 
-<img width="1024" height="500" alt="featured-graphic" src="https://github.com/user-attachments/assets/93f5ab69-a223-4287-8440-00f3d8ca6427" />
+<img width="1024" height="500" alt="featured-graphic" src="https://github.com/user-attachments/assets/06d1f1ee-00f8-4813-945b-3aa839dfe40b" />
 
 # ⚙️ Features
 
