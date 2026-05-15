@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DayData } from '../../utils/customCalendarHelpers';
 import { CustomMarking, formatDateString } from '../../types/calendarTypes';
+import { parseLocalDate } from '../../utils/dateUtils';
 import { useTypography } from '../../hooks/useStyles';
 
 interface DayCellProps {
@@ -48,7 +49,10 @@ export const DayCell = memo<DayCellProps>(
       return <View style={dayContainerStyle} />;
     }
 
-    const isFutureDate = new Date(dateString) > new Date();
+    const cellDate = parseLocalDate(dateString);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+    const isFutureDate = cellDate > today;
     const isDisabled = disableFuture && isFutureDate;
     const isSelected = marking?.selected;
     const hasHealthLogs = marking?.hasHealthLogs;
@@ -170,4 +174,3 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 });
-

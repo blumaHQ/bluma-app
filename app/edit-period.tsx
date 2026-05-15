@@ -15,6 +15,7 @@ import {
   generateDateRange,
 } from '../types/calendarTypes';
 import { createSelectedStyle } from '../utils/calendarStyles';
+import { parseLocalDate } from '../utils/dateUtils';
 import { getDB, getSetting } from '../db';
 import { healthLogs, periodDates } from '../db/schema';
 import { and, eq } from 'drizzle-orm';
@@ -65,13 +66,13 @@ export default function PeriodCalendarScreen() {
   }, [colors]);
 
   const onDayPress = useCallback((dateString: string) => {
-    const selectedDate = new Date(dateString);
-    const todayDate = new Date(today);
+    const selectedDate = parseLocalDate(dateString);
+    const todayDate = parseLocalDate(today);
 
     setTempDates(prevDates => {
       const updatedDates = { ...prevDates };
 
-      const prevDay = new Date(dateString);
+      const prevDay = parseLocalDate(dateString);
       prevDay.setDate(prevDay.getDate() - 1);
       const prevDayString = formatDateString(prevDay);
 
@@ -88,7 +89,7 @@ export default function PeriodCalendarScreen() {
         
         if (dateString === today) {
           Object.keys(updatedDates).forEach(date => {
-            if (new Date(date) > todayDate) {
+            if (parseLocalDate(date) > todayDate) {
               delete updatedDates[date];
             }
           });

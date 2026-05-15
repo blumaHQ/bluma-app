@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { DayData } from '../../utils/customCalendarHelpers';
 import { CustomMarking, formatDateString } from '../../types/calendarTypes';
+import { parseLocalDate } from '../../utils/dateUtils';
 import { getEditDayCellStyles } from '../../utils/calendarStyles';
 import { ColorScheme } from '../../styles/colors';
 import { Typography } from '../../styles/typography';
@@ -27,10 +28,9 @@ export const EditDayCell = memo<EditDayCellProps>(
       return <View style={styles.dayContainer} />;
     }
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const dayDate = new Date(dateString);
-    dayDate.setHours(0, 0, 0, 0);
+    const dayDate = parseLocalDate(dateString);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
 
     const isFuture = dayDate > today;
     const isDisabled = false;
@@ -117,4 +117,3 @@ export const EditDayCell = memo<EditDayCellProps>(
 );
 
 EditDayCell.displayName = 'EditDayCell';
-
