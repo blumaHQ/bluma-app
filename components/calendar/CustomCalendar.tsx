@@ -5,6 +5,7 @@ import { MarkedDates } from '../../types/calendarTypes';
 import {
   generateMonthsArray,
   findMonthIndex,
+  getLocalizedDayNames,
   MonthData,
 } from '../../utils/customCalendarHelpers';
 import { MonthView } from './MonthView';
@@ -25,7 +26,7 @@ export interface CustomCalendarRef {
   scrollToToday: () => void;
 }
 
-const DAY_NAMES = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+const DAY_NAMES = getLocalizedDayNames();
 const HEADER_HEIGHT = 50;
 const DAY_CELL_HEIGHT = 64;
 const MONTH_PADDING = 10;

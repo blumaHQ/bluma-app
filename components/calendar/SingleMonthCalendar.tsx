@@ -3,7 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { MonthView } from './MonthView';
-import { MonthData } from '../../utils/customCalendarHelpers';
+import { MonthData, getLocalizedDayNames } from '../../utils/customCalendarHelpers';
+
+const DAY_NAMES = getLocalizedDayNames();
 
 interface SingleMonthCalendarProps {
   selectedDate?: string;
@@ -152,7 +154,7 @@ export function SingleMonthCalendar({
       <GestureDetector gesture={swipeGesture}>
         <View>
           <View style={styles.dayNamesRow}>
-            {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((name, index) => (
+            {DAY_NAMES.map((name, index) => (
               <View key={index} style={styles.dayNameCell}>
                 <Text style={[styles.dayNameText, { color: colors.textPrimary, fontWeight: '600' }]}>
                   {name}

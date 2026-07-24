@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import {
   MonthData,
   generateDaysForMonth,
+  getLocalizedDayNames,
   getMonthName,
 } from '../../utils/customCalendarHelpers';
 import { MarkedDates } from '../../types/calendarTypes';
@@ -21,7 +22,7 @@ interface MonthViewProps {
   cellHeight?: number;
 }
 
-const DAY_NAMES = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+const DAY_NAMES = getLocalizedDayNames();
 
 export const MonthView = memo<MonthViewProps>(
   ({

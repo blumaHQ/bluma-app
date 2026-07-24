@@ -1,3 +1,14 @@
+import { getLocales } from 'expo-localization';
+
+export function getLocalizedDayNames(): string[] {
+  const locale = getLocales()[0]?.languageTag ?? 'en';
+  const formatter = new Intl.DateTimeFormat(locale, { weekday: 'narrow' });
+  // 2026-01-05 (Mon) through 2026-01-11 (Sun)
+  return Array.from({ length: 7 }, (_, i) =>
+    formatter.format(new Date(2026, 0, 5 + i))
+  );
+}
+
 export interface MonthData {
   year: number;
   month: number;
