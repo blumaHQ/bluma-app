@@ -44,7 +44,7 @@ export const EditDayCell = memo<EditDayCellProps>(
       }
     };
 
-    const date = new Date(dateString);
+    const date = parseLocalDate(dateString);
     const accessibilityLabel = `${date.toLocaleDateString('default', { 
       month: 'long', 
       day: 'numeric' 

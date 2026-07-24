@@ -21,8 +21,8 @@ export function useCycleCalculations({
     (date: string): number | null => {
       if (!firstPeriodDate || allPeriodDates.length === 0) return null;
 
-      const selectedDateObj = new Date(date);
-      const startDateObj = new Date(firstPeriodDate);
+      const selectedDateObj = parseLocalDate(date);
+      const startDateObj = parseLocalDate(firstPeriodDate);
 
       if (selectedDateObj >= startDateObj) {
         const cycleLength = PeriodPredictionService.getAverageCycleLength(
