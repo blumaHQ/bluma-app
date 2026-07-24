@@ -60,7 +60,7 @@
     "grey-discharge": "Grey discharge"
   },
   "sex": {
-    "title": "Sex",
+    "title": "Sexual activity",
     "no-sex": "Didn't have sex",
     "protected-sex": "Protected sex",
     "unprotected-sex": "Unprotected sex",
@@ -79,7 +79,7 @@
     "symptoms": "Symptoms",
     "moods": "Moods",
     "discharge": "Vaginal discharge",
-    "sex": "Sex",
+    "sex": "Sexual activity",
     "basalTemperature": "Basal temperature",
     "basalTemperaturePlaceholder": "Log your temperature",
     "temperatureRangeC": "Enter a value between 35-40 °C",

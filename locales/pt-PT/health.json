@@ -49,25 +49,25 @@
     "blood-clots": "Coágulos"
   },
   "discharge": {
-    "title": "Corrimento",
-    "no-discharge": "Sem corrimento",
-    "watery": "Aquoso",
-    "creamy": "Cremoso",
+    "title": "Fluxo vaginal",
+    "no-discharge": "Sem fluxo vaginal",
+    "watery": "Aquosa",
+    "creamy": "Cremosa",
     "egg-white": "Clara de ovo",
-    "sticky": "Pegajoso",
-    "spotting": "Manchas",
+    "sticky": "Pegajosa",
+    "spotting": "Manchas de sangue",
     "unusual": "Incomum",
-    "grey-discharge": "Corrimento cinzento"
+    "grey-discharge": "Cinza"
   },
   "sex": {
-    "title": "Sexo",
+    "title": "Atividade sexual",
     "no-sex": "Não tive sexo",
-    "protected-sex": "Sexo protegido",
+    "protected-sex": "Sexo com proteção",
     "unprotected-sex": "Sexo sem proteção",
     "pain-during-sex": "Dor durante o sexo",
-    "high-sex-drive": "Desejo sexual alto",
-    "neutral-sex-drive": "Desejo sexual neutro",
-    "low-sex-drive": "Desejo sexual baixo"
+    "high-sex-drive": "Libido alta",
+    "neutral-sex-drive": "Libido neutro",
+    "low-sex-drive": "Libido baixa"
   },
   "tracking": {
     "title": "Regista a tua saúde",
@@ -77,9 +77,9 @@
     "cancel": "Cancelar",
     "flow": "Fluxo menstrual",
     "symptoms": "Sintomas",
-    "moods": "Humores",
-    "discharge": "Corrimento vaginal",
-    "sex": "Sexo",
+    "moods": "Humor",
+    "discharge": "Fluxo vaginal",
+    "sex": "Atividade sexual",
     "basalTemperature": "Temperatura basal",
     "basalTemperaturePlaceholder": "Regista a tua temperatura",
     "temperatureRangeC": "Introduz um valor entre 35-40 °C",

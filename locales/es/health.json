@@ -60,14 +60,14 @@
     "grey-discharge": "Gris"
   },
   "sex": {
-    "title": "Sexo",
+    "title": "Actividad sexual",
     "no-sex": "No tuve sexo",
     "protected-sex": "Sexo con protección",
     "unprotected-sex": "Sexo sin protección",
     "pain-during-sex": "Dolor durante el sexo",
-    "high-sex-drive": "Deseo sexual alto",
-    "neutral-sex-drive": "Deseo sexual neutro",
-    "low-sex-drive": "Deseo sexual bajo"
+    "high-sex-drive": "Libido alta",
+    "neutral-sex-drive": "Libido neutro",
+    "low-sex-drive": "Libido baja"
   },
   "tracking": {
     "title": "Registra tu salud",
