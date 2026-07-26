@@ -6,6 +6,7 @@ import {
   getCalendarDateStyle,
   getPeriodDateStyle,
   getTodayDateStyle,
+  getDayCategory,
 } from '../utils/calendarStyles';
 import { ColorScheme } from '../styles/colors';
 
@@ -45,6 +46,7 @@ export function useCalendarMarkedDates({
     ) => {
       // Load health log dates
       const healthLogDates = await loadHealthLogDates();
+      const today = formatDateString(new Date());
 
       // If no period data, still show health log indicators
       const allMarkedDates: MarkedDates = {};
@@ -54,7 +56,10 @@ export function useCalendarMarkedDates({
 
         // Apply styling to actual period dates
         periodDates.forEach(dateString => {
-          allMarkedDates[dateString] = getPeriodDateStyle(colors);
+          allMarkedDates[dateString] = {
+            ...getPeriodDateStyle(colors),
+            dayCategory: getDayCategory('period', dateString, today),
+          };
         });
 
         // Generate predictions
@@ -68,10 +73,10 @@ export function useCalendarMarkedDates({
         if (showOvulation) {
           Object.entries(fertilityDates).forEach(([dateString, prediction]) => {
             if (!periodDateSet.has(dateString)) {
-              allMarkedDates[dateString] = getCalendarDateStyle(
-                prediction.type,
-                colors
-              );
+              allMarkedDates[dateString] = {
+                ...getCalendarDateStyle(prediction.type, colors),
+                dayCategory: getDayCategory(prediction.type, dateString, today),
+              };
             }
           });
         }
@@ -90,10 +95,10 @@ export function useCalendarMarkedDates({
           }
 
           if (!periodDateSet.has(dateString) && !allMarkedDates[dateString]) {
-            allMarkedDates[dateString] = getCalendarDateStyle(
-              prediction.type,
-              colors
-            );
+            allMarkedDates[dateString] = {
+              ...getCalendarDateStyle(prediction.type, colors),
+              dayCategory: getDayCategory(prediction.type, dateString, today),
+            };
           }
         });
       }
@@ -112,7 +117,6 @@ export function useCalendarMarkedDates({
       });
 
       // Apply today style to current date (but period style takes precedence)
-      const today = formatDateString(new Date());
       const isPeriodDate = periodDates.includes(today);
       
       if (!isPeriodDate) {
@@ -175,10 +179,17 @@ export function useCalendarMarkedDates({
     [baseMarkedDates, getMarkedDatesWithSelection]
   );
 
+  // Look up the semantic category (period/fertile/ovulation, past or future) for a date
+  const getDayCategoryForDate = useCallback(
+    (date: string) => baseMarkedDates[date]?.dayCategory,
+    [baseMarkedDates]
+  );
+
   return {
     baseMarkedDates,
     generateMarkedDates,
     getMarkedDatesWithSelection,
     getSelectionMarkedDates,
+    getDayCategoryForDate,
   };
 }

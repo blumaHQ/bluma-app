@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import { QuickHealthSelector } from './QuickHealthSelector';
-import { PeriodPredictionService } from '../services/periodPredictions';
 import { formatDateString } from '../types/calendarTypes';
+import { CalendarDayCategory } from '../utils/calendarStyles';
 import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
 import { formatDateShort } from '../utils/localeUtils';
@@ -12,14 +12,14 @@ import { formatDateShort } from '../utils/localeUtils';
 interface CycleDetailsProps {
   selectedDate: string;
   cycleDay: number | null;
-  averageCycleLength?: number;
+  dayCategory?: CalendarDayCategory;
   onClose?: () => void;
 }
 
 export function CycleDetails({
   selectedDate,
   cycleDay,
-  averageCycleLength = 28,
+  dayCategory,
   onClose,
 }: CycleDetailsProps) {
   const { colors } = useTheme();
@@ -30,19 +30,6 @@ export function CycleDetails({
   const selectedDateFormatted = selectedDate
     ? formatDateShort(selectedDate)
     : '';
-
-  const getConceptionChance = () => {
-    if (!cycleDay) return '';
-    const chance = PeriodPredictionService.getPregnancyChance(
-      cycleDay,
-      averageCycleLength
-    ).toLowerCase();
-    
-    // Map the chance to translation key
-    return t(`cycleDetails.conceptionChance.${chance}`);
-  };
-
-  const isOvulationDay = cycleDay !== null && PeriodPredictionService.getCyclePhase(cycleDay, averageCycleLength) === 'ovulatory';
 
   const isDateInPastOrToday = () => {
     const today = formatDateString(new Date());
@@ -63,10 +50,9 @@ export function CycleDetails({
               {selectedDateFormatted}
               {cycleDay ? ` • ${t('cycleDetails.cycleDay', { number: cycleDay })}` : ''}
             </Text>
-            {cycleDay && (
+            {dayCategory && (
               <Text style={[typography.body, { color: colors.textSecondary }]}>
-                {getConceptionChance()}
-                {isOvulationDay ? ` • ${tCalendar('legend.ovulationDay')}` : ''}
+                {tCalendar(`dayInfo.${dayCategory}`)}
               </Text>
             )}
           </View>

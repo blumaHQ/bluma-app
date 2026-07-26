@@ -8,7 +8,6 @@ export function useCalendarData() {
   const [allPeriodDates, setAllPeriodDates] = useState<string[]>([]);
   const [userCycleLength, setUserCycleLength] = useState<number>(28);
   const [userPeriodLength, setUserPeriodLength] = useState<number>(5);
-  const [averageCycleLength, setAverageCycleLength] = useState<number>(28);
 
   // Load user settings
   useEffect(() => {
@@ -49,38 +48,27 @@ export function useCalendarData() {
 
       setFirstPeriodDate(mostRecentStart);
 
-      // Calculate average cycle length
-      const cycleLength = PeriodPredictionService.getAverageCycleLength(
-        periodDateStrings,
-        userCycleLength
-      );
-      setAverageCycleLength(cycleLength);
-
       return {
         periodDates: periodDateStrings,
         mostRecentStart,
         periods,
-        cycleLength,
       };
     } else {
       setFirstPeriodDate(null);
       setAllPeriodDates([]);
-      setAverageCycleLength(28);
       return {
         periodDates: [],
         mostRecentStart: null,
         periods: [],
-        cycleLength: 28,
       };
     }
-  }, [userCycleLength]);
+  }, []);
 
   return {
     firstPeriodDate,
     allPeriodDates,
     userCycleLength,
     userPeriodLength,
-    averageCycleLength,
     loadData,
   };
 }

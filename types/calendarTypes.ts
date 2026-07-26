@@ -1,3 +1,5 @@
+import { CalendarDayCategory } from '../utils/calendarStyles';
+
 // Custom type for marked dates with today style
 export type CustomMarking = {
   selected?: boolean;
@@ -12,6 +14,7 @@ export type CustomMarking = {
     backgroundColor: string;
   };
   hasHealthLogs?: boolean;
+  dayCategory?: CalendarDayCategory;
 };
 
 // Type for date markers

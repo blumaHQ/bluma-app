@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { Button } from './Button';
 import { useTheme } from '../styles/theme';
 import { CycleDetails } from './CycleDetails';
+import { CalendarDayCategory } from '../utils/calendarStyles';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Animated, {
   useAnimatedStyle,
@@ -18,7 +19,7 @@ const DEFAULT_CONTENT_HEIGHT = 320;
 interface CalendarBottomSheetProps {
   selectedDate: string;
   cycleDay: number | null;
-  averageCycleLength: number;
+  dayCategory: CalendarDayCategory | undefined;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
 }
@@ -26,7 +27,7 @@ interface CalendarBottomSheetProps {
 export function CalendarBottomSheet({
   selectedDate,
   cycleDay,
-  averageCycleLength,
+  dayCategory,
   isOpen,
   onOpenChange,
 }: CalendarBottomSheetProps) {
@@ -98,7 +99,7 @@ export function CalendarBottomSheet({
           <CycleDetails
             selectedDate={selectedDate}
             cycleDay={cycleDay}
-            averageCycleLength={averageCycleLength}
+            dayCategory={dayCategory}
             onClose={closeDrawer}
           />
         </BottomSheetView>
