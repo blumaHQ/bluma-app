@@ -21,6 +21,14 @@
     "fertileWindow": "Ventana fértil",
     "symptomsIndicator": "Indicador de síntomas registrados"
   },
+  "dayInfo": {
+    "period": "Día de periodo",
+    "futurePeriod": "Día de periodo previsto",
+    "fertile": "Día fértil • Alta probabilidad de concebir",
+    "futureFertile": "Día fértil previsto • Alta probabilidad de concebir",
+    "ovulation": "Día de ovulación • Alta probabilidad de concebir",
+    "futureOvulation": "Día de ovulación previsto • Alta probabilidad de concebir"
+  },
   "accessibility": {
     "tapToDeselect": "Toca para deseleccionar",
     "tapToSelectPeriod": "Toca para seleccionar como día de periodo",

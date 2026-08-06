@@ -21,6 +21,14 @@
     "fertileWindow": "Fertile window",
     "symptomsIndicator": "Symptoms log indicator"
   },
+  "dayInfo": {
+    "period": "Period day",
+    "futurePeriod": "Predicted period day",
+    "fertile": "Fertile day • High chance to conceive",
+    "futureFertile": "Predicted fertile day • High chance to conceive",
+    "ovulation": "Ovulation day • High chance to conceive",
+    "futureOvulation": "Predicted ovulation day • High chance to conceive"
+  },
   "accessibility": {
     "tapToDeselect": "Tap to deselect",
     "tapToSelectPeriod": "Tap to select as period day",

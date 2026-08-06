@@ -42,11 +42,6 @@
     "temperature": "Temperatura basal"
   },
   "cycleDetails": {
-    "cycleDay": "Dia {{number}} do ciclo",
-    "conceptionChance": {
-      "low": "Baixa chance de conceber",
-      "medium": "Chance média de conceber",
-      "high": "Alta chance de conceber"
-    }
+    "cycleDay": "Dia {{number}} do ciclo"
   }
 }

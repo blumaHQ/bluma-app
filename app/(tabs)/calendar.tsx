@@ -37,7 +37,6 @@ export default function CalendarScreen() {
     allPeriodDates,
     userCycleLength,
     userPeriodLength,
-    averageCycleLength,
     loadData,
   } = useCalendarData();
 
@@ -45,6 +44,7 @@ export default function CalendarScreen() {
     generateMarkedDates,
     getMarkedDatesWithSelection,
     getSelectionMarkedDates,
+    getDayCategoryForDate,
   } = useCalendarMarkedDates({
     colors,
     userCycleLength,
@@ -137,6 +137,11 @@ export default function CalendarScreen() {
   const selectionMarkedDates = useMemo(
     () => getSelectionMarkedDates(selectedDate),
     [selectedDate, getSelectionMarkedDates]
+  );
+
+  const selectedDayCategory = useMemo(
+    () => getDayCategoryForDate(selectedDate),
+    [selectedDate, getDayCategoryForDate]
   );
 
   // Reload data when tab is focused
@@ -248,7 +253,7 @@ export default function CalendarScreen() {
         <CalendarBottomSheet
           selectedDate={selectedDate}
           cycleDay={cycleDay}
-          averageCycleLength={averageCycleLength}
+          dayCategory={selectedDayCategory}
           isOpen={isDrawerOpen}
           onOpenChange={handleBottomSheetChange}
         />

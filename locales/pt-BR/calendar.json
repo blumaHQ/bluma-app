@@ -21,6 +21,14 @@
     "fertileWindow": "Janela fértil",
     "symptomsIndicator": "Indicador de registro de sintomas"
   },
+  "dayInfo": {
+    "period": "Dia de menstruação",
+    "futurePeriod": "Dia de menstruação previsto",
+    "fertile": "Dia fértil • Alta chance de conceber",
+    "futureFertile": "Dia fértil previsto • Alta chance de conceber",
+    "ovulation": "Dia da ovulação • Alta chance de conceber",
+    "futureOvulation": "Dia da ovulação previsto • Alta chance de conceber"
+  },
   "accessibility": {
     "tapToDeselect": "Toque para desmarcar",
     "tapToSelectPeriod": "Toque para selecionar como dia de menstruação",

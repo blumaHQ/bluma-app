@@ -9,6 +9,36 @@ interface CalendarColors {
 
 export type PredictionType = 'ovulation' | 'fertile' | 'period';
 
+export type CalendarDayCategory =
+  | 'period'
+  | 'futurePeriod'
+  | 'fertile'
+  | 'futureFertile'
+  | 'ovulation'
+  | 'futureOvulation';
+
+/**
+ * Pure function mapping a prediction type + date into the semantic category
+ * shown in the calendar bottom sheet (e.g. "Fertile day", "Future ovulation day").
+ * A date is "future" when it hasn't happened yet relative to `today`.
+ */
+export function getDayCategory(
+  type: PredictionType,
+  dateString: string,
+  today: string
+): CalendarDayCategory {
+  const isFuture = dateString > today;
+
+  switch (type) {
+    case 'period':
+      return isFuture ? 'futurePeriod' : 'period';
+    case 'fertile':
+      return isFuture ? 'futureFertile' : 'fertile';
+    case 'ovulation':
+      return isFuture ? 'futureOvulation' : 'ovulation';
+  }
+}
+
 export interface CalendarDateStyle {
   customStyles: {
     container: {
