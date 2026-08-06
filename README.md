@@ -14,9 +14,9 @@ An offline period tracking app designed to be a delight to use whilst preserving
 - Biometric app lock.
 - Encrypted backups.
 - Dark & light themes.
-- Works offline - All data is stored locally and encrypted.
+- Works fully offline - All data is stored locally and encrypted.
 - No account required.
-- No ads.
+- No ads, ever.
 - No third‑party analytics or tracking.
 - Open source code.
 
@@ -42,7 +42,7 @@ An offline period tracking app designed to be a delight to use whilst preserving
 
 # 📄 License
 
-Copyright © 2025 Maribel Ferreira  
+Copyright © 2026 Maribel Ferreira  
 This project is licensed under the [GNU General Public License v3.0](LICENSE).
 
 You may use, modify, and distribute the software under the GPL-3.0 license. If you distribute a modified version, you must also make the corresponding source code available under the same license.
