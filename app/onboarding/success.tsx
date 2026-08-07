@@ -44,8 +44,8 @@ export default function SuccessScreen() {
               textAlign: 'center',
               color: colors.textSecondary,
               paddingHorizontal: 16,
-              fontSize: 18,
-              lineHeight: 24,
+              fontSize: 19,
+              lineHeight: 26,
             },
           ]}
         >

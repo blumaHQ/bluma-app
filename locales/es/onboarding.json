@@ -1,33 +1,33 @@
 {
   "welcome": {
     "title": "Rastrea tu ciclo menstrual con privacidad",
-    "badgeStorage": "Datos almacenados localmente y cifrados",
-    "badgeNoTracking": "Sin rastreo de terceros",
-    "badgeNoAds": "Sin anuncios",
-    "badgeOpenSource": "Código abierto"
+    "badgeStorage": "Todos los datos son cifrados y almacenados solo en tu dispositivo.",
+    "badgeNoTracking": "Sin nube, nada que vender, compartir ni filtrar.",
+    "badgeNoAds": "Sin anuncios.",
+    "badgeOpenSource": "Código abierto."
   },
   "periodLength": {
     "title": "¿Cuánto dura normalmente tu periodo?",
     "checkboxText": "No lo sé - que la app lo calcule",
-    "checkboxSubtext": "La app usará 5 días como predeterminado y luego se ajustará a medida que registres ciclos."
+    "checkboxSubtext": "La app usará 5 días como predeterminado y luego se ajustará a medida que registres periodos."
   },
   "cycleLength": {
     "title": "¿Cuántos días dura tu ciclo en promedio?",
     "subtitle": "Este es el número de días desde el inicio de un periodo hasta el inicio del siguiente.",
     "checkboxText": "No lo sé - que la app lo calcule",
-    "checkboxSubtext": "La app usará 28 días como predeterminado y luego se ajustará a medida que registres ciclos."
+    "checkboxSubtext": "La app usará 28 días como predeterminado y luego se ajustará a medida que registres periodos."
   },
   "lastPeriod": {
     "title": "¿Cuándo fue el inicio de tu último periodo?",
-    "subtitle": "Esto nos ayudará a predecir tu próximo periodo.",
-    "checkboxText": "No lo recuerdo",
+    "subtitle": "Esto nos ayudará a estimar el inicio de tu próximo periodo.",
+    "checkboxText": "No recuerdo",
     "checkboxSubtext": "No hay problema, puedes hacerlo más tarde dentro de la app.",
     "continue": "Continuar"
   },
   "success": {
     "title": "¡Todo listo!",
-    "subtitle": "Las predicciones se vuelven más precisas después de registrar de 3 a 6 ciclos. Sigue rastreando regularmente para obtener los mejores resultados.",
-    "button": "Comenzar a rastrear"
+    "subtitle": "Cuantos más ciclos registres, más precisas serán tus predicciones.",
+    "button": "Comenzar a registrar"
   },
   "continue": "Continuar"
 }

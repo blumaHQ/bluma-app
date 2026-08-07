@@ -1,10 +1,10 @@
 {
   "welcome": {
-    "title": "Acompanhe seu ciclo com privacidade",
-    "badgeStorage": "Dados armazenados localmente e criptografados",
-    "badgeNoTracking": "Sem rastreamento de terceiros",
-    "badgeNoAds": "Sem anúncios",
-    "badgeOpenSource": "Código aberto"
+    "title": "Acompanha o teu ciclo menstrual em privado",
+    "badgeStorage": "Todos os dados são criptografados e armazenados só no seu dispositivo.",
+    "badgeNoTracking": "Sem nuvem, nada para vender, compartilhar ou vazar.",
+    "badgeNoAds": "Sem anúncios.",
+    "badgeOpenSource": "Código aberto."
   },
   "periodLength": {
     "title": "Quanto tempo sua menstruação costuma durar?",
@@ -19,15 +19,15 @@
   },
   "lastPeriod": {
     "title": "Quando começou sua última menstruação?",
-    "subtitle": "Isso ajudará a prever sua próxima menstruação.",
+    "subtitle": "Isso ajudará a estimar o início da sua próxima menstruação.",
     "checkboxText": "Não lembro",
     "checkboxSubtext": "Tudo bem, você pode fazer isso depois dentro do app.",
     "continue": "Continuar"
   },
   "success": {
     "title": "Tudo pronto!",
-    "subtitle": "As previsões ficam mais precisas depois de registrar 3 a 6 ciclos. Continue acompanhando com regularidade para melhores resultados.",
-    "button": "Começar a acompanhar"
+    "subtitle": "Quanto mais ciclos você registrar, mais precisas ficam suas previsões.",
+    "button": "Começar a registrar"
   },
   "continue": "Continuar"
 }

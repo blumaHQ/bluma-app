@@ -1,10 +1,10 @@
 {
   "welcome": {
-    "title": "Acompanha o teu ciclo em privado",
-    "badgeStorage": "Dados armazenados localmente e encriptados",
-    "badgeNoTracking": "Sem rastreio de terceiros",
-    "badgeNoAds": "Sem anúncios",
-    "badgeOpenSource": "Código aberto"
+    "title": "Acompanha o teu ciclo menstrual em privado",
+    "badgeStorage": "Todos os dados são encriptados e armazenados só no teu dispositivo.",
+    "badgeNoTracking": "Sem nuvem, nada para vender, partilhar ou vazar.",
+    "badgeNoAds": "Sem anúncios.",
+    "badgeOpenSource": "Código aberto."
   },
   "periodLength": {
     "title": "Quanto tempo costuma durar o teu período?",
@@ -19,15 +19,15 @@
   },
   "lastPeriod": {
     "title": "Quando começou o teu último período?",
-    "subtitle": "Isto ajudará a prever o teu próximo período.",
+    "subtitle": "Isto ajudará a estimar o início do teu próximo período.",
     "checkboxText": "Não me lembro",
     "checkboxSubtext": "Não há problema, podes fazê-lo mais tarde dentro da aplicação.",
     "continue": "Continuar"
   },
   "success": {
     "title": "Estás pronta!",
-    "subtitle": "As previsões tornam-se mais precisas após registares 3-6 ciclos. Continua a acompanhar regularmente para melhores resultados.",
-    "button": "Começar a acompanhar"
+    "subtitle": "Quanto mais ciclos registares, mais precisas ficam as tuas previsões.",
+    "button": "Começar a registar"
   },
   "continue": "Continuar"
 }

@@ -55,8 +55,8 @@ export default function WelcomeScreen() {
           style={[
             { color: colors.textPrimary },
             {
-              fontSize: 28,
-              lineHeight: 36,
+              fontSize: 27,
+              lineHeight: 35,
               marginBottom: 36,
               textAlign: 'center',
               fontFamily: 'BricolageGrotesque_700Bold',
@@ -70,7 +70,7 @@ export default function WelcomeScreen() {
             <View style={styles.badgeIconSlot}>
               <Ionicons name="lock-closed-outline" size={24} color={colors.accentPink} />
             </View>
-            <Text style={[typography.body, { color: colors.textSecondary, fontSize: 19, lineHeight: 24 }]}>
+            <Text style={[typography.body, { color: colors.textSecondary, fontSize: 18, lineHeight: 24 }]}>
               {t('welcome.badgeStorage')}
             </Text>
           </View>
@@ -78,7 +78,7 @@ export default function WelcomeScreen() {
             <View style={styles.badgeIconSlot}>
               <Ionicons name="shield-checkmark-outline" size={24} color={colors.accentPink} />
             </View>
-            <Text style={[typography.body, { color: colors.textSecondary, fontSize: 19, lineHeight: 24 }]}>
+            <Text style={[typography.body, { color: colors.textSecondary, fontSize: 18, lineHeight: 24 }]}>
               {t('welcome.badgeNoTracking')}
             </Text>
           </View>
@@ -86,7 +86,7 @@ export default function WelcomeScreen() {
             <View style={styles.badgeIconSlot}>
               <Ionicons name="ban-outline" size={24} color={colors.accentPink} />
             </View>
-            <Text style={[typography.body, { color: colors.textSecondary, fontSize: 19, lineHeight: 24 }]}>
+            <Text style={[typography.body, { color: colors.textSecondary, fontSize: 18, lineHeight: 24 }]}>
               {t('welcome.badgeNoAds')}
             </Text>
           </View>
@@ -94,7 +94,7 @@ export default function WelcomeScreen() {
             <View style={styles.badgeIconSlot}>
               <Ionicons name="code-slash-outline" size={24} color={colors.accentPink} />
             </View>
-            <Text style={[typography.body, { color: colors.textSecondary, fontSize: 19, lineHeight: 24 }]}>
+            <Text style={[typography.body, { color: colors.textSecondary, fontSize: 18, lineHeight: 24 }]}>
               {t('welcome.badgeOpenSource')}
             </Text>
           </View>

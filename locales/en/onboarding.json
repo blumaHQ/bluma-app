@@ -1,10 +1,10 @@
 {
   "welcome": {
-    "title": "Track your cycle, privately",
-    "badgeStorage": "Data stored locally and encrypted",
-    "badgeNoTracking": "No third-party tracking",
-    "badgeNoAds": "No ads",
-    "badgeOpenSource": "Open source"
+    "title": "Track your menstrual cycle, privately.",
+    "badgeStorage": "All data is encrypted and stored exclusively on your device.",
+    "badgeNoTracking": "No cloud, nothing to sell, share or leak.",
+    "badgeNoAds": "No ads, ever.",
+    "badgeOpenSource": "Open source."
   },
   "periodLength": {
     "title": "How long does your period usually last?",
@@ -26,7 +26,7 @@
   },
   "success": {
     "title": "You're all set!",
-    "subtitle": "Predictions become more accurate after logging 3-6 cycles. Keep tracking regularly for the best results.",
+    "subtitle": "The more cycles you log, the more accurate your predictions get.",
     "button": "Start tracking"
   },
   "continue": "Continue"
