@@ -4,8 +4,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Pressable,
   ScrollView,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Button } from '../components/Button';
 import { router, useLocalSearchParams } from 'expo-router';
 import dayjs from 'dayjs';
@@ -388,7 +390,7 @@ export default function HealthTracking() {
       const db = getDB();
       await db.delete(healthLogs).where(eq(healthLogs.date, selectedDate));
 
-      const allRecords = [];
+      const allRecords: (typeof healthLogs.$inferInsert)[] = [];
 
       for (const id of selectedSymptoms) {
         allRecords.push({
@@ -626,6 +628,34 @@ export default function HealthTracking() {
               </Text>
             )}
           </TouchableOpacity>
+          <View
+            style={[
+              styles.chartLinkDivider,
+              { backgroundColor: colors.neutral150 },
+            ]}
+          />
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: '/bbt-chart',
+                params: { date: selectedDate },
+              })
+            }
+            accessibilityRole="button"
+            style={({ pressed }) => [
+              styles.chartLink,
+              pressed && { opacity: 0.7 },
+            ]}
+          >
+            <Text style={typography.body}>
+              {t('health:tracking.viewChart')}
+            </Text>
+            <Ionicons
+              name="chevron-forward"
+              size={18}
+              color={colors.textPrimary}
+            />
+          </Pressable>
         </View>
 
         {/* Notes */}
@@ -704,6 +734,16 @@ const styles = StyleSheet.create({
   },
   notesIcon: {
     marginLeft: 16,
+  },
+  chartLinkDivider: {
+    height: StyleSheet.hairlineWidth,
+    marginTop: 16,
+  },
+  chartLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 12,
   },
   saveButtonContainer: {
     position: 'absolute',

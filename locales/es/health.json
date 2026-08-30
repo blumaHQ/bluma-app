@@ -82,6 +82,10 @@
     "sex": "Sexo",
     "basalTemperature": "Temperatura basal",
     "basalTemperaturePlaceholder": "Registra tu temperatura",
+    "viewChart": "Ver gráfico",
+    "chosenCycle": "Ciclo elegido",
+    "chartEmpty": "No hay temperaturas registradas en este ciclo.",
+    "chartEmptyNoCycle": "Registra un periodo para ver tu gráfico de temperatura.",
     "temperatureRangeC": "Introduce un valor entre 35-40 °C",
     "temperatureRangeF": "Introduce un valor entre 95-102 °F",
     "notes": "Notas",
@@ -98,4 +102,3 @@
     "noSymptomsThisDate": "Registra síntomas para descubrir los patrones de tu cuerpo"
   }
 }
-

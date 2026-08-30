@@ -82,6 +82,10 @@
     "sex": "Sexual activity",
     "basalTemperature": "Basal temperature",
     "basalTemperaturePlaceholder": "Log your temperature",
+    "viewChart": "View chart",
+    "chosenCycle": "Chosen cycle",
+    "chartEmpty": "No temperatures logged this cycle.",
+    "chartEmptyNoCycle": "Log a period to see your temperature chart.",
     "temperatureRangeC": "Enter a value between 35-40 °C",
     "temperatureRangeF": "Enter a value between 95-102 °F",
     "notes": "Notes",
@@ -98,4 +102,3 @@
     "noSymptomsThisDate": "Track symptoms to discover patterns"
   }
 }
-
