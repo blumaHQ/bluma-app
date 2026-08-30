@@ -24,8 +24,8 @@
   "dayInfo": {
     "period": "Dia de período",
     "futurePeriod": "Dia de período previsto",
-    "fertile": "Dia fértil • Alta probabilidade de conceber",
-    "futureFertile": "Dia fértil previsto • Alta probabilidade de conceber",
+    "fertile": "Janela fértil • Alta probabilidade de conceber",
+    "futureFertile": "Janela fértil prevista • Alta probabilidade de conceber",
     "ovulation": "Dia da ovulação • Alta probabilidade de conceber",
     "futureOvulation": "Dia da ovulação previsto • Alta probabilidade de conceber"
   },

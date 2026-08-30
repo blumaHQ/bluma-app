@@ -24,10 +24,10 @@
   "dayInfo": {
     "period": "Dia de menstruação",
     "futurePeriod": "Dia de menstruação previsto",
-    "fertile": "Dia fértil • Alta chance de conceber",
-    "futureFertile": "Dia fértil previsto • Alta chance de conceber",
-    "ovulation": "Dia da ovulação • Alta chance de conceber",
-    "futureOvulation": "Dia da ovulação previsto • Alta chance de conceber"
+    "fertile": "Janela fértil • Maior chance de engravidar",
+    "futureFertile": "Janela fértil prevista • Maior chance de engravidar",
+    "ovulation": "Dia da ovulação • Maior chance de engravidar",
+    "futureOvulation": "Dia da ovulação previsto • Maior chance de engravidar"
   },
   "accessibility": {
     "tapToDeselect": "Toque para desmarcar",

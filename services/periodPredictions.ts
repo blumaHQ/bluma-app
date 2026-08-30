@@ -1,10 +1,6 @@
 import { parseLocalDate } from '../utils/dateUtils';
 
-export type CyclePhase =
-  | 'menstrual'
-  | 'follicular'
-  | 'ovulatory'
-  | 'luteal';
+export type CyclePhase = 'menstrual' | 'follicular' | 'ovulatory' | 'luteal';
 
 export type PregnancyChanceLevel = 'high' | 'medium' | 'low';
 
@@ -12,12 +8,6 @@ interface PredictionResult {
   days: number;
   date: string;
   cycleLength: number;
-}
-
-interface CycleInfo {
-  phase: CyclePhase;
-  cycleDay: number;
-  pregnancyChance: PregnancyChanceLevel;
 }
 
 export class PeriodPredictionService {
@@ -56,7 +46,8 @@ export class PeriodPredictionService {
 
     const recentPeriods = periods.slice(0, 6);
     const avg =
-      recentPeriods.reduce((sum, p) => sum + p.length, 0) / recentPeriods.length;
+      recentPeriods.reduce((sum, p) => sum + p.length, 0) /
+      recentPeriods.length;
     return Math.round(avg);
   }
 
@@ -140,7 +131,14 @@ export class PeriodPredictionService {
   ): PredictionResult {
     const cycleLength = this.getAverageCycleLength(allDates, userCycleLength);
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+    const today = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      12,
+      0,
+      0
+    );
     const nextPeriod = parseLocalDate(startDate);
 
     nextPeriod.setDate(nextPeriod.getDate() + cycleLength);
@@ -160,7 +158,14 @@ export class PeriodPredictionService {
       current = parseLocalDate(currentDate);
     } else {
       const now = new Date();
-      current = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
+      current = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        12,
+        0,
+        0
+      );
     }
 
     const dayDiff = Math.round(
@@ -168,6 +173,23 @@ export class PeriodPredictionService {
     );
 
     return dayDiff + 1;
+  }
+
+  static wrapCycleDay(cycleDay: number, cycleLength: number): number {
+    if (cycleLength <= 0 || cycleDay <= cycleLength) return cycleDay;
+    return ((cycleDay - 1) % cycleLength) + 1;
+  }
+
+  static getCycleDayForDate(
+    startDate: string,
+    targetDate: string,
+    cycleLength: number,
+    today: string
+  ): number {
+    const cycleDay = this.getCurrentCycleDay(startDate, targetDate);
+    return targetDate > today
+      ? this.wrapCycleDay(cycleDay, cycleLength)
+      : cycleDay;
   }
 
   static getOvulationCycleDay(cycleLength: number = 28): number {
@@ -216,23 +238,6 @@ export class PeriodPredictionService {
     return 'low';
   }
 
-  static getCycleInfo(
-    startDate: string,
-    currentDate?: string,
-    cycleLength?: number,
-    periodLength?: number
-  ): CycleInfo {
-    const cycleDay = this.getCurrentCycleDay(startDate, currentDate);
-    const avgCycleLength = cycleLength || 28;
-    const phase = this.getCyclePhase(cycleDay, avgCycleLength, periodLength);
-
-    return {
-      phase,
-      cycleDay,
-      pregnancyChance: this.getPregnancyChance(cycleDay, avgCycleLength),
-    };
-  }
-
   // Generate fertile windows and ovulation for actual logged periods
   static generateFertilityForLoggedPeriods(
     periodStartDates: string[],
@@ -242,17 +247,17 @@ export class PeriodPredictionService {
       [date: string]: { type: 'fertile' | 'ovulation' };
     } = {};
 
-     // Skip the first (earliest) period since we have no data about the cycle before it
-     if (periodStartDates.length === 0) return fertilityDates;
-    
-     const sortedDates = [...periodStartDates].sort((a, b) => 
-       new Date(a).getTime() - new Date(b).getTime()
-     );
-     
-     // Skip the first period and only calculate fertility for subsequent periods
-     const datesWithPreviousCycle = sortedDates.slice(1);
- 
-     datesWithPreviousCycle.forEach(startDate => {
+    // Skip the first (earliest) period since we have no data about the cycle before it
+    if (periodStartDates.length === 0) return fertilityDates;
+
+    const sortedDates = [...periodStartDates].sort(
+      (a, b) => new Date(a).getTime() - new Date(b).getTime()
+    );
+
+    // Skip the first period and only calculate fertility for subsequent periods
+    const datesWithPreviousCycle = sortedDates.slice(1);
+
+    datesWithPreviousCycle.forEach(startDate => {
       // Calculate ovulation date (14 days before period start)
       const periodDate = parseLocalDate(startDate);
       const ovulationDate = new Date(periodDate);
