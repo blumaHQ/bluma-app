@@ -21,7 +21,7 @@ import { useTemperature, parseTempUnit } from '../contexts/TemperatureContext';
 import { useAuth } from '../contexts/AuthContext';
 import Toast from 'react-native-toast-message';
 import { formatTodayOrDate } from '../utils/localeUtils';
-import { toFahrenheit } from '../utils/temperatureUtils';
+import { formatTemperature } from '../utils/temperatureUtils';
 import { useTranslation } from 'react-i18next';
 import {
   SYMPTOMS,
@@ -41,11 +41,17 @@ dayjs.extend(isoWeek);
 
 export default function HealthTracking() {
   const { colors } = useTheme();
-  const { typography, commonStyles, scrollContentContainerWithSafeArea, insets } = useAppStyles();
+  const {
+    typography,
+    commonStyles,
+    scrollContentContainerWithSafeArea,
+    insets,
+  } = useAppStyles();
   const { t } = useTranslation(['common', 'health']);
   const params = useLocalSearchParams();
   const { notes, setNotes } = useNotes();
-  const { tempCelsius, setTempCelsius, tempUnit, setTempUnit } = useTemperature();
+  const { tempCelsius, setTempCelsius, tempUnit, setTempUnit } =
+    useTemperature();
   const { isLocked } = useAuth();
   const ICON_SIZE = 54;
 
@@ -246,7 +252,7 @@ export default function HealthTracking() {
     };
 
     const targetRef = sectionRefs[params.scrollTo as string];
-    
+
     if (targetRef?.current) {
       setTimeout(() => {
         targetRef.current?.measureLayout(
@@ -475,14 +481,14 @@ export default function HealthTracking() {
       <ScrollView
         ref={scrollViewRef}
         style={commonStyles.scrollView}
-        contentContainerStyle={[scrollContentContainerWithSafeArea, { paddingBottom: 80 + insets.bottom}]}
+        contentContainerStyle={[
+          scrollContentContainerWithSafeArea,
+          { paddingBottom: 80 + insets.bottom },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {isPeriodDate && (
-          <View
-            ref={flowSectionRef}
-            style={[commonStyles.sectionContainer]}
-          >
+          <View ref={flowSectionRef} style={[commonStyles.sectionContainer]}>
             <View style={commonStyles.sectionTitleContainer}>
               <Text style={[typography.headingMd]}>
                 {t('health:tracking.flow')}
@@ -499,10 +505,7 @@ export default function HealthTracking() {
             />
           </View>
         )}
-        <View
-          ref={symptomsSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={symptomsSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
             <Text style={[typography.headingMd]}>
               {t('health:tracking.symptoms')}
@@ -519,10 +522,7 @@ export default function HealthTracking() {
           />
         </View>
 
-        <View
-          ref={moodsSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={moodsSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
             <Text style={[typography.headingMd]}>
               {t('health:tracking.moods')}
@@ -539,10 +539,7 @@ export default function HealthTracking() {
           />
         </View>
 
-        <View
-          ref={dischargeSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={dischargeSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
             <Text style={[typography.headingMd]}>
               {t('health:tracking.discharge')}
@@ -577,10 +574,7 @@ export default function HealthTracking() {
         </View>
 
         {/* Basal temperature */}
-        <View
-          ref={tempSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={tempSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
             <Text style={[typography.headingMd]}>
               {t('health:tracking.basalTemperature')}
@@ -615,11 +609,9 @@ export default function HealthTracking() {
             activeOpacity={0.7}
           >
             {tempCelsius && !Number.isNaN(parseFloat(tempCelsius)) ? (
-                <Text style={[typography.body, { flex: 1, fontSize: 22 }]}>
+              <Text style={[typography.body, { flex: 1, fontSize: 22 }]}>
                 <Text>
-                  {tempUnit === 'F'
-                    ? toFahrenheit(parseFloat(tempCelsius)).toFixed(1)
-                    : parseFloat(tempCelsius).toFixed(1)}
+                  {formatTemperature(parseFloat(tempCelsius), tempUnit)}
                 </Text>
                 <Text style={{ fontSize: 16 }}>{` °${tempUnit}`}</Text>
               </Text>
@@ -627,7 +619,7 @@ export default function HealthTracking() {
               <Text
                 style={[
                   typography.body,
-                  { flex: 1, color: colors.placeholder},
+                  { flex: 1, color: colors.placeholder },
                 ]}
               >
                 {t('health:tracking.basalTemperaturePlaceholder')}
@@ -637,12 +629,11 @@ export default function HealthTracking() {
         </View>
 
         {/* Notes */}
-        <View
-          ref={notesSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={notesSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
-            <Text style={[typography.headingMd]}>{t('health:tracking.notes')}</Text>
+            <Text style={[typography.headingMd]}>
+              {t('health:tracking.notes')}
+            </Text>
             <View style={styles.notesIconsContainer}>
               {notes.trim() && (
                 <TouchableOpacity
@@ -650,9 +641,7 @@ export default function HealthTracking() {
                   onPress={() => setNotes('')}
                   activeOpacity={0.7}
                 >
-                  <DeleteIcon
-                    color={colors.neutral400}
-                  />
+                  <DeleteIcon color={colors.neutral400} />
                 </TouchableOpacity>
               )}
               <TouchableOpacity
@@ -675,10 +664,7 @@ export default function HealthTracking() {
             activeOpacity={0.7}
           >
             {notes.trim() ? (
-              <Text
-                style={[typography.body, { flex: 1 }]}
-                numberOfLines={3}
-              >
+              <Text style={[typography.body, { flex: 1 }]} numberOfLines={3}>
                 {notes}
               </Text>
             ) : (
@@ -697,7 +683,9 @@ export default function HealthTracking() {
 
       {/* Save button that appears only when changes are made */}
       {hasChanges && (
-        <View style={[styles.saveButtonContainer, { bottom: 30 + insets.bottom }]}>
+        <View
+          style={[styles.saveButtonContainer, { bottom: 30 + insets.bottom }]}
+        >
           <Button title={t('buttons.save')} onPress={saveChanges} fullWidth />
         </View>
       )}
