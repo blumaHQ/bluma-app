@@ -132,7 +132,7 @@ export function BbtChart({
           key={point.date}
           cx={point.x}
           cy={point.y}
-          r={5}
+          r={4}
           fill={lineColor}
         />
       ))}
