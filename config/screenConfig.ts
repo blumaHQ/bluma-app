@@ -98,6 +98,13 @@ export const dynamicScreens: ScreenConfig[] = [
     backgroundColorKey: 'panel',
   },
   {
+    name: 'bbt-chart',
+    headerShown: true,
+    titleKey: 'common:navigation.chart',
+    headerShadowVisible: false,
+    backgroundColorKey: 'background',
+  },
+  {
     name: 'cycle-history',
     headerShown: true,
     titleKey: 'stats:cycleHistory.title',
@@ -179,4 +186,3 @@ export function getBackgroundColor(
 
   return colorMap[key];
 }
-

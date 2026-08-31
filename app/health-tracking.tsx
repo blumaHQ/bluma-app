@@ -4,8 +4,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Pressable,
   ScrollView,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Button } from '../components/Button';
 import { router, useLocalSearchParams } from 'expo-router';
 import dayjs from 'dayjs';
@@ -21,7 +23,7 @@ import { useTemperature, parseTempUnit } from '../contexts/TemperatureContext';
 import { useAuth } from '../contexts/AuthContext';
 import Toast from 'react-native-toast-message';
 import { formatTodayOrDate } from '../utils/localeUtils';
-import { toFahrenheit } from '../utils/temperatureUtils';
+import { formatTemperature } from '../utils/temperatureUtils';
 import { useTranslation } from 'react-i18next';
 import {
   SYMPTOMS,
@@ -41,11 +43,17 @@ dayjs.extend(isoWeek);
 
 export default function HealthTracking() {
   const { colors } = useTheme();
-  const { typography, commonStyles, scrollContentContainerWithSafeArea, insets } = useAppStyles();
+  const {
+    typography,
+    commonStyles,
+    scrollContentContainerWithSafeArea,
+    insets,
+  } = useAppStyles();
   const { t } = useTranslation(['common', 'health']);
   const params = useLocalSearchParams();
   const { notes, setNotes } = useNotes();
-  const { tempCelsius, setTempCelsius, tempUnit, setTempUnit } = useTemperature();
+  const { tempCelsius, setTempCelsius, tempUnit, setTempUnit } =
+    useTemperature();
   const { isLocked } = useAuth();
   const ICON_SIZE = 54;
 
@@ -246,7 +254,7 @@ export default function HealthTracking() {
     };
 
     const targetRef = sectionRefs[params.scrollTo as string];
-    
+
     if (targetRef?.current) {
       setTimeout(() => {
         targetRef.current?.measureLayout(
@@ -382,7 +390,7 @@ export default function HealthTracking() {
       const db = getDB();
       await db.delete(healthLogs).where(eq(healthLogs.date, selectedDate));
 
-      const allRecords = [];
+      const allRecords: (typeof healthLogs.$inferInsert)[] = [];
 
       for (const id of selectedSymptoms) {
         allRecords.push({
@@ -475,14 +483,14 @@ export default function HealthTracking() {
       <ScrollView
         ref={scrollViewRef}
         style={commonStyles.scrollView}
-        contentContainerStyle={[scrollContentContainerWithSafeArea, { paddingBottom: 80 + insets.bottom}]}
+        contentContainerStyle={[
+          scrollContentContainerWithSafeArea,
+          { paddingBottom: 80 + insets.bottom },
+        ]}
         showsVerticalScrollIndicator={false}
       >
         {isPeriodDate && (
-          <View
-            ref={flowSectionRef}
-            style={[commonStyles.sectionContainer]}
-          >
+          <View ref={flowSectionRef} style={[commonStyles.sectionContainer]}>
             <View style={commonStyles.sectionTitleContainer}>
               <Text style={[typography.headingMd]}>
                 {t('health:tracking.flow')}
@@ -499,10 +507,7 @@ export default function HealthTracking() {
             />
           </View>
         )}
-        <View
-          ref={symptomsSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={symptomsSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
             <Text style={[typography.headingMd]}>
               {t('health:tracking.symptoms')}
@@ -519,10 +524,7 @@ export default function HealthTracking() {
           />
         </View>
 
-        <View
-          ref={moodsSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={moodsSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
             <Text style={[typography.headingMd]}>
               {t('health:tracking.moods')}
@@ -539,10 +541,7 @@ export default function HealthTracking() {
           />
         </View>
 
-        <View
-          ref={dischargeSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={dischargeSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
             <Text style={[typography.headingMd]}>
               {t('health:tracking.discharge')}
@@ -577,10 +576,7 @@ export default function HealthTracking() {
         </View>
 
         {/* Basal temperature */}
-        <View
-          ref={tempSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={tempSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
             <Text style={[typography.headingMd]}>
               {t('health:tracking.basalTemperature')}
@@ -615,11 +611,9 @@ export default function HealthTracking() {
             activeOpacity={0.7}
           >
             {tempCelsius && !Number.isNaN(parseFloat(tempCelsius)) ? (
-                <Text style={[typography.body, { flex: 1, fontSize: 22 }]}>
+              <Text style={[typography.body, { flex: 1, fontSize: 22 }]}>
                 <Text>
-                  {tempUnit === 'F'
-                    ? toFahrenheit(parseFloat(tempCelsius)).toFixed(1)
-                    : parseFloat(tempCelsius).toFixed(1)}
+                  {formatTemperature(parseFloat(tempCelsius), tempUnit)}
                 </Text>
                 <Text style={{ fontSize: 16 }}>{` °${tempUnit}`}</Text>
               </Text>
@@ -627,22 +621,49 @@ export default function HealthTracking() {
               <Text
                 style={[
                   typography.body,
-                  { flex: 1, color: colors.placeholder},
+                  { flex: 1, color: colors.placeholder },
                 ]}
               >
                 {t('health:tracking.basalTemperaturePlaceholder')}
               </Text>
             )}
           </TouchableOpacity>
+          <View
+            style={[
+              styles.chartLinkDivider,
+              { backgroundColor: colors.neutral150 },
+            ]}
+          />
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: '/bbt-chart',
+                params: { date: selectedDate },
+              })
+            }
+            accessibilityRole="button"
+            style={({ pressed }) => [
+              styles.chartLink,
+              pressed && { opacity: 0.7 },
+            ]}
+          >
+            <Text style={typography.body}>
+              {t('health:tracking.viewChart')}
+            </Text>
+            <Ionicons
+              name="chevron-forward"
+              size={18}
+              color={colors.textPrimary}
+            />
+          </Pressable>
         </View>
 
         {/* Notes */}
-        <View
-          ref={notesSectionRef}
-          style={[commonStyles.sectionContainer]}
-        >
+        <View ref={notesSectionRef} style={[commonStyles.sectionContainer]}>
           <View style={commonStyles.sectionTitleContainer}>
-            <Text style={[typography.headingMd]}>{t('health:tracking.notes')}</Text>
+            <Text style={[typography.headingMd]}>
+              {t('health:tracking.notes')}
+            </Text>
             <View style={styles.notesIconsContainer}>
               {notes.trim() && (
                 <TouchableOpacity
@@ -650,9 +671,7 @@ export default function HealthTracking() {
                   onPress={() => setNotes('')}
                   activeOpacity={0.7}
                 >
-                  <DeleteIcon
-                    color={colors.neutral400}
-                  />
+                  <DeleteIcon color={colors.neutral400} />
                 </TouchableOpacity>
               )}
               <TouchableOpacity
@@ -675,10 +694,7 @@ export default function HealthTracking() {
             activeOpacity={0.7}
           >
             {notes.trim() ? (
-              <Text
-                style={[typography.body, { flex: 1 }]}
-                numberOfLines={3}
-              >
+              <Text style={[typography.body, { flex: 1 }]} numberOfLines={3}>
                 {notes}
               </Text>
             ) : (
@@ -697,7 +713,9 @@ export default function HealthTracking() {
 
       {/* Save button that appears only when changes are made */}
       {hasChanges && (
-        <View style={[styles.saveButtonContainer, { bottom: 30 + insets.bottom }]}>
+        <View
+          style={[styles.saveButtonContainer, { bottom: 30 + insets.bottom }]}
+        >
           <Button title={t('buttons.save')} onPress={saveChanges} fullWidth />
         </View>
       )}
@@ -716,6 +734,16 @@ const styles = StyleSheet.create({
   },
   notesIcon: {
     marginLeft: 16,
+  },
+  chartLinkDivider: {
+    height: StyleSheet.hairlineWidth,
+    marginTop: 16,
+  },
+  chartLink: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 12,
   },
   saveButtonContainer: {
     position: 'absolute',
