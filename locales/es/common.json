@@ -40,7 +40,7 @@
     "appName": "Bluma",
     "notes": "Notas",
     "temperature": "Temperatura basal",
-    "chart": "Gráfico"
+    "chart": "Gráfico de temperatura basal"
   },
   "cycleDetails": {
     "cycleDay": "Día {{number}} del ciclo"

@@ -40,7 +40,7 @@
     "appName": "Bluma",
     "notes": "Notes",
     "temperature": "Basal temperature",
-    "chart": "Chart"
+    "chart": "Basal temperature chart"
   },
   "cycleDetails": {
     "cycleDay": "Cycle day {{number}}"
