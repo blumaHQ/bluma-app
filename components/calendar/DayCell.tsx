@@ -12,11 +12,7 @@ interface DayCellProps {
   onPress: (dateString: string) => void;
   colors: {
     textPrimary: string;
-    textSecondary: string;
     primary: string;
-    primaryLight: string;
-    white: string;
-    accentPink: string;
   };
   mode: 'view' | 'selection';
   disableFuture?: boolean;
@@ -52,8 +48,7 @@ export const DayCell = memo<DayCellProps>(
     const cellDate = parseLocalDate(dateString);
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 12, 0, 0);
-    const isFutureDate = cellDate > today;
-    const isDisabled = disableFuture && isFutureDate;
+    const isDisabled = Boolean(disableFuture && cellDate > today);
     const isSelected = marking?.selected;
     const hasHealthLogs = marking?.hasHealthLogs;
     const isToday = dateString === formatDateString(new Date());
@@ -64,8 +59,7 @@ export const DayCell = memo<DayCellProps>(
       }
     };
 
-    const date = parseLocalDate(dateString);
-    const accessibilityLabel = `${date.toLocaleDateString(undefined, {
+    const accessibilityLabel = `${cellDate.toLocaleDateString(undefined, {
       month: 'long',
       day: 'numeric',
     })}${hasHealthLogs ? `, ${t('accessibility.hasHealthLogs')}` : ''}${isSelected ? `, ${t('accessibility.selected')}` : ''}`;
@@ -118,14 +112,7 @@ export const DayCell = memo<DayCellProps>(
         )}
       </View>
     );
-  },
-  (prev, next) =>
-    prev.day.dateString === next.day.dateString &&
-    prev.marking === next.marking &&
-    prev.colors === next.colors &&
-    prev.mode === next.mode &&
-    prev.disableFuture === next.disableFuture &&
-    prev.cellHeight === next.cellHeight
+  }
 );
 
 DayCell.displayName = 'DayCell';

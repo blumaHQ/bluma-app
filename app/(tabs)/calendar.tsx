@@ -42,7 +42,6 @@ export default function CalendarScreen() {
 
   const {
     generateMarkedDates,
-    getMarkedDatesWithSelection,
     getSelectionMarkedDates,
     getDayCategoryForDate,
   } = useCalendarMarkedDates({
@@ -53,86 +52,64 @@ export default function CalendarScreen() {
     showFuturePeriods,
   });
 
-  const { cycleDay, setCycleDay, calculateCycleDay } = useCycleCalculations({
+  const calculateCycleDay = useCycleCalculations({
     firstPeriodDate,
     allPeriodDates,
     userCycleLength,
   });
 
-  const [markedDates, setMarkedDates] = useState({});
   const [selectedDate, setSelectedDate] = useState(
     formatDateString(new Date())
   );
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const params = useLocalSearchParams();
 
-  // Load calendar view settings on mount
-  useEffect(() => {
-    async function loadCalendarSettings() {
-      const ovulationSetting = await getSetting('show_ovulation');
-      const futurePeriodsSetting = await getSetting('show_future_periods');
-
-      setShowOvulation(ovulationSetting !== 'false');
-      setShowFuturePeriods(futurePeriodsSetting !== 'false');
-    }
-
-    loadCalendarSettings();
+  const loadCalendarViewSettings = useCallback(async () => {
+    const ovulationSetting = await getSetting('show_ovulation');
+    const futurePeriodsSetting = await getSetting('show_future_periods');
+    setShowOvulation(ovulationSetting !== 'false');
+    setShowFuturePeriods(futurePeriodsSetting !== 'false');
   }, []);
 
-  // Listen for calendar settings changes
+  const refreshCalendar = useCallback(async () => {
+    const result = await loadData();
+    await generateMarkedDates(
+      result?.periodDates ?? [],
+      result?.mostRecentStart ?? null,
+      result?.periods ?? []
+    );
+  }, [loadData, generateMarkedDates]);
+
+  useEffect(() => {
+    loadCalendarViewSettings();
+  }, [loadCalendarViewSettings]);
+
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener(
       'calendarSettingsChanged',
       async () => {
-        const ovulationSetting = await getSetting('show_ovulation');
-        const futurePeriodsSetting = await getSetting('show_future_periods');
-
-        setShowOvulation(ovulationSetting !== 'false');
-        setShowFuturePeriods(futurePeriodsSetting !== 'false');
-
-        // Reload calendar data to apply new settings
-        const result = await loadData();
-        if (
-          result &&
-          result.periodDates &&
-          result.mostRecentStart &&
-          result.periods
-        ) {
-          await generateMarkedDates(
-            result.periodDates,
-            result.mostRecentStart,
-            result.periods
-          );
-        }
+        await loadCalendarViewSettings();
+        await refreshCalendar();
       }
     );
 
     return () => listener.remove();
-  }, [loadData, generateMarkedDates]);
+  }, [loadCalendarViewSettings, refreshCalendar]);
 
-  // Check if we should navigate to the period calendar screen from URL params
   useEffect(() => {
     if (params.openPeriodModal === 'true') {
       router.push('/edit-period');
     }
   }, [params.openPeriodModal]);
 
-  // Listen for data deletion events to refresh calendar
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener('dataDeleted', async () => {
-      const result = await loadData();
-      // Always call generateMarkedDates, even with empty data to clear the calendar
-      await generateMarkedDates(
-        result?.periodDates || [],
-        result?.mostRecentStart || null,
-        result?.periods || []
-      );
-      const today = formatDateString(new Date());
-      setSelectedDate(today);
+      await refreshCalendar();
+      setSelectedDate(formatDateString(new Date()));
     });
 
     return () => listener.remove();
-  }, [loadData, generateMarkedDates]);
+  }, [refreshCalendar]);
 
   const selectionMarkedDates = useMemo(
     () => getSelectionMarkedDates(selectedDate),
@@ -144,65 +121,28 @@ export default function CalendarScreen() {
     [selectedDate, getDayCategoryForDate]
   );
 
-  // Reload data when tab is focused
-  useFocusEffect(
-    useCallback(() => {
-      const reloadData = async () => {
-        const result = await loadData();
-        if (
-          result &&
-          result.periodDates &&
-          result.mostRecentStart &&
-          result.periods
-        ) {
-          await generateMarkedDates(
-            result.periodDates,
-            result.mostRecentStart,
-            result.periods
-          );
-        }
-      };
-      reloadData();
-      return () => {};
-    }, [loadData, generateMarkedDates])
+  const cycleDay = useMemo(
+    () => calculateCycleDay(selectedDate),
+    [selectedDate, calculateCycleDay]
   );
 
-  // Update cycle info when selected date changes
-  useEffect(() => {
-    setCycleDay(calculateCycleDay(selectedDate));
-  }, [selectedDate, calculateCycleDay, setCycleDay]);
+  useFocusEffect(
+    useCallback(() => {
+      refreshCalendar();
+    }, [refreshCalendar])
+  );
 
-  // Update marked dates when base marked dates change (but not when selected date changes - handled in onDayPress)
-  useEffect(() => {
-    setMarkedDates(selectionMarkedDates);
-  }, [selectionMarkedDates]);
-
-  const openDrawer = useCallback(() => {
+  const onDayPress = useCallback((dateString: string) => {
+    setSelectedDate(dateString);
     setIsDrawerOpen(true);
   }, []);
 
-  const onDayPress = useCallback(
-    (dateString: string) => {
-      setSelectedDate(dateString);
-
-      setCycleDay(calculateCycleDay(dateString));
-      setMarkedDates(getMarkedDatesWithSelection(dateString));
-
-      openDrawer();
-    },
-    [calculateCycleDay, getMarkedDatesWithSelection, openDrawer, setCycleDay]
-  );
-
-  const handleBottomSheetChange = useCallback(
-    (isOpen: boolean) => {
-      setIsDrawerOpen(isOpen);
-      if (!isOpen) {
-        setSelectedDate('');
-        setMarkedDates(getSelectionMarkedDates(''));
-      }
-    },
-    [getSelectionMarkedDates]
-  );
+  const handleBottomSheetChange = useCallback((isOpen: boolean) => {
+    setIsDrawerOpen(isOpen);
+    if (!isOpen) {
+      setSelectedDate('');
+    }
+  }, []);
 
   const handleTodayPress = useCallback(() => {
     calendarRef.current?.scrollToToday();
@@ -243,7 +183,7 @@ export default function CalendarScreen() {
           ref={calendarRef}
           mode="view"
           current={selectedDate}
-          markedDates={markedDates}
+          markedDates={selectionMarkedDates}
           onDayPress={onDayPress}
           onMonthChange={onMonthChange}
         />
