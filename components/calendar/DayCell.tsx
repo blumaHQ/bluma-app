@@ -118,14 +118,7 @@ export const DayCell = memo<DayCellProps>(
         )}
       </View>
     );
-  },
-  (prev, next) =>
-    prev.day.dateString === next.day.dateString &&
-    prev.marking === next.marking &&
-    prev.colors === next.colors &&
-    prev.mode === next.mode &&
-    prev.disableFuture === next.disableFuture &&
-    prev.cellHeight === next.cellHeight
+  }
 );
 
 DayCell.displayName = 'DayCell';

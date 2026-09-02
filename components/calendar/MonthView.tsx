@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
   container: {
     paddingBottom: 0,
     paddingTop: 10,
-    backgroundColor: 'purple',
   },
   header: {
     alignItems: 'center',

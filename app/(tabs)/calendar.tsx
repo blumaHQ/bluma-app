@@ -42,7 +42,6 @@ export default function CalendarScreen() {
 
   const {
     generateMarkedDates,
-    getMarkedDatesWithSelection,
     getSelectionMarkedDates,
     getDayCategoryForDate,
   } = useCalendarMarkedDates({
@@ -53,13 +52,12 @@ export default function CalendarScreen() {
     showFuturePeriods,
   });
 
-  const { cycleDay, setCycleDay, calculateCycleDay } = useCycleCalculations({
+  const { calculateCycleDay } = useCycleCalculations({
     firstPeriodDate,
     allPeriodDates,
     userCycleLength,
   });
 
-  const [markedDates, setMarkedDates] = useState({});
   const [selectedDate, setSelectedDate] = useState(
     formatDateString(new Date())
   );
@@ -144,6 +142,11 @@ export default function CalendarScreen() {
     [selectedDate, getDayCategoryForDate]
   );
 
+  const cycleDay = useMemo(
+    () => calculateCycleDay(selectedDate),
+    [selectedDate, calculateCycleDay]
+  );
+
   // Reload data when tab is focused
   useFocusEffect(
     useCallback(() => {
@@ -167,42 +170,17 @@ export default function CalendarScreen() {
     }, [loadData, generateMarkedDates])
   );
 
-  // Update cycle info when selected date changes
-  useEffect(() => {
-    setCycleDay(calculateCycleDay(selectedDate));
-  }, [selectedDate, calculateCycleDay, setCycleDay]);
-
-  // Update marked dates when base marked dates change (but not when selected date changes - handled in onDayPress)
-  useEffect(() => {
-    setMarkedDates(selectionMarkedDates);
-  }, [selectionMarkedDates]);
-
-  const openDrawer = useCallback(() => {
+  const onDayPress = useCallback((dateString: string) => {
+    setSelectedDate(dateString);
     setIsDrawerOpen(true);
   }, []);
 
-  const onDayPress = useCallback(
-    (dateString: string) => {
-      setSelectedDate(dateString);
-
-      setCycleDay(calculateCycleDay(dateString));
-      setMarkedDates(getMarkedDatesWithSelection(dateString));
-
-      openDrawer();
-    },
-    [calculateCycleDay, getMarkedDatesWithSelection, openDrawer, setCycleDay]
-  );
-
-  const handleBottomSheetChange = useCallback(
-    (isOpen: boolean) => {
-      setIsDrawerOpen(isOpen);
-      if (!isOpen) {
-        setSelectedDate('');
-        setMarkedDates(getSelectionMarkedDates(''));
-      }
-    },
-    [getSelectionMarkedDates]
-  );
+  const handleBottomSheetChange = useCallback((isOpen: boolean) => {
+    setIsDrawerOpen(isOpen);
+    if (!isOpen) {
+      setSelectedDate('');
+    }
+  }, []);
 
   const handleTodayPress = useCallback(() => {
     calendarRef.current?.scrollToToday();
@@ -243,7 +221,7 @@ export default function CalendarScreen() {
           ref={calendarRef}
           mode="view"
           current={selectedDate}
-          markedDates={markedDates}
+          markedDates={selectionMarkedDates}
           onDayPress={onDayPress}
           onMonthChange={onMonthChange}
         />

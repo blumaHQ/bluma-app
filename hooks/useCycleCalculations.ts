@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback } from 'react';
 import { PeriodPredictionService } from '../services/periodPredictions';
 import { formatDateString } from '../types/calendarTypes';
 import { parseLocalDate } from '../utils/dateUtils';
@@ -14,8 +14,6 @@ export function useCycleCalculations({
   allPeriodDates,
   userCycleLength,
 }: UseCycleCalculationsProps) {
-  const [cycleDay, setCycleDay] = useState<number | null>(null);
-
   const calculateCycleDay = useCallback(
     (date: string): number | null => {
       if (!firstPeriodDate || allPeriodDates.length === 0) return null;
@@ -65,9 +63,5 @@ export function useCycleCalculations({
     [firstPeriodDate, allPeriodDates, userCycleLength]
   );
 
-  return {
-    cycleDay,
-    setCycleDay,
-    calculateCycleDay,
-  };
+  return { calculateCycleDay };
 }
