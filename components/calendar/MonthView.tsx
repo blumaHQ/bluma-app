@@ -108,6 +108,7 @@ export const MonthView = memo<MonthViewProps>(
     if (prev.disableFuture !== next.disableFuture) return false;
     if (prev.showMonthHeader !== next.showMonthHeader) return false;
     if (prev.renderDay !== next.renderDay) return false;
+    if (prev.onDayPress !== next.onDayPress) return false;
     if (prev.cellHeight !== next.cellHeight) return false;
     
     // Only check markedDates for dates in this month
