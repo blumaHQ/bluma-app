@@ -14,7 +14,7 @@ export function useCycleCalculations({
   allPeriodDates,
   userCycleLength,
 }: UseCycleCalculationsProps) {
-  const calculateCycleDay = useCallback(
+  return useCallback(
     (date: string): number | null => {
       if (!firstPeriodDate || allPeriodDates.length === 0) return null;
 
@@ -62,6 +62,4 @@ export function useCycleCalculations({
     },
     [firstPeriodDate, allPeriodDates, userCycleLength]
   );
-
-  return { calculateCycleDay };
 }

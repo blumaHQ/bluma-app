@@ -152,43 +152,28 @@ export function useCalendarMarkedDates({
     ]
   );
 
-  // Generate marked dates with highlighting for a specific selected date
-  const getMarkedDatesWithSelection = useCallback(
-    (selectedDateParam: string) => {
-      // Create a copy of base marked dates and add selection indicator
-      const markedDatesWithSelection = { ...baseMarkedDates };
+  const getSelectionMarkedDates = useCallback(
+    (selectedDate: string) => {
+      if (!selectedDate) return baseMarkedDates;
 
-      // Add selection indicator to the selected date
-      if (selectedDateParam) {
-        markedDatesWithSelection[selectedDateParam] = {
-          ...markedDatesWithSelection[selectedDateParam],
+      return {
+        ...baseMarkedDates,
+        [selectedDate]: {
+          ...baseMarkedDates[selectedDate],
           selected: true,
-        };
-      }
-
-      return markedDatesWithSelection;
+        },
+      };
     },
     [baseMarkedDates]
   );
 
-  const getSelectionMarkedDates = useCallback(
-    (selectedDate: string) =>
-      selectedDate
-        ? getMarkedDatesWithSelection(selectedDate)
-        : baseMarkedDates,
-    [baseMarkedDates, getMarkedDatesWithSelection]
-  );
-
-  // Look up the semantic category (period/fertile/ovulation, past or future) for a date
   const getDayCategoryForDate = useCallback(
     (date: string) => baseMarkedDates[date]?.dayCategory,
     [baseMarkedDates]
   );
 
   return {
-    baseMarkedDates,
     generateMarkedDates,
-    getMarkedDatesWithSelection,
     getSelectionMarkedDates,
     getDayCategoryForDate,
   };

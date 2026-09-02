@@ -52,7 +52,7 @@ export default function CalendarScreen() {
     showFuturePeriods,
   });
 
-  const { calculateCycleDay } = useCycleCalculations({
+  const calculateCycleDay = useCycleCalculations({
     firstPeriodDate,
     allPeriodDates,
     userCycleLength,
@@ -64,73 +64,52 @@ export default function CalendarScreen() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
   const params = useLocalSearchParams();
 
-  // Load calendar view settings on mount
-  useEffect(() => {
-    async function loadCalendarSettings() {
-      const ovulationSetting = await getSetting('show_ovulation');
-      const futurePeriodsSetting = await getSetting('show_future_periods');
-
-      setShowOvulation(ovulationSetting !== 'false');
-      setShowFuturePeriods(futurePeriodsSetting !== 'false');
-    }
-
-    loadCalendarSettings();
+  const loadCalendarViewSettings = useCallback(async () => {
+    const ovulationSetting = await getSetting('show_ovulation');
+    const futurePeriodsSetting = await getSetting('show_future_periods');
+    setShowOvulation(ovulationSetting !== 'false');
+    setShowFuturePeriods(futurePeriodsSetting !== 'false');
   }, []);
 
-  // Listen for calendar settings changes
+  const refreshCalendar = useCallback(async () => {
+    const result = await loadData();
+    await generateMarkedDates(
+      result?.periodDates ?? [],
+      result?.mostRecentStart ?? null,
+      result?.periods ?? []
+    );
+  }, [loadData, generateMarkedDates]);
+
+  useEffect(() => {
+    loadCalendarViewSettings();
+  }, [loadCalendarViewSettings]);
+
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener(
       'calendarSettingsChanged',
       async () => {
-        const ovulationSetting = await getSetting('show_ovulation');
-        const futurePeriodsSetting = await getSetting('show_future_periods');
-
-        setShowOvulation(ovulationSetting !== 'false');
-        setShowFuturePeriods(futurePeriodsSetting !== 'false');
-
-        // Reload calendar data to apply new settings
-        const result = await loadData();
-        if (
-          result &&
-          result.periodDates &&
-          result.mostRecentStart &&
-          result.periods
-        ) {
-          await generateMarkedDates(
-            result.periodDates,
-            result.mostRecentStart,
-            result.periods
-          );
-        }
+        await loadCalendarViewSettings();
+        await refreshCalendar();
       }
     );
 
     return () => listener.remove();
-  }, [loadData, generateMarkedDates]);
+  }, [loadCalendarViewSettings, refreshCalendar]);
 
-  // Check if we should navigate to the period calendar screen from URL params
   useEffect(() => {
     if (params.openPeriodModal === 'true') {
       router.push('/edit-period');
     }
   }, [params.openPeriodModal]);
 
-  // Listen for data deletion events to refresh calendar
   useEffect(() => {
     const listener = DeviceEventEmitter.addListener('dataDeleted', async () => {
-      const result = await loadData();
-      // Always call generateMarkedDates, even with empty data to clear the calendar
-      await generateMarkedDates(
-        result?.periodDates || [],
-        result?.mostRecentStart || null,
-        result?.periods || []
-      );
-      const today = formatDateString(new Date());
-      setSelectedDate(today);
+      await refreshCalendar();
+      setSelectedDate(formatDateString(new Date()));
     });
 
     return () => listener.remove();
-  }, [loadData, generateMarkedDates]);
+  }, [refreshCalendar]);
 
   const selectionMarkedDates = useMemo(
     () => getSelectionMarkedDates(selectedDate),
@@ -147,27 +126,10 @@ export default function CalendarScreen() {
     [selectedDate, calculateCycleDay]
   );
 
-  // Reload data when tab is focused
   useFocusEffect(
     useCallback(() => {
-      const reloadData = async () => {
-        const result = await loadData();
-        if (
-          result &&
-          result.periodDates &&
-          result.mostRecentStart &&
-          result.periods
-        ) {
-          await generateMarkedDates(
-            result.periodDates,
-            result.mostRecentStart,
-            result.periods
-          );
-        }
-      };
-      reloadData();
-      return () => {};
-    }, [loadData, generateMarkedDates])
+      refreshCalendar();
+    }, [refreshCalendar])
   );
 
   const onDayPress = useCallback((dateString: string) => {
