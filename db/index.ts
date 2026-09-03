@@ -2,7 +2,15 @@ import * as SQLite from 'expo-sqlite';
 import { drizzle } from 'drizzle-orm/expo-sqlite';
 import { settings } from './schema';
 import { eq } from 'drizzle-orm';
-import * as FileSystem from 'expo-file-system';
+import {
+  DATABASE_NAME,
+  deleteDatabaseWithSidecars,
+  discardTemporaryDatabase,
+  encryptPlaintextDatabase,
+  finishInterruptedEncryption,
+  inspectDatabaseFile,
+  openEncryptedDatabase,
+} from './databaseFile';
 import { initializeEncryption, getEncryptionKeyHex, EncryptionError, ERROR_CODES } from '../services/databaseEncryptionService';
 
 const MIGRATION_TABLES = `
@@ -34,13 +42,32 @@ let expo: SQLite.SQLiteDatabase | null = null;
 let db: ReturnType<typeof drizzle> | null = null;
 let initializationPromise: Promise<void> | null = null;
 
-async function databaseFileExists(): Promise<boolean> {
-  if (!FileSystem.documentDirectory) {
-    return false;
+async function prepareDatabaseFile(
+  hexKey: string,
+  wasKeyJustCreated: boolean
+): Promise<void> {
+  const state = inspectDatabaseFile(DATABASE_NAME);
+
+  if (state === 'plaintext') {
+    // A plaintext database is readable without the key, so a freshly created key
+    // can still take ownership of it.
+    await encryptPlaintextDatabase(hexKey);
+    return;
   }
-  const dbPath = `${FileSystem.documentDirectory}SQLite/period.db`;
-  const fileInfo = await FileSystem.getInfoAsync(dbPath);
-  return fileInfo.exists;
+
+  if (state === 'missing' || state === 'empty') {
+    await finishInterruptedEncryption();
+    return;
+  }
+
+  if (wasKeyJustCreated) {
+    throw new EncryptionError(
+      ERROR_CODES.ORPHANED_DATABASE,
+      'Encryption key was lost but encrypted database still exists. Your data cannot be recovered.'
+    );
+  }
+
+  await discardTemporaryDatabase();
 }
 
 export async function deleteDatabaseFile(): Promise<void> {
@@ -51,7 +78,7 @@ export async function deleteDatabaseFile(): Promise<void> {
   expo = null;
   db = null;
   
-  await SQLite.deleteDatabaseAsync('period.db');
+  await deleteDatabaseWithSidecars(DATABASE_NAME);
 }
 
 export async function initializeDatabase(): Promise<void> {
@@ -67,28 +94,11 @@ export async function initializeDatabase(): Promise<void> {
   initializationPromise = (async () => {
     try {
       const { wasKeyJustCreated } = await initializeEncryption();
-      
-      // Check for orphaned database: key was just created but encrypted database exists
-      if (wasKeyJustCreated) {
-        const dbExists = await databaseFileExists();
-        if (dbExists) {
-          throw new EncryptionError(
-            ERROR_CODES.ORPHANED_DATABASE,
-            'Encryption key was lost but encrypted database still exists. Your data cannot be recovered.'
-          );
-        }
-      }
-      
       const hexKey = getEncryptionKeyHex();
-      
-      expo = await SQLite.openDatabaseAsync('period.db');
 
-      await expo.execAsync(`PRAGMA key = "x'${hexKey}'";`);
-      await expo.execAsync('PRAGMA cipher_page_size = 4096;');
-      await expo.execAsync('PRAGMA kdf_iter = 256000;');
+      await prepareDatabaseFile(hexKey, wasKeyJustCreated);
 
-      // Test DB access
-      await expo.getAllAsync('SELECT count(*) FROM sqlite_master;');
+      expo = await openEncryptedDatabase(DATABASE_NAME, hexKey);
       await expo.execAsync(MIGRATION_TABLES);
       
       db = drizzle(expo);

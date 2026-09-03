@@ -60,7 +60,7 @@ export default {
           color: "#4B61C7",
         },
       ],
-      "expo-sqlite",
+      ["expo-sqlite", { useSQLCipher: true }],
       "expo-font",
       "expo-localization",
     ],
