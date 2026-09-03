@@ -232,15 +232,37 @@ export async function encryptPlaintextDatabase(hexKey: string): Promise<void> {
   await swapInTemporaryDatabase();
 }
 
+// A temporary file that the active key cannot open is unrecoverable, so it is
+// left on disk rather than promoted or deleted.
+async function assertTemporaryDatabaseOpens(hexKey: string): Promise<void> {
+  let temporary: SQLite.SQLiteDatabase | null = null;
+  try {
+    temporary = await openEncryptedDatabase(TEMPORARY_DATABASE_NAME, hexKey);
+  } catch (error) {
+    if (error instanceof EncryptionError) {
+      throw error;
+    }
+    throw new EncryptionError(
+      ERROR_CODES.ORPHANED_DATABASE,
+      'An interrupted encryption left a database that the current key cannot open. Your data cannot be recovered.'
+    );
+  } finally {
+    await closeQuietly(temporary);
+  }
+}
+
 // The swap deletes the plaintext file before moving the encrypted copy in, so a
-// crash in that window leaves no main file. A temporary file only survives that
-// window once it has passed verification, which makes it safe to promote here.
-export async function finishInterruptedEncryption(): Promise<boolean> {
+// crash in that window leaves no main file. Promoting the temporary file
+// recovers from that, but only once the active key has been shown to open it.
+export async function finishInterruptedEncryption(
+  hexKey: string
+): Promise<boolean> {
   if (inspectDatabaseFile(TEMPORARY_DATABASE_NAME) !== 'encrypted') {
     await discardTemporaryDatabase();
     return false;
   }
 
+  await assertTemporaryDatabaseOpens(hexKey);
   await swapInTemporaryDatabase();
   return true;
 }

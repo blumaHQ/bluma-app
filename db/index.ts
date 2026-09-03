@@ -56,7 +56,7 @@ async function prepareDatabaseFile(
   }
 
   if (state === 'missing' || state === 'empty') {
-    await finishInterruptedEncryption();
+    await finishInterruptedEncryption(hexKey);
     return;
   }
 
