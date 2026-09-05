@@ -45,7 +45,7 @@ export function ErrorScreen({ errorKey, onRetry, onReset }: ErrorScreenProps) {
     buttonPrimary: {
       paddingHorizontal: 24,
       paddingVertical: 12,
-      backgroundColor: colors.primary,
+      backgroundColor: colors.buttonPrimary,
       borderRadius: 8,
       alignItems: 'center',
     },

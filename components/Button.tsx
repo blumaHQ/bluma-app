@@ -32,7 +32,10 @@ export function Button({
   const { colors } = useTheme();
   const { typography } = useAppStyles();
 
-  const resolvedColor = color ?? colors.primary;
+  // The filled (primary) button uses its own token; text/outlined buttons
+  // stay on the brand colour so they read like the app's links.
+  const resolvedColor =
+    color ?? (variant === 'contained' ? colors.buttonPrimary : colors.primary);
 
   const buttonStyle = useMemo(() => {
     switch (variant) {

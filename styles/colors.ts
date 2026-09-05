@@ -13,6 +13,7 @@ export interface ColorScheme {
   // primary / main brand colors
   primary: string;
   primaryLight: string;
+  buttonPrimary: string; // filled (primary) button background
   accentPink: string;
   accentPinkLight: string;
   accentBlue: string;
@@ -70,8 +71,9 @@ export const lightColors: ColorScheme = {
   border: '#EFEFF6', // borders / dividers
 
   // primary / main brand colors
-  primary: '#4B61C7', // main action (primary buttons, text buttons, links, active tabs
+  primary: '#4B61C7', // main action (text buttons, links, active tabs)
   primaryLight: '#D6E8FE',
+  buttonPrimary: '#2E7D32', // filled (primary) button background, 5.1:1 with white label
   accentPink: '#FB3192', // Pink for period day highlights
   accentPinkLight: '#FFE8F3', // Lighter pink for backgrounds
   accentBlue: '#4B61C7', // For fertile days indicator
@@ -131,6 +133,7 @@ export const darkColors: ColorScheme = {
   // primary / main brand colors (keep brand consistent but adjust for contrast)
   primary: '#5F7AF4', // slightly lighter for better contrast on dark
   primaryLight: '#26253E', // dark version of light accent
+  buttonPrimary: '#2A8049', // filled (primary) button background, 4.9:1 with white label
   accentPink: '#FF4DA6', // slightly lighter pink for dark mode
   accentPinkLight: '#FFDEEE', // dark version of light pink background
   accentBlue: '#75AAFF', // For fertile days indicator
