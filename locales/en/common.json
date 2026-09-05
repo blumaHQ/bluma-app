@@ -11,7 +11,11 @@
     "database": {
       "title": "Unable to Start App",
       "generic": "We encountered an issue starting the app. Please try restarting.",
-      "orphaned": "Your encryption key was lost, but your encrypted database still exists. Your previous data cannot be recovered and must be reset to continue using the app."
+      "orphaned": "Your encryption key was lost, but your encrypted database still exists. Your previous data cannot be recovered and must be reset to continue using the app.",
+      "keyMismatch": "Your data is on this device, but the encryption key here doesn't match it, so it can't be opened. This usually happens after restoring from a backup. Trying again won't help. Resetting lets you start over, but your previous data will be erased.",
+      "keyUnavailable": "We couldn't reach the encryption key for your data. Your information is still on this device and hasn't been changed. Please try again. If it keeps failing, the key may be gone for good — resetting would then be the only way to continue, and it would erase your data.",
+      "cipherUnavailable": "This version of the app can't set up encryption, so your data has been left exactly as it was. Nothing has been lost. Please try again, and update Bluma if an update is available.",
+      "migrationFailed": "We couldn't finish protecting your data this time. Nothing has been lost. Check that your phone has some free storage space, then try again."
     }
   },
   "resetData": {

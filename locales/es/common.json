@@ -11,7 +11,11 @@
     "database": {
       "title": "No se puede iniciar la aplicación",
       "generic": "Encontramos un problema al iniciar la aplicación. Por favor, intenta reiniciar.",
-      "orphaned": "Tu clave de cifrado se perdió, pero tu base de datos cifrada todavía existe. Tus datos anteriores no se pueden recuperar y deben restablecerse para continuar usando la aplicación."
+      "orphaned": "Tu clave de cifrado se perdió, pero tu base de datos cifrada todavía existe. Tus datos anteriores no se pueden recuperar y deben restablecerse para continuar usando la aplicación.",
+      "keyMismatch": "Tus datos están en este dispositivo, pero la clave de cifrado que hay aquí no coincide con ellos, así que no se pueden abrir. Esto suele ocurrir después de restaurar desde una copia de seguridad. Volver a intentarlo no ayudará. Restablecer te permite empezar de nuevo, pero tus datos anteriores se borrarán.",
+      "keyUnavailable": "No pudimos acceder a la clave de cifrado de tus datos. Tu información sigue en este dispositivo y no ha cambiado. Por favor, inténtalo de nuevo. Si sigue fallando, es posible que la clave se haya perdido definitivamente; entonces restablecer sería la única forma de continuar, y borraría tus datos.",
+      "cipherUnavailable": "Esta versión de la aplicación no puede configurar el cifrado, así que tus datos se han dejado exactamente como estaban. No se ha perdido nada. Por favor, inténtalo de nuevo y actualiza Bluma si hay una actualización disponible.",
+      "migrationFailed": "No pudimos terminar de proteger tus datos esta vez. No se ha perdido nada. Comprueba que tu teléfono tenga algo de espacio libre y vuelve a intentarlo."
     }
   },
   "resetData": {

@@ -58,9 +58,9 @@ reviews:
         - New NOT NULL columns without a default value are breaking for existing rows — require a default or a migration that backfills.
         - Prefer additive migrations (add column/table) over destructive ones.
 
-        IMPORTANT: App has no production users yet. Plaintext-to-encrypted DB migration
-        is NOT required - users will uninstall/reinstall during development.
-        Do not flag missing plaintext upgrade handling.
+        IMPORTANT: The app has Play Store users. Changes to how the database is
+        opened or keyed must preserve on-device data - flag anything that could
+        make an existing database unreadable or drop rows during an upgrade.
 
     - path: "android/**"
       instructions: |

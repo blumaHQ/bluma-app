@@ -11,7 +11,11 @@
     "database": {
       "title": "Não foi possível iniciar o app",
       "generic": "Encontramos um problema ao iniciar o app. Por favor, tente reiniciar.",
-      "orphaned": "Sua chave de criptografia foi perdida, mas seu banco de dados criptografado ainda existe. Seus dados anteriores não podem ser recuperados e precisam ser redefinidos para continuar usando o app."
+      "orphaned": "Sua chave de criptografia foi perdida, mas seu banco de dados criptografado ainda existe. Seus dados anteriores não podem ser recuperados e precisam ser redefinidos para continuar usando o app.",
+      "keyMismatch": "Seus dados estão neste dispositivo, mas a chave de criptografia daqui não corresponde a eles, então não é possível abri-los. Isso costuma acontecer depois de restaurar a partir de um backup. Tentar de novo não vai ajudar. Redefinir permite começar do zero, mas seus dados anteriores serão apagados.",
+      "keyUnavailable": "Não conseguimos acessar a chave de criptografia dos seus dados. Suas informações continuam neste dispositivo e não foram alteradas. Por favor, tente novamente. Se continuar falhando, a chave pode ter sido perdida definitivamente; nesse caso, redefinir seria a única forma de continuar, e isso apagaria seus dados.",
+      "cipherUnavailable": "Esta versão do app não consegue configurar a criptografia, então seus dados foram mantidos exatamente como estavam. Nada foi perdido. Por favor, tente novamente e atualize o Bluma se houver uma atualização disponível.",
+      "migrationFailed": "Não conseguimos terminar de proteger seus dados desta vez. Nada foi perdido. Verifique se o seu telefone tem algum espaço livre e tente novamente."
     }
   },
   "resetData": {

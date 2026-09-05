@@ -25,12 +25,14 @@ export const ERROR_CODES = {
   KEY_CORRUPTED: 'KEY_CORRUPTED',
   UNINITIALIZED_ENCRYPTION: 'UNINITIALIZED_ENCRYPTION',
   ORPHANED_DATABASE: 'ORPHANED_DATABASE',
+  KEY_MISMATCH: 'KEY_MISMATCH',
+  CIPHER_UNAVAILABLE: 'CIPHER_UNAVAILABLE',
+  MIGRATION_FAILED: 'MIGRATION_FAILED',
 } as const;
 
 let keyCache: string | null = null;
 let initializationPromise: Promise<void> | null = null;
 let keyRewrappingPromise: Promise<void> | null = null;
-let wasKeyCreatedDuringInit = false;
 
 
 function generateRandomKeyHex(): string {
@@ -103,25 +105,40 @@ async function loadExistingKey(): Promise<string> {
   return keyHex;
 }
 
-export async function initializeEncryption(): Promise<{ wasKeyJustCreated: boolean }> {
+interface InitializeEncryptionOptions {
+  /**
+   * Whether a key that cannot be read may be replaced with a new one. Must be
+   * false whenever a file the missing key could be protecting is still on disk:
+   * a null read from SecureStore is not always permanent (Keystore can be
+   * briefly unavailable, and a lock-screen change or a device restore can
+   * produce one), and `createNewKey` overwrites the entry it failed to read, so
+   * minting on a transient failure destroys the only key to the user's data.
+   */
+  allowKeyCreation: boolean;
+}
+
+export async function initializeEncryption({
+  allowKeyCreation,
+}: InitializeEncryptionOptions): Promise<void> {
   if (keyCache) {
-    return { wasKeyJustCreated: false };
+    return;
   }
 
   if (initializationPromise) {
     await initializationPromise;
-    return { wasKeyJustCreated: wasKeyCreatedDuringInit };
+    return;
   }
-
-  wasKeyCreatedDuringInit = false;
 
   initializationPromise = (async () => {
     try {
       keyCache = await loadExistingKey();
     } catch (error) {
-      if (error instanceof EncryptionError && error.code === ERROR_CODES.KEY_NOT_FOUND) {
+      if (
+        error instanceof EncryptionError &&
+        error.code === ERROR_CODES.KEY_NOT_FOUND &&
+        allowKeyCreation
+      ) {
         keyCache = await createNewKey();
-        wasKeyCreatedDuringInit = true;
       } else {
         if (error instanceof EncryptionError) throw error;
         if (isAuthenticationError(error)) {
@@ -138,7 +155,6 @@ export async function initializeEncryption(): Promise<{ wasKeyJustCreated: boole
   })();
 
   await initializationPromise;
-  return { wasKeyJustCreated: wasKeyCreatedDuringInit };
 }
 
 export async function getKeyRequiresAuth(): Promise<boolean> {
@@ -243,6 +259,5 @@ export async function deleteEncryptionKey(): Promise<void> {
     keyCache = null;
     initializationPromise = null;
     keyRewrappingPromise = null;
-    wasKeyCreatedDuringInit = false;
   }
 }
