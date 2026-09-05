@@ -19,6 +19,48 @@ import {
   createReadyState,
 } from '../types/appState';
 
+// What the user is told, and whether they are offered a wipe, for each way
+// database setup can fail. `canReset: false` marks the failures that leave the
+// data intact and clear up on their own, where a wipe would destroy good data.
+const DATABASE_ERROR_STATES: Partial<
+  Record<keyof typeof ERROR_CODES, { messageKey: string; canReset: boolean }>
+> = {
+  ORPHANED_DATABASE: {
+    messageKey: 'errors.database.orphaned',
+    canReset: true,
+  },
+  KEY_MISMATCH: {
+    messageKey: 'errors.database.keyMismatch',
+    canReset: true,
+  },
+  KEY_NOT_FOUND: {
+    messageKey: 'errors.database.keyUnavailable',
+    canReset: true,
+  },
+  CIPHER_UNAVAILABLE: {
+    messageKey: 'errors.database.cipherUnavailable',
+    canReset: false,
+  },
+  MIGRATION_FAILED: {
+    messageKey: 'errors.database.migrationFailed',
+    canReset: false,
+  },
+};
+
+function createDatabaseErrorState(error: unknown): AppState {
+  const mapped =
+    error instanceof EncryptionError
+      ? DATABASE_ERROR_STATES[error.code]
+      : undefined;
+
+  // Technical details are logged, never shown.
+  console.error('[AppInitialization] Database initialization error:', error);
+
+  return mapped
+    ? createErrorState(mapped.messageKey, mapped.canReset)
+    : createErrorState('errors.database.generic');
+}
+
 /**
  * Manages app initialization flow: database setup → onboarding check → navigation.
  * Handles authentication, background locking, and error recovery.
@@ -74,19 +116,8 @@ export function useAppInitialization() {
         } finally {
           setAppState(createLockedState('auth_cancelled'));
         }
-      } else if (
-        error instanceof EncryptionError &&
-        error.code === ERROR_CODES.ORPHANED_DATABASE
-      ) {
-        // Specific error for when encryption key is lost but encrypted database exists
-        console.error('[AppInitialization] Orphaned database detected:', error);
-        setAppState(createErrorState('errors.database.orphaned'));
       } else {
-        // Log technical details for debugging (not shown to users)
-        console.error('[AppInitialization] Database initialization error:', error);
-        
-        // Always show generic user-friendly message
-        setAppState(createErrorState('errors.database.generic'));
+        setAppState(createDatabaseErrorState(error));
       }
     } finally {
       setupInProgress.current = false;
@@ -129,9 +160,8 @@ export function useAppInitialization() {
         unlockTriggered.current = false;
         return;
       }
-      console.error('[AppInit] Background unlock failed:', error);
       previousReadyState.current = null;
-      setAppState(createErrorState('errors.database.generic'));
+      setAppState(createDatabaseErrorState(error));
     } finally {
       unlockInProgress.current = false;
     }

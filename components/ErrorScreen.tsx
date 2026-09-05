@@ -8,7 +8,9 @@ interface ErrorScreenProps {
   /** i18n translation key for the primary error message */
   errorKey: string;
   onRetry: () => void;
-  onReset: () => void;
+  /** Omitted when the failure left the user's data intact, so that a recoverable
+   *  error never puts a destructive action in front of them. */
+  onReset?: () => void;
 }
 
 export function ErrorScreen({ errorKey, onRetry, onReset }: ErrorScreenProps) {
@@ -83,14 +85,16 @@ export function ErrorScreen({ errorKey, onRetry, onReset }: ErrorScreenProps) {
         >
           <Text style={styles.buttonTextPrimary}>{t('buttons.continue')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonSecondary}
-          onPress={onReset}
-          accessibilityRole="button"
-          accessibilityLabel={t('buttons.resetAllData')}
-        >
-          <Text style={styles.buttonTextSecondary}>{t('buttons.resetAllData')}</Text>
-        </TouchableOpacity>
+        {onReset && (
+          <TouchableOpacity
+            style={styles.buttonSecondary}
+            onPress={onReset}
+            accessibilityRole="button"
+            accessibilityLabel={t('buttons.resetAllData')}
+          >
+            <Text style={styles.buttonTextSecondary}>{t('buttons.resetAllData')}</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

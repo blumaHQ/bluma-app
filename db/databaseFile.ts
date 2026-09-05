@@ -14,6 +14,12 @@ const HEX_KEY_PATTERN = /^[0-9a-f]{64}$/i;
 const CIPHER_PAGE_SIZE = 4096;
 const KDF_ITERATIONS = 256000;
 
+// expo-sqlite surfaces SQLite result codes only in the exception message.
+// SQLCipher raises SQLITE_NOTADB when the key does not decrypt the header,
+// which is the one failure that genuinely means "wrong key" rather than
+// "could not read the file right now".
+const KEY_MISMATCH_PATTERN = /not a database|SQLITE_NOTADB/i;
+
 export type DatabaseFileState = 'missing' | 'empty' | 'plaintext' | 'encrypted';
 
 // `defaultDatabaseDirectory` is a bare filesystem path on both platforms
@@ -54,9 +60,19 @@ export function inspectDatabaseFile(name: string): DatabaseFileState {
   }
 }
 
+// Whether any file on disk could be holding data that only the stored key opens.
+// The temporary file counts: an interrupted encryption can leave the sole copy
+// of the user's data there.
+export function hasEncryptedDatabaseOnDisk(): boolean {
+  return (
+    inspectDatabaseFile(DATABASE_NAME) === 'encrypted' ||
+    inspectDatabaseFile(TEMPORARY_DATABASE_NAME) === 'encrypted'
+  );
+}
+
 // `SQLite.deleteDatabaseAsync` removes only the main file on both platforms. A
 // leftover hot journal would be rolled back into whichever file takes its place.
-export async function deleteDatabaseWithSidecars(name: string): Promise<void> {
+async function deleteDatabaseWithSidecars(name: string): Promise<void> {
   for (const suffix of SIDECAR_SUFFIXES) {
     const sidecar = databaseFile(`${name}${suffix}`);
     if (sidecar.exists) {
@@ -76,6 +92,11 @@ function assertValidHexKey(hexKey: string): void {
       'Encryption key is not a 64-character hexadecimal string.'
     );
   }
+}
+
+function isKeyMismatch(error: unknown): boolean {
+  const detail = error instanceof Error ? error.message : String(error);
+  return KEY_MISMATCH_PATTERN.test(detail);
 }
 
 async function assertCipherAvailable(
@@ -104,7 +125,7 @@ async function closeQuietly(
   }
 }
 
-export async function openEncryptedDatabase(
+async function openEncryptedDatabase(
   name: string,
   hexKey: string
 ): Promise<SQLite.SQLiteDatabase> {
@@ -120,6 +141,25 @@ export async function openEncryptedDatabase(
     return database;
   } catch (error) {
     await closeQuietly(database);
+    throw error;
+  }
+}
+
+// The user's own database, as opposed to the working copies the migration makes.
+// A key that cannot open it is a distinct situation from one that cannot be read
+// at all, and restarting does not fix it, so it gets its own code.
+export async function openMainDatabase(
+  hexKey: string
+): Promise<SQLite.SQLiteDatabase> {
+  try {
+    return await openEncryptedDatabase(DATABASE_NAME, hexKey);
+  } catch (error) {
+    if (!(error instanceof EncryptionError) && isKeyMismatch(error)) {
+      throw new EncryptionError(
+        ERROR_CODES.KEY_MISMATCH,
+        'The stored encryption key does not decrypt the database.'
+      );
+    }
     throw error;
   }
 }
@@ -223,6 +263,14 @@ export async function discardTemporaryDatabase(): Promise<void> {
   await deleteDatabaseWithSidecars(TEMPORARY_DATABASE_NAME);
 }
 
+// Both files have to go together. A temporary file left behind by a reset is
+// read as an interrupted encryption on the next launch, and the freshly created
+// key cannot open it, which locks the user out of an app they just wiped.
+export async function deleteAllDatabaseFiles(): Promise<void> {
+  await deleteDatabaseWithSidecars(DATABASE_NAME);
+  await discardTemporaryDatabase();
+}
+
 export async function encryptPlaintextDatabase(hexKey: string): Promise<void> {
   assertValidHexKey(hexKey);
   await discardTemporaryDatabase();
@@ -232,8 +280,10 @@ export async function encryptPlaintextDatabase(hexKey: string): Promise<void> {
   await swapInTemporaryDatabase();
 }
 
-// A temporary file that the active key cannot open is unrecoverable, so it is
-// left on disk rather than promoted or deleted.
+// A temporary file that the active key genuinely cannot decrypt is unrecoverable,
+// so it is left on disk rather than promoted or deleted. Every other failure —
+// a busy, full or unreadable file — costs the user nothing and is retryable, so
+// it must not be reported as lost data.
 async function assertTemporaryDatabaseOpens(hexKey: string): Promise<void> {
   let temporary: SQLite.SQLiteDatabase | null = null;
   try {
@@ -242,10 +292,13 @@ async function assertTemporaryDatabaseOpens(hexKey: string): Promise<void> {
     if (error instanceof EncryptionError) {
       throw error;
     }
-    throw new EncryptionError(
-      ERROR_CODES.ORPHANED_DATABASE,
-      'An interrupted encryption left a database that the current key cannot open. Your data cannot be recovered.'
-    );
+    if (isKeyMismatch(error)) {
+      throw new EncryptionError(
+        ERROR_CODES.ORPHANED_DATABASE,
+        'An interrupted encryption left a database that the current key cannot open. Your data cannot be recovered.'
+      );
+    }
+    throw migrationFailed(error);
   } finally {
     await closeQuietly(temporary);
   }
@@ -256,13 +309,12 @@ async function assertTemporaryDatabaseOpens(hexKey: string): Promise<void> {
 // recovers from that, but only once the active key has been shown to open it.
 export async function finishInterruptedEncryption(
   hexKey: string
-): Promise<boolean> {
+): Promise<void> {
   if (inspectDatabaseFile(TEMPORARY_DATABASE_NAME) !== 'encrypted') {
     await discardTemporaryDatabase();
-    return false;
+    return;
   }
 
   await assertTemporaryDatabaseOpens(hexKey);
   await swapInTemporaryDatabase();
-  return true;
 }

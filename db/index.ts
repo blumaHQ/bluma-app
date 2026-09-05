@@ -4,14 +4,15 @@ import { settings } from './schema';
 import { eq } from 'drizzle-orm';
 import {
   DATABASE_NAME,
-  deleteDatabaseWithSidecars,
+  deleteAllDatabaseFiles,
   discardTemporaryDatabase,
   encryptPlaintextDatabase,
   finishInterruptedEncryption,
+  hasEncryptedDatabaseOnDisk,
   inspectDatabaseFile,
-  openEncryptedDatabase,
+  openMainDatabase,
 } from './databaseFile';
-import { initializeEncryption, getEncryptionKeyHex, EncryptionError, ERROR_CODES } from '../services/databaseEncryptionService';
+import { initializeEncryption, getEncryptionKeyHex } from '../services/databaseEncryptionService';
 
 const MIGRATION_TABLES = `
 CREATE TABLE IF NOT EXISTS period_dates (
@@ -42,10 +43,7 @@ let expo: SQLite.SQLiteDatabase | null = null;
 let db: ReturnType<typeof drizzle> | null = null;
 let initializationPromise: Promise<void> | null = null;
 
-async function prepareDatabaseFile(
-  hexKey: string,
-  wasKeyJustCreated: boolean
-): Promise<void> {
+async function prepareDatabaseFile(hexKey: string): Promise<void> {
   const state = inspectDatabaseFile(DATABASE_NAME);
 
   if (state === 'plaintext') {
@@ -60,13 +58,6 @@ async function prepareDatabaseFile(
     return;
   }
 
-  if (wasKeyJustCreated) {
-    throw new EncryptionError(
-      ERROR_CODES.ORPHANED_DATABASE,
-      'Encryption key was lost but encrypted database still exists. Your data cannot be recovered.'
-    );
-  }
-
   await discardTemporaryDatabase();
 }
 
@@ -78,7 +69,7 @@ export async function deleteDatabaseFile(): Promise<void> {
   expo = null;
   db = null;
   
-  await deleteDatabaseWithSidecars(DATABASE_NAME);
+  await deleteAllDatabaseFiles();
 }
 
 export async function initializeDatabase(): Promise<void> {
@@ -93,12 +84,16 @@ export async function initializeDatabase(): Promise<void> {
 
   initializationPromise = (async () => {
     try {
-      const { wasKeyJustCreated } = await initializeEncryption();
+      // The key has to be resolved against what is already on disk: replacing a
+      // key that only failed to read would strand the data it was protecting.
+      await initializeEncryption({
+        allowKeyCreation: !hasEncryptedDatabaseOnDisk(),
+      });
       const hexKey = getEncryptionKeyHex();
 
-      await prepareDatabaseFile(hexKey, wasKeyJustCreated);
+      await prepareDatabaseFile(hexKey);
 
-      expo = await openEncryptedDatabase(DATABASE_NAME, hexKey);
+      expo = await openMainDatabase(hexKey);
       await expo.execAsync(MIGRATION_TABLES);
       
       db = drizzle(expo);
