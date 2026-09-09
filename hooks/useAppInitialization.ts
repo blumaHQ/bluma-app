@@ -22,6 +22,10 @@ import {
 // What the user is told, and whether they are offered a wipe, for each way
 // database setup can fail. `canReset: false` marks the failures that leave the
 // data intact and clear up on their own, where a wipe would destroy good data.
+// Anything not listed falls through to the generic state below, which keeps the
+// reset available: that branch still catches unrecoverable failures such as a
+// corrupt database file, and the error screen replaces the whole app, so it is
+// the only way out. Its copy frames the reset as a last resort instead.
 const DATABASE_ERROR_STATES: Partial<
   Record<keyof typeof ERROR_CODES, { messageKey: string; canReset: boolean }>
 > = {
@@ -35,6 +39,10 @@ const DATABASE_ERROR_STATES: Partial<
   },
   KEY_NOT_FOUND: {
     messageKey: 'errors.database.keyUnavailable',
+    canReset: true,
+  },
+  KEY_CORRUPTED: {
+    messageKey: 'errors.database.keyCorrupted',
     canReset: true,
   },
   CIPHER_UNAVAILABLE: {
