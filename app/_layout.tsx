@@ -65,7 +65,7 @@ function AppContent() {
       <ErrorScreen
         errorKey={appState.error}
         onRetry={retryInitialization}
-        onReset={resetAllLocalData}
+        onReset={appState.canReset ? resetAllLocalData : undefined}
       />
     );
   }

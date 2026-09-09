@@ -28,6 +28,11 @@ export default {
     },
     android: {
       versionCode: 14,
+      // The SQLite database is encrypted with a key wrapped by a hardware-bound,
+      // non-exportable Keystore key, so it cannot travel with an Android Auto
+      // Backup. Restoring one would hand the user a database no key can open.
+      // It also keeps a health database from being uploaded to a third party.
+      allowBackup: false,
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#FFFFFF",
@@ -60,7 +65,7 @@ export default {
           color: "#4B61C7",
         },
       ],
-      "expo-sqlite",
+      ["expo-sqlite", { useSQLCipher: true }],
       "expo-font",
       "expo-localization",
     ],
