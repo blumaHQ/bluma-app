@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
-import { QuickHealthSelector } from './QuickHealthSelector';
+import { HealthLogPreview } from './HealthLogPreview';
 import { formatDateString } from '../types/calendarTypes';
 import { CalendarDayCategory } from '../utils/calendarStyles';
 import { useTheme } from '../styles/theme';
@@ -30,47 +30,43 @@ export function CycleDetails({
   const selectedDateFormatted = selectedDate
     ? formatDateShort(selectedDate)
     : '';
-
-  const isDateInPastOrToday = () => {
-    const today = formatDateString(new Date());
-    return selectedDate <= today;
-  };
+  const today = formatDateString(new Date());
+  const isDateInPastOrToday = selectedDate <= today;
 
   return (
     <>
-      <View>
-        <View style={styles.headerRow}>
-          <View style={styles.titleContainer}>
-            <Text
-              style={[
-                typography.headingMd,
-                { fontSize: 23, fontWeight: 'bold', marginBottom: 6 },
-              ]}
-            >
-              {selectedDateFormatted}
-              {cycleDay ? ` • ${t('cycleDetails.cycleDay', { number: cycleDay })}` : ''}
+      <View style={styles.headerRow}>
+        <View style={styles.titleContainer}>
+          <Text
+            style={[
+              typography.headingMd,
+              { fontSize: 23, fontWeight: 'bold', marginBottom: 6 },
+            ]}
+          >
+            {selectedDateFormatted}
+            {cycleDay ? ` • ${t('cycleDetails.cycleDay', { number: cycleDay })}` : ''}
+          </Text>
+          {dayCategory && (
+            <Text style={[typography.body, { color: colors.textSecondary }]}>
+              {tCalendar(`dayInfo.${dayCategory}`)}
             </Text>
-            {dayCategory && (
-              <Text style={[typography.body, { color: colors.textSecondary }]}>
-                {tCalendar(`dayInfo.${dayCategory}`)}
-              </Text>
-            )}
-          </View>
-          {onClose && (
-            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-              <Ionicons name="close" size={28} color={colors.textSecondary} />
-            </TouchableOpacity>
           )}
         </View>
+        {onClose && (
+          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+            <Ionicons name="close" size={28} color={colors.textSecondary} />
+          </TouchableOpacity>
+        )}
       </View>
 
-      {isDateInPastOrToday() && (
+      {isDateInPastOrToday && (
         <>
           <Text style={[typography.headingMd, { fontSize: 20, fontWeight: '500', marginBottom: 12, marginTop: 16, }]}>
-            {tHealth('quickHealthSelector.title')}
+            {tHealth('healthLogPreview.title')}
           </Text>
-          <QuickHealthSelector
+          <HealthLogPreview
             selectedDate={selectedDate}
+            isInSheet
           />
         </>
       )}
@@ -79,7 +75,6 @@ export function CycleDetails({
 }
 
 const styles = StyleSheet.create({
-
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -93,5 +88,3 @@ const styles = StyleSheet.create({
     marginTop: -9,
   },
 });
-
-export default CycleDetails;

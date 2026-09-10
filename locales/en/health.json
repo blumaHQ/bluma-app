@@ -94,7 +94,7 @@
     "successMessage": "Health data saved",
     "errorMessage": "Error. Please try again."
   },
-  "quickHealthSelector": {
+  "healthLogPreview": {
     "title": "How do you feel today?",
     "add": "Add",
     "note": "Note",

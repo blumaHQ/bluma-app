@@ -4,7 +4,7 @@ import { useLocalSearchParams, router, useFocusEffect } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { CycleOverviewWidget } from '../../components/CycleOverviewWidget';
 import { CycleInsights } from '../../components/CycleInsights';
-import { QuickHealthSelector } from '../../components/QuickHealthSelector';
+import { HealthLogPreview } from '../../components/HealthLogPreview';
 import { getDB, getSetting } from '../../db';
 import { PeriodDate, periodDates } from '../../db/schema';
 import { PeriodPredictionService } from '../../services/periodPredictions';
@@ -194,9 +194,9 @@ export default function Index() {
 
       <View style={[commonStyles.sectionContainer]}>
         <Text style={[typography.headingMd, { marginBottom: 16 }]}>
-          {t('quickHealthSelector.title')}
+          {t('healthLogPreview.title')}
         </Text>
-        <QuickHealthSelector />
+        <HealthLogPreview />
       </View>
 
       <View />
