@@ -4,9 +4,8 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
-  TextStyle,
 } from 'react-native';
+import { Gesture, GestureDetector, ScrollView } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 import { router, useFocusEffect } from 'expo-router';
 import { getDB, getSetting } from '../db';
@@ -53,7 +52,7 @@ const getDisplayText = (
 ) => {
   const { type, item_id } = log;
 
-  if (type === 'notes') return t('quickHealthSelector.note');
+  if (type === 'notes') return t('healthLogPreview.note');
 
   if (type === 'temperature') {
     const celsius = parseFloat(log.name || '');
@@ -119,20 +118,31 @@ const HealthLogItem = memo(
 
 HealthLogItem.displayName = 'HealthLogItem';
 
-type QuickHealthSelectorProps = {
+const healthTrackingHref = (selectedDate?: string) =>
+  selectedDate ? `/health-tracking?date=${selectedDate}` : '/health-tracking';
+
+type HealthLogPreviewProps = {
   selectedDate?: string;
-  titleStyle?: TextStyle;
-  showEmptyStateText?: boolean;
+  isInSheet?: boolean;
 };
 
-export const QuickHealthSelector = ({
+export const HealthLogPreview = ({
   selectedDate,
-  titleStyle,
-  showEmptyStateText = true,
-}: QuickHealthSelectorProps) => {
+  isInSheet = false,
+}: HealthLogPreviewProps) => {
   const { colors } = useTheme();
   const { typography } = useAppStyles();
   const { t } = useTranslation('health');
+  const stripNativeGesture = useMemo(() => {
+    if (!isInSheet) {
+      return null;
+    }
+
+    return Gesture.Native()
+      .shouldActivateOnStart(true)
+      .disallowInterruption(true)
+      .cancelsTouchesInView(false);
+  }, [isInSheet]);
   const [healthLogsForDate, setHealthLogsForDate] = useState<any[]>([]);
   const [tempUnit, setTempUnit] = useState<'C' | 'F'>('C');
 
@@ -165,61 +175,47 @@ export const QuickHealthSelector = ({
     return (
       <TouchableOpacity
         style={styles.container}
-        onPress={() =>
-          router.push(
-            selectedDate
-              ? `/health-tracking?date=${selectedDate}`
-              : '/health-tracking'
-          )
-        }
+        onPress={() => router.push(healthTrackingHref(selectedDate))}
         activeOpacity={0.7}
       >
         <View pointerEvents="none">
           <FAB
             onPress={() => {}}
             containerStyle={styles.fabContainer}
-            label={t('quickHealthSelector.add')}
+            label={t('healthLogPreview.add')}
           />
         </View>
-        {showEmptyStateText && (
-          <Text
-            style={[
-              typography.caption,
-              {
-                color: colors.textSecondary,
-                fontSize: 15,
-                flex: 1,
-                alignSelf: 'center',
-              },
-            ]}
-          >
-            {selectedDate && selectedDate !== dayjs().format('YYYY-MM-DD')
-              ? t('quickHealthSelector.noSymptomsThisDate')
-              : t('quickHealthSelector.noSymptomsToday')}
-          </Text>
-        )}
+        <Text
+          style={[
+            typography.caption,
+            {
+              color: colors.textSecondary,
+              fontSize: 15,
+              flex: 1,
+              alignSelf: 'center',
+            },
+          ]}
+        >
+          {selectedDate && selectedDate !== dayjs().format('YYYY-MM-DD')
+            ? t('healthLogPreview.noSymptomsThisDate')
+            : t('healthLogPreview.noSymptomsToday')}
+        </Text>
       </TouchableOpacity>
     );
   }
 
-  return (
-    <View style={styles.container}>
-      {/* Fixed FAB - always visible */}
+  const strip = (
+    <View style={styles.container} collapsable={false}>
       <FAB
-        onPress={() =>
-          router.push(
-            selectedDate
-              ? `/health-tracking?date=${selectedDate}`
-              : '/health-tracking'
-          )
-        }
+        onPress={() => router.push(healthTrackingHref(selectedDate))}
         containerStyle={styles.fabContainer}
-        label={t('quickHealthSelector.add')}
+        label={t('healthLogPreview.add')}
       />
 
-      {/* Scrollable content */}
       <ScrollView
         horizontal
+        nestedScrollEnabled
+        directionalLockEnabled
         showsHorizontalScrollIndicator={false}
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
@@ -236,6 +232,14 @@ export const QuickHealthSelector = ({
         ))}
       </ScrollView>
     </View>
+  );
+
+  if (!stripNativeGesture) {
+    return strip;
+  }
+
+  return (
+    <GestureDetector gesture={stripNativeGesture}>{strip}</GestureDetector>
   );
 };
 
@@ -268,5 +272,3 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 });
-
-export default QuickHealthSelector;

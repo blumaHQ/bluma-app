@@ -94,7 +94,7 @@
     "successMessage": "Dados de saúde salvos",
     "errorMessage": "Erro. Por favor, tente novamente."
   },
-  "quickHealthSelector": {
+  "healthLogPreview": {
     "title": "Como você se sente hoje?",
     "add": "Adicionar",
     "note": "Nota",
