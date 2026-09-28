@@ -30,43 +30,47 @@ export function CycleDetails({
   const selectedDateFormatted = selectedDate
     ? formatDateShort(selectedDate)
     : '';
-  const today = formatDateString(new Date());
-  const isDateInPastOrToday = selectedDate <= today;
+
+  const isDateInPastOrToday = () => {
+    const today = formatDateString(new Date());
+    return selectedDate <= today;
+  };
 
   return (
     <>
-      <View style={styles.headerRow}>
-        <View style={styles.titleContainer}>
-          <Text
-            style={[
-              typography.headingMd,
-              { fontSize: 23, fontWeight: 'bold', marginBottom: 6 },
-            ]}
-          >
-            {selectedDateFormatted}
-            {cycleDay ? ` • ${t('cycleDetails.cycleDay', { number: cycleDay })}` : ''}
-          </Text>
-          {dayCategory && (
-            <Text style={[typography.body, { color: colors.textSecondary }]}>
-              {tCalendar(`dayInfo.${dayCategory}`)}
+      <View>
+        <View style={styles.headerRow}>
+          <View style={styles.titleContainer}>
+            <Text
+              style={[
+                typography.headingMd,
+                { fontSize: 23, fontWeight: 'bold', marginBottom: 6 },
+              ]}
+            >
+              {selectedDateFormatted}
+              {cycleDay ? ` • ${t('cycleDetails.cycleDay', { number: cycleDay })}` : ''}
             </Text>
+            {dayCategory && (
+              <Text style={[typography.body, { color: colors.textSecondary }]}>
+                {tCalendar(`dayInfo.${dayCategory}`)}
+              </Text>
+            )}
+          </View>
+          {onClose && (
+            <TouchableOpacity onPress={onClose} style={styles.closeButton}>
+              <Ionicons name="close" size={28} color={colors.textSecondary} />
+            </TouchableOpacity>
           )}
         </View>
-        {onClose && (
-          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <Ionicons name="close" size={28} color={colors.textSecondary} />
-          </TouchableOpacity>
-        )}
       </View>
 
-      {isDateInPastOrToday && (
+      {isDateInPastOrToday() && (
         <>
           <Text style={[typography.headingMd, { fontSize: 20, fontWeight: '500', marginBottom: 12, marginTop: 16, }]}>
             {tHealth('healthLogPreview.title')}
           </Text>
           <HealthLogPreview
             selectedDate={selectedDate}
-            isInSheet
           />
         </>
       )}

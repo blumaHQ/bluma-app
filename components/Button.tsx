@@ -1,5 +1,13 @@
 import React, { useMemo } from 'react';
-import { Text, Pressable, StyleSheet, ActivityIndicator, View } from 'react-native';
+import {
+  Text,
+  Pressable,
+  StyleSheet,
+  ActivityIndicator,
+  View,
+  StyleProp,
+  TextStyle,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '../styles/theme';
 import { useAppStyles } from '../hooks/useStyles';
@@ -61,7 +69,7 @@ export function Button({
     }
   }, [variant, resolvedColor, colors.white]);
 
-  const textStyle = useMemo(
+  const textStyle = useMemo<StyleProp<TextStyle>>(
     () => [typography.body, { fontWeight: '500', color: textColor }],
     [typography.body, textColor]
   );

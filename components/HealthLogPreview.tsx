@@ -4,8 +4,8 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import { Gesture, GestureDetector, ScrollView } from 'react-native-gesture-handler';
 import { useTranslation } from 'react-i18next';
 import { router, useFocusEffect } from 'expo-router';
 import { getDB, getSetting } from '../db';
@@ -36,10 +36,10 @@ const getIconComponent = (log: any) => {
 
   let iconName: string | undefined;
   if (type === 'symptom') iconName = SYMPTOMS.find(s => s.id === item_id)?.icon;
-  else if (type === 'mood') iconName = MOODS.find(m => m.id === item_id)?.icon;
-  else if (type === 'flow') iconName = FLOWS.find(f => f.id === item_id)?.icon;
+  else if (type === 'mood') iconName = MOODS.find(s => s.id === item_id)?.icon;
+  else if (type === 'flow') iconName = FLOWS.find(s => s.id === item_id)?.icon;
   else if (type === 'discharge')
-    iconName = DISCHARGES.find(d => d.id === item_id)?.icon;
+    iconName = DISCHARGES.find(s => s.id === item_id)?.icon;
   else if (type === 'sex') iconName = SEX.find(s => s.id === item_id)?.icon;
 
   return <CustomIcon name={(iconName ?? 'im-okay') as any} size={54} />;
@@ -118,41 +118,22 @@ const HealthLogItem = memo(
 
 HealthLogItem.displayName = 'HealthLogItem';
 
-const healthTrackingHref = (selectedDate?: string) =>
-  selectedDate ? `/health-tracking?date=${selectedDate}` : '/health-tracking';
-
 type HealthLogPreviewProps = {
   selectedDate?: string;
-  isInSheet?: boolean;
 };
 
-export const HealthLogPreview = ({
-  selectedDate,
-  isInSheet = false,
-}: HealthLogPreviewProps) => {
+export const HealthLogPreview = ({ selectedDate }: HealthLogPreviewProps) => {
   const { colors } = useTheme();
   const { typography } = useAppStyles();
   const { t } = useTranslation('health');
-  const stripNativeGesture = useMemo(() => {
-    if (!isInSheet) {
-      return null;
-    }
-
-    return Gesture.Native()
-      .shouldActivateOnStart(true)
-      .disallowInterruption(true)
-      .cancelsTouchesInView(false);
-  }, [isInSheet]);
   const [healthLogsForDate, setHealthLogsForDate] = useState<any[]>([]);
   const [tempUnit, setTempUnit] = useState<'C' | 'F'>('C');
 
-  // Load health logs when component is focused or selectedDate changes
   useFocusEffect(
     useCallback(() => {
       const loadHealthLogs = async () => {
         try {
           const db = getDB();
-          // Use the selected date or default to today
           const dateToUse = selectedDate || dayjs().format('YYYY-MM-DD');
           const logs = await db
             .select()
@@ -175,7 +156,13 @@ export const HealthLogPreview = ({
     return (
       <TouchableOpacity
         style={styles.container}
-        onPress={() => router.push(healthTrackingHref(selectedDate))}
+        onPress={() =>
+          router.push(
+            selectedDate
+              ? `/health-tracking?date=${selectedDate}`
+              : '/health-tracking'
+          )
+        }
         activeOpacity={0.7}
       >
         <View pointerEvents="none">
@@ -204,18 +191,22 @@ export const HealthLogPreview = ({
     );
   }
 
-  const strip = (
-    <View style={styles.container} collapsable={false}>
+  return (
+    <View style={styles.container}>
       <FAB
-        onPress={() => router.push(healthTrackingHref(selectedDate))}
+        onPress={() =>
+          router.push(
+            selectedDate
+              ? `/health-tracking?date=${selectedDate}`
+              : '/health-tracking'
+          )
+        }
         containerStyle={styles.fabContainer}
         label={t('healthLogPreview.add')}
       />
 
       <ScrollView
         horizontal
-        nestedScrollEnabled
-        directionalLockEnabled
         showsHorizontalScrollIndicator={false}
         style={styles.scrollContainer}
         contentContainerStyle={styles.scrollContent}
@@ -232,14 +223,6 @@ export const HealthLogPreview = ({
         ))}
       </ScrollView>
     </View>
-  );
-
-  if (!stripNativeGesture) {
-    return strip;
-  }
-
-  return (
-    <GestureDetector gesture={stripNativeGesture}>{strip}</GestureDetector>
   );
 };
 

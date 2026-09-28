@@ -16,6 +16,10 @@ import Animated, {
 
 const DEFAULT_CONTENT_HEIGHT = 320;
 
+// Keeps the sheet's drag gesture vertical-only so the nested horizontal
+// health log strip can claim sideways swipes.
+const DRAG_AXIS_THRESHOLD: [number, number] = [-10, 10];
+
 interface CalendarBottomSheetProps {
   selectedDate: string;
   cycleDay: number | null;
@@ -76,6 +80,8 @@ export function CalendarBottomSheet({
         maxDynamicContentSize={500}
         enablePanDownToClose
         enableOverDrag={false}
+        activeOffsetY={DRAG_AXIS_THRESHOLD}
+        failOffsetX={DRAG_AXIS_THRESHOLD}
         onChange={(i: number) => onOpenChange(i >= 0)}
         backgroundStyle={{
           backgroundColor: colors.surface,
