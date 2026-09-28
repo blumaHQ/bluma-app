@@ -17,7 +17,7 @@ export default {
   expo: {
     name: getAppName(),
     slug: "bluma",
-    version: "1.9.0",
+    version: "1.9.1",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
     scheme: "bluma",
@@ -27,7 +27,7 @@ export default {
       supportsTablet: true,
     },
     android: {
-      versionCode: 15,
+      versionCode: 16,
       // The SQLite database is encrypted with a key wrapped by a hardware-bound,
       // non-exportable Keystore key, so it cannot travel with an Android Auto
       // Backup. Restoring one would hand the user a database no key can open.
