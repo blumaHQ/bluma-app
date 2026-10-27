@@ -1,12 +1,33 @@
-import { getLocales } from 'expo-localization';
+import { getCalendars, getLocales, Weekday } from 'expo-localization';
+
+const SUNDAY_REFERENCE_DATE = new Date(2026, 0, 4);
+
+let cachedLocaleTag: string | null = null;
+let cachedFirstWeekday: number | null = null;
+
+function getLocaleTag(): string {
+  cachedLocaleTag ??= getLocales()[0]?.languageTag ?? 'en';
+  return cachedLocaleTag;
+}
+
+/** Index of the week's first day, matching `Date.prototype.getDay()` (0 = Sunday). */
+export function getFirstWeekday(): number {
+  cachedFirstWeekday ??=
+    (getCalendars()[0]?.firstWeekday ?? Weekday.MONDAY) - 1;
+  return cachedFirstWeekday;
+}
 
 export function getLocalizedDayNames(): string[] {
-  const locale = getLocales()[0]?.languageTag ?? 'en';
-  const formatter = new Intl.DateTimeFormat(locale, { weekday: 'narrow' });
-  // 2026-01-05 (Mon) through 2026-01-11 (Sun)
-  return Array.from({ length: 7 }, (_, i) =>
-    formatter.format(new Date(2026, 0, 5 + i))
-  );
+  const formatter = new Intl.DateTimeFormat(getLocaleTag(), {
+    weekday: 'narrow',
+  });
+  const firstWeekday = getFirstWeekday();
+
+  return Array.from({ length: 7 }, (_, i) => {
+    const date = new Date(SUNDAY_REFERENCE_DATE);
+    date.setDate(date.getDate() + ((firstWeekday + i) % 7));
+    return formatter.format(date);
+  });
 }
 
 export interface MonthData {
@@ -26,6 +47,21 @@ export interface DayData {
   isCurrentMonth: boolean;
 }
 
+export function buildMonthData(year: number, month: number): MonthData {
+  const weekDayOfFirst = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const firstDay = (weekDayOfFirst - getFirstWeekday() + 7) % 7;
+
+  return {
+    year,
+    month,
+    firstDay,
+    daysInMonth,
+    weekCount: Math.ceil((firstDay + daysInMonth) / 7),
+    key: `${year}-${month}`,
+  };
+}
+
 export function generateMonthsArray(
   startDate: Date,
   monthsBefore: number,
@@ -37,24 +73,7 @@ export function generateMonthsArray(
   for (let i = -monthsBefore; i <= monthsAfter; i++) {
     const date = new Date(baseDate);
     date.setMonth(date.getMonth() + i);
-
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
-    
-    const totalDays = adjustedFirstDay + daysInMonth;
-    const weekCount = totalDays <= 35 ? 5 : 6;
-
-    months.push({
-      year,
-      month,
-      firstDay: adjustedFirstDay,
-      daysInMonth,
-      weekCount,
-      key: `${year}-${month}`,
-    });
+    months.push(buildMonthData(date.getFullYear(), date.getMonth()));
   }
 
   return months;
@@ -119,7 +138,10 @@ export function formatDateString(date: Date): string {
 
 export function getMonthName(month: number, year: number): string {
   const date = new Date(year, month, 1);
-  return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+  return date.toLocaleDateString(getLocaleTag(), {
+    month: 'long',
+    year: 'numeric',
+  });
 }
 
 export function findMonthIndex(

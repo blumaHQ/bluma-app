@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import {
   MonthData,
   generateDaysForMonth,
-  getLocalizedDayNames,
   getMonthName,
 } from '../../utils/customCalendarHelpers';
 import { MarkedDates } from '../../types/calendarTypes';
@@ -16,13 +15,10 @@ interface MonthViewProps {
   colors: any;
   mode: 'view' | 'selection';
   disableFuture?: boolean;
-  showDayNames?: boolean;
   showMonthHeader?: boolean;
   renderDay?: (props: any) => React.ReactNode;
   cellHeight?: number;
 }
-
-const DAY_NAMES = getLocalizedDayNames();
 
 export const MonthView = memo<MonthViewProps>(
   ({
@@ -32,7 +28,6 @@ export const MonthView = memo<MonthViewProps>(
     colors,
     mode,
     disableFuture = false,
-    showDayNames = false,
     showMonthHeader = true,
     renderDay,
     cellHeight,
@@ -58,18 +53,6 @@ export const MonthView = memo<MonthViewProps>(
             <Text style={[styles.headerText, { color: colors.textPrimary }]}>
               {monthName}
             </Text>
-          </View>
-        )}
-
-        {showDayNames && (
-          <View style={styles.dayNamesRow}>
-            {DAY_NAMES.map((name, index) => (
-              <View key={index} style={styles.dayNameCell}>
-                <Text style={[styles.dayNameText, { color: colors.textPrimary, }]}>
-                  {name}
-                </Text>
-              </View>
-            ))}
           </View>
         )}
 
@@ -109,7 +92,6 @@ export const MonthView = memo<MonthViewProps>(
     if (prev.showMonthHeader !== next.showMonthHeader) return false;
     if (prev.renderDay !== next.renderDay) return false;
     if (prev.onDayPress !== next.onDayPress) return false;
-    if (prev.showDayNames !== next.showDayNames) return false;
     if (prev.cellHeight !== next.cellHeight) return false;
     
     // Only check markedDates for dates in this month
@@ -141,19 +123,6 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  dayNamesRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 5,
-  },
-  dayNameCell: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  dayNameText: {
-    fontSize: 12,
-    fontWeight: '500',
   },
   daysGrid: {
     flexDirection: 'row',
