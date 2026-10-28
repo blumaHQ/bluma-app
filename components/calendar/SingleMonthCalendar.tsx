@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { MonthView } from './MonthView';
-import { MonthData, getLocalizedDayNames } from '../../utils/customCalendarHelpers';
+import {
+  buildMonthData,
+  getLocalizedDayNames,
+  getMonthName,
+} from '../../utils/customCalendarHelpers';
 
 const DAY_NAMES = getLocalizedDayNames();
 
@@ -30,20 +34,10 @@ export function SingleMonthCalendar({
   const [displayMonth, setDisplayMonth] = useState(currentDate.getMonth());
   const [displayYear, setDisplayYear] = useState(currentDate.getFullYear());
 
-  const firstDay = new Date(displayYear, displayMonth, 1).getDay();
-  const adjustedFirstDay = firstDay === 0 ? 6 : firstDay - 1;
-  const daysInMonth = new Date(displayYear, displayMonth + 1, 0).getDate();
-  const totalDays = adjustedFirstDay + daysInMonth;
-  const weekCount = totalDays <= 35 ? 5 : 6;
-
-  const monthData: MonthData = {
-    month: displayMonth,
-    year: displayYear,
-    key: `${displayYear}-${displayMonth}`,
-    firstDay: adjustedFirstDay,
-    daysInMonth,
-    weekCount,
-  };
+  const monthData = useMemo(
+    () => buildMonthData(displayYear, displayMonth),
+    [displayYear, displayMonth]
+  );
 
   const markedDates = selectedDate
   ? {
@@ -99,13 +93,7 @@ export function SingleMonthCalendar({
     }
   };
 
-  const monthName = new Date(displayYear, displayMonth, 1).toLocaleDateString(
-    'default',
-    {
-      month: 'long',
-      year: 'numeric',
-    }
-  );
+  const monthName = getMonthName(displayMonth, displayYear);
 
   const swipeGesture = Gesture.Pan()
     .runOnJS(true)
@@ -172,7 +160,6 @@ export function SingleMonthCalendar({
               colors={colors}
               mode="selection"
               disableFuture={disableFuture}
-              showDayNames={false}
               showMonthHeader={false}
               cellHeight={44}
             />

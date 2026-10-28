@@ -88,7 +88,6 @@ export const CustomCalendar = forwardRef<CustomCalendarRef, CustomCalendarProps>
       colors={colors}
       mode={mode}
       disableFuture={disableFuture}
-      showDayNames={false}
       renderDay={renderDay}
     />
   ), [markedDates, onDayPress, colors, mode, disableFuture, renderDay]);
